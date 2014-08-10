@@ -21,7 +21,7 @@
 
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color
 {
-    return [MGSwipeButton buttonWithTitle:title icon:nil backgroundColor:color callback:nil];
+    return [MGSwipeButton buttonWithTitle:title icon:icon backgroundColor:color callback:nil];
 }
 
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback
@@ -35,6 +35,7 @@
     [button sizeToFit];
     CGRect frame = button.frame;
     frame.size.width += 10; //padding
+    frame.size.width = MAX(50, frame.size.width); //initial min size
     button.frame = frame;
     return button;
 }

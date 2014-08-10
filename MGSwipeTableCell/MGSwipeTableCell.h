@@ -39,9 +39,9 @@ typedef enum MGSwipeDirection {
  * Swipe button are not expandable by default
  **/
 @interface MGSwipeExpansionSettings: NSObject
-/** index of the button (in the left or right buttons arrays) */
+/** index of the expandable button (in the left or right buttons arrays) */
 @property (nonatomic, assign) NSInteger buttonIndex;
-/** if true the button fills the cell on trigger, else it goes to its initial position */
+/** if true the button fills the cell on trigger, else it bounces back to its initial position */
 @property (nonatomic, assign) BOOL fillOnTrigger;
 /** Size proportional threshold to trigger the expansion button. Default value 1.5 */
 @property (nonatomic, assign) CGFloat threshold;
