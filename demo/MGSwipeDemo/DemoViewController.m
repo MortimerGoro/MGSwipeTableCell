@@ -90,7 +90,7 @@
             return YES;
         }];
         CGRect frame = button.frame;
-        frame.size.width += 20;
+        frame.size.width = 55;
         button.frame = frame;
         [result addObject:button];
     }
@@ -148,14 +148,15 @@
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     cell.detailTextLabel.text = data.detailTitle;
     cell.delegate = self;
+
+    
+#if !TEST_USE_MG_DELEGATE
     cell.leftSwipeSettings.transition = data.transition;
     cell.rightSwipeSettings.transition = data.transition;
     cell.leftExpansion.buttonIndex = data.leftExpandableIndex;
     cell.leftExpansion.fillOnTrigger = NO;
     cell.rightExpansion.buttonIndex = data.rightExpandableIndex;
     cell.rightExpansion.fillOnTrigger = YES;
-    
-#if !TEST_USE_MG_DELEGATE
     cell.leftButtons = [self createLeftButtons:data.leftButtonsCount];
     cell.rightButtons = [self createRightButtons:data.rightButtonsCount];
 #endif
@@ -166,12 +167,19 @@
 
 #if TEST_USE_MG_DELEGATE
 -(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
+             swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings;
 {
     TestData * data = [tests objectAtIndex:[self.tableView indexPathForCell:cell].row];
+    swipeSettings.transition = data.transition;
+    
     if (direction == MGSwipeDirectionLeftToRight) {
+        expansionSettings.buttonIndex = data.leftExpandableIndex;
+        expansionSettings.fillOnTrigger = NO;
         return [self createLeftButtons:data.leftButtonsCount];
     }
     else {
+        expansionSettings.buttonIndex = data.rightExpandableIndex;
+        expansionSettings.fillOnTrigger = YES;
         return [self createRightButtons:data.rightButtonsCount];
     }
 }
