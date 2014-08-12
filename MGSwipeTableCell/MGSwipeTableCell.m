@@ -396,8 +396,9 @@ typedef struct MGSwipeAnimationData {
 -(void) createSwipeViewIfNeeded
 {
     if (!swipeOverlay) {
-        swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height)];
+        swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
         swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
+        swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
         swipeView = [[UIImageView alloc] initWithImage:[self imageFromView:self]];
         swipeView.autoresizingMask =  UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         swipeView.frame = swipeOverlay.bounds;
