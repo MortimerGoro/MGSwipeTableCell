@@ -53,7 +53,7 @@
 
 -(instancetype) initWithButtons:(NSArray*) buttonsArray direction:(MGSwipeDirection) direction
 {
-    CGSize maxSize;
+    CGSize maxSize = CGSizeZero;
     for (UIView * button in buttonsArray) {
         maxSize.width = MAX(maxSize.width, button.bounds.size.width);
         maxSize.height = MAX(maxSize.height, button.bounds.size.height);
