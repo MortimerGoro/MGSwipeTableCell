@@ -518,7 +518,7 @@ typedef struct MGSwipeAnimationData {
         self.accessoryView.hidden = hidden;
     }
     for (UIView * view in self.contentView.superview.subviews) {
-        if ([view isKindOfClass:[UIButton class]]) {
+        if (view != self.contentView && ([view isKindOfClass:[UIButton class]] || [NSStringFromClass(view.class) rangeOfString:@"Disclosure"].location != NSNotFound)) {
             view.hidden = hidden;
         }
     }
