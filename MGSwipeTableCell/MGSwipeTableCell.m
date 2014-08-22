@@ -502,6 +502,22 @@ typedef struct MGSwipeAnimationData {
     }
 }
 
+-(UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    //override hitTest to give swipe buttons a higher priority (diclosure buttons can steal input)
+    UIView * targets[] = {leftView, rightView};
+    for (int i = 0; i< 2; ++i) {
+        UIView * target = targets[i];
+        if (!target) continue;
+        
+        CGPoint p = [self convertPoint:point toView:target];
+        if (CGRectContainsPoint(target.bounds, p)) {
+            return [target hitTest:p withEvent:event];
+        }
+    }
+    return [super hitTest:point withEvent:event];
+}
+
 #pragma mark Some utility methods
 
 - (UIImage *)imageFromView:(UIView *)view {
@@ -518,7 +534,7 @@ typedef struct MGSwipeAnimationData {
         self.accessoryView.hidden = hidden;
     }
     for (UIView * view in self.contentView.superview.subviews) {
-        if ([view isKindOfClass:[UIButton class]]) {
+        if (view != self.contentView && ([view isKindOfClass:[UIButton class]] || [NSStringFromClass(view.class) rangeOfString:@"Disclosure"].location != NSNotFound)) {
             view.hidden = hidden;
         }
     }
