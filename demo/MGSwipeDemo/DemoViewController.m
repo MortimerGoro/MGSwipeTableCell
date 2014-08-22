@@ -170,7 +170,6 @@
     cell.leftButtons = [self createLeftButtons:data.leftButtonsCount];
     cell.rightButtons = [self createRightButtons:data.rightButtonsCount];
 #endif
-    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
@@ -214,6 +213,11 @@
     }
     
     return YES;
+}
+
+-(void) tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"Tapped accessory button");
 }
 
 @end
