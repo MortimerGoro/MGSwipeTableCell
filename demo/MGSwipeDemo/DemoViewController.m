@@ -16,6 +16,7 @@
 {
     NSMutableArray * tests;
     UIBarButtonItem * prevButton;
+    UITableViewCellAccessoryType accessory;
 }
 
 
@@ -42,6 +43,13 @@
         prevButton = self.navigationItem.rightBarButtonItem;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancelTableEditClick:)];
     }
+    else if (buttonIndex == 3) {
+        accessory++;
+        if (accessory >=4) {
+            accessory = 0;
+        }
+        [self.tableView reloadData];
+    }
     else {
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"autolayout_test" bundle:nil];
         DemoViewController *vc = [sb instantiateInitialViewController];
@@ -56,6 +64,7 @@
     UIActionSheet * sheet = [[UIActionSheet alloc] initWithTitle:@"Select action" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles: nil];
     [sheet addButtonWithTitle:@"Reload test"];
     [sheet addButtonWithTitle:@"Multiselect test"];
+    [sheet addButtonWithTitle:@"Change accessory button"];
     if (!_testingStoryboardCell) {
         [sheet addButtonWithTitle:@"Storyboard test"];
     }
@@ -147,6 +156,7 @@
     cell.textLabel.text = data.title;
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     cell.detailTextLabel.text = data.detailTitle;
+    cell.accessoryType = accessory;
     cell.delegate = self;
 
     
