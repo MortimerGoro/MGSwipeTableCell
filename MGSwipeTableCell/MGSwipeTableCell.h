@@ -84,7 +84,6 @@ typedef enum MGSwipeDirection {
 
 @end
 
-
 /**
  * Swipe Cell class
  * To implement swipe cells you have to override from this class

@@ -23,7 +23,22 @@
 		11D0A01A1996AFF1008D8809 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11D0A0171996AFF1008D8809 /* menu@2x.png */; };
 		11D0A01C1996B2BE008D8809 /* autolayout_test.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11D0A01B1996B2BE008D8809 /* autolayout_test.storyboard */; };
 		11D0A01E1996C339008D8809 /* cat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11D0A01D1996C339008D8809 /* cat@2x.png */; };
+		C59FDF9119B8186D00BA4374 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 113D5E281996AD7400066AE3 /* XCTest.framework */; };
+		C59FDF9219B8186D00BA4374 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 113D5E0F1996AD7400066AE3 /* Foundation.framework */; };
+		C59FDF9319B8186D00BA4374 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 113D5E131996AD7400066AE3 /* UIKit.framework */; };
+		C59FDF9919B8186D00BA4374 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C59FDF9719B8186D00BA4374 /* InfoPlist.strings */; };
+		C59FDF9B19B8186D00BA4374 /* MGSwipeDemo_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = C59FDF9A19B8186D00BA4374 /* MGSwipeDemo_Tests.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C59FDF9D19B8186D00BA4374 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 113D5E041996AD7400066AE3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 113D5E0B1996AD7400066AE3;
+			remoteInfo = MGSwipeDemo;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		113D5E0C1996AD7400066AE3 /* MGSwipeDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MGSwipeDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,6 +66,11 @@
 		11D0A0171996AFF1008D8809 /* menu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "menu@2x.png"; path = "assets/menu@2x.png"; sourceTree = "<group>"; };
 		11D0A01B1996B2BE008D8809 /* autolayout_test.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = autolayout_test.storyboard; sourceTree = "<group>"; };
 		11D0A01D1996C339008D8809 /* cat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cat@2x.png"; path = "assets/cat@2x.png"; sourceTree = "<group>"; };
+		C59FDF9019B8186D00BA4374 /* MGSwipeDemo Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MGSwipeDemo Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C59FDF9619B8186D00BA4374 /* MGSwipeDemo Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MGSwipeDemo Tests-Info.plist"; sourceTree = "<group>"; };
+		C59FDF9819B8186D00BA4374 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C59FDF9A19B8186D00BA4374 /* MGSwipeDemo_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MGSwipeDemo_Tests.m; sourceTree = "<group>"; };
+		C59FDF9C19B8186D00BA4374 /* MGSwipeDemo Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MGSwipeDemo Tests-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +84,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C59FDF8D19B8186D00BA4374 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C59FDF9119B8186D00BA4374 /* XCTest.framework in Frameworks */,
+				C59FDF9319B8186D00BA4374 /* UIKit.framework in Frameworks */,
+				C59FDF9219B8186D00BA4374 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -72,6 +102,7 @@
 			children = (
 				1162A9581996AE0E00A1DC80 /* MGSwipeTableCell */,
 				113D5E151996AD7400066AE3 /* MGSwipeDemo */,
+				C59FDF9419B8186D00BA4374 /* MGSwipeDemo Tests */,
 				113D5E0E1996AD7400066AE3 /* Frameworks */,
 				113D5E0D1996AD7400066AE3 /* Products */,
 			);
@@ -81,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				113D5E0C1996AD7400066AE3 /* MGSwipeDemo.app */,
+				C59FDF9019B8186D00BA4374 /* MGSwipeDemo Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -146,6 +178,25 @@
 			name = assets;
 			sourceTree = "<group>";
 		};
+		C59FDF9419B8186D00BA4374 /* MGSwipeDemo Tests */ = {
+			isa = PBXGroup;
+			children = (
+				C59FDF9A19B8186D00BA4374 /* MGSwipeDemo_Tests.m */,
+				C59FDF9519B8186D00BA4374 /* Supporting Files */,
+			);
+			path = "MGSwipeDemo Tests";
+			sourceTree = "<group>";
+		};
+		C59FDF9519B8186D00BA4374 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C59FDF9619B8186D00BA4374 /* MGSwipeDemo Tests-Info.plist */,
+				C59FDF9719B8186D00BA4374 /* InfoPlist.strings */,
+				C59FDF9C19B8186D00BA4374 /* MGSwipeDemo Tests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -166,6 +217,24 @@
 			productReference = 113D5E0C1996AD7400066AE3 /* MGSwipeDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C59FDF8F19B8186D00BA4374 /* MGSwipeDemo Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C59FDF9F19B8186D00BA4374 /* Build configuration list for PBXNativeTarget "MGSwipeDemo Tests" */;
+			buildPhases = (
+				C59FDF8C19B8186D00BA4374 /* Sources */,
+				C59FDF8D19B8186D00BA4374 /* Frameworks */,
+				C59FDF8E19B8186D00BA4374 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C59FDF9E19B8186D00BA4374 /* PBXTargetDependency */,
+			);
+			name = "MGSwipeDemo Tests";
+			productName = "MGSwipeDemo Tests";
+			productReference = C59FDF9019B8186D00BA4374 /* MGSwipeDemo Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -174,6 +243,11 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Imanol Fernandez Gorostizaga";
+				TargetAttributes = {
+					C59FDF8F19B8186D00BA4374 = {
+						TestTargetID = 113D5E0B1996AD7400066AE3;
+					};
+				};
 			};
 			buildConfigurationList = 113D5E071996AD7400066AE3 /* Build configuration list for PBXProject "MGSwipeDemo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -188,6 +262,7 @@
 			projectRoot = "";
 			targets = (
 				113D5E0B1996AD7400066AE3 /* MGSwipeDemo */,
+				C59FDF8F19B8186D00BA4374 /* MGSwipeDemo Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -207,6 +282,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C59FDF8E19B8186D00BA4374 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C59FDF9919B8186D00BA4374 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -223,13 +306,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C59FDF8C19B8186D00BA4374 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C59FDF9B19B8186D00BA4374 /* MGSwipeDemo_Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C59FDF9E19B8186D00BA4374 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 113D5E0B1996AD7400066AE3 /* MGSwipeDemo */;
+			targetProxy = C59FDF9D19B8186D00BA4374 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		113D5E181996AD7400066AE3 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				113D5E191996AD7400066AE3 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C59FDF9719B8186D00BA4374 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C59FDF9819B8186D00BA4374 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -335,6 +442,48 @@
 			};
 			name = Release;
 		};
+		C59FDFA019B8186D00BA4374 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MGSwipeDemo.app/MGSwipeDemo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MGSwipeDemo Tests/MGSwipeDemo Tests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "MGSwipeDemo Tests/MGSwipeDemo Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		C59FDFA119B8186D00BA4374 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MGSwipeDemo.app/MGSwipeDemo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MGSwipeDemo Tests/MGSwipeDemo Tests-Prefix.pch";
+				INFOPLIST_FILE = "MGSwipeDemo Tests/MGSwipeDemo Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -355,6 +504,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		C59FDF9F19B8186D00BA4374 /* Build configuration list for PBXNativeTarget "MGSwipeDemo Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C59FDFA019B8186D00BA4374 /* Debug */,
+				C59FDFA119B8186D00BA4374 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

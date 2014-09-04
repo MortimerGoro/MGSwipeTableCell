@@ -158,7 +158,6 @@
     cell.detailTextLabel.text = data.detailTitle;
     cell.accessoryType = accessory;
     cell.delegate = self;
-
     
 #if !TEST_USE_MG_DELEGATE
     cell.leftSwipeSettings.transition = data.transition;
