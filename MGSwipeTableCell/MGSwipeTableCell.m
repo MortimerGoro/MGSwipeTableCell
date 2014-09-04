@@ -197,6 +197,7 @@
 -(void) transitionStatic:(CGFloat) t
 {
     const CGFloat dx = self.bounds.size.width * t;
+
     for (NSInteger i = buttons.count - 1; i >=0 ; --i) {
         UIView * button = [buttons objectAtIndex:i];
         const CGFloat x = fromLeft ? self.bounds.size.width - dx + button.bounds.size.width * i : dx - button.bounds.size.width * (buttons.count - i);
@@ -215,14 +216,14 @@
     for (int i = 0; i < buttons.count; ++i) {
         UIView * button = [buttons objectAtIndex:i];
         CAShapeLayer * maskLayer = [[CAShapeLayer alloc] init];
-        const CGSize size = button.bounds.size;
+        CGSize size = button.bounds.size;
         CGRect maskRect = CGRectMake(size.width * 0.5 - dx, 0, dx * 2, size.height);
         CGPathRef path = CGPathCreateWithRect(maskRect, NULL);
         maskLayer.path = path;
         CGPathRelease(path);
         CGFloat ox =  dx * (2 * i + 1) - size.width * 0.5;
         button.frame = CGRectMake(fromLeft ?  self.bounds.size.width * (1-t) + ox: ox, 0, button.bounds.size.width, button.bounds.size.height);
-        button.layer.mask = maskLayer;
+//        button.layer.mask = maskLayer;
     }
 }
 
