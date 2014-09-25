@@ -549,6 +549,11 @@ typedef struct MGSwipeAnimationData {
             view.hidden = hidden;
         }
     }
+    for (UIView * view in self.contentView.subviews) {
+        if (view != swipeOverlay) {
+            view.hidden = hidden;
+        }
+    }
 }
 
 -(UIColor *) backgroundColorForSwipe
