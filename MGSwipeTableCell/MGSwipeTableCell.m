@@ -333,9 +333,19 @@ typedef struct MGSwipeAnimationData {
     return self;
 }
 
+- (id)initWithCoder:(NSCoder*)aDecoder
+{
+    if(self = [super initWithCoder:aDecoder]) {
+        [self initViews];
+    }
+    return self;
+}
+
 -(void) awakeFromNib
 {
-    [self initViews];
+    if (!panRecognizer) {
+        [self initViews];
+    }
 }
 
 -(void) dealloc
@@ -372,6 +382,7 @@ typedef struct MGSwipeAnimationData {
     if (panRecognizer) {
         panRecognizer.delegate = nil;
         [self removeGestureRecognizer:panRecognizer];
+        panRecognizer = nil;
     }
 }
 
