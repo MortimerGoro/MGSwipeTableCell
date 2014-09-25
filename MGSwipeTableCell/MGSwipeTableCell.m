@@ -271,6 +271,7 @@
     if (self = [super init]) {
         self.transition = MGSwipeTransitionBorder;
         self.threshold = 0.5;
+        self.offset = 0;
     }
     return self;
 }
@@ -619,7 +620,7 @@ typedef struct MGSwipeAnimationData {
         if (!view) continue;
 
         //buttons view position
-        CGFloat translation = MIN(offset, view.bounds.size.width) * sign;
+        CGFloat translation = MIN(offset, view.bounds.size.width) * sign + settings[i].offset * sign;
         view.transform = CGAffineTransformMakeTranslation(translation, 0);
 
         if (view != activeButtons) continue; //only transition if active (perf. improvement)

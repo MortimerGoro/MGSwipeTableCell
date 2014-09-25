@@ -29,6 +29,10 @@ typedef NS_ENUM(NSInteger, MGSwipeDirection) {
 @property (nonatomic, assign) MGSwipeTransition transition;
 /** Size proportional threshold to hide/keep the buttons when the user ends swipping. Default value 0.5 */
 @property (nonatomic, assign) CGFloat threshold;
+/** Optional offset to change the swipe buttons position. Relative to the cell border position. Default value: 0 
+ ** For example it can be used to avoid cropped buttons when sectionIndexTitlesForTableView is used in the UITableView
+ **/
+@property (nonatomic, assign) CGFloat offset;
 @end
 
 
