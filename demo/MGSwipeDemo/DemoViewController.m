@@ -17,12 +17,13 @@
     NSMutableArray * tests;
     UIBarButtonItem * prevButton;
     UITableViewCellAccessoryType accessory;
+    UIImageView * background; //used for transparency test
 }
 
 
 -(void) cancelTableEditClick: (id) sender
 {
-    [self.tableView setEditing: NO animated: YES];
+    [_tableView setEditing: NO animated: YES];
     self.navigationItem.rightBarButtonItem = prevButton;
     prevButton = nil;
 }
@@ -35,11 +36,11 @@
     
     if (buttonIndex == 1) {
         tests = [TestData data];
-        [self.tableView reloadData];
+        [_tableView reloadData];
     }
     else if (buttonIndex == 2) {
-        self.tableView.allowsMultipleSelectionDuringEditing = YES;
-        [self.tableView setEditing: YES animated: YES];
+        _tableView.allowsMultipleSelectionDuringEditing = YES;
+        [_tableView setEditing: YES animated: YES];
         prevButton = self.navigationItem.rightBarButtonItem;
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancelTableEditClick:)];
     }
@@ -48,7 +49,22 @@
         if (accessory >=4) {
             accessory = 0;
         }
-        [self.tableView reloadData];
+        [_tableView reloadData];
+    }
+    else if (buttonIndex == 4) {
+        if (background) {
+            [background removeFromSuperview];
+            _tableView.backgroundColor = [UIColor whiteColor];
+        }
+        else {
+            background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"background.jpg"]];
+            background.frame = self.view.bounds;
+            background.contentMode = UIViewContentModeScaleToFill;
+            background.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            [self.view insertSubview:background belowSubview:_tableView];
+            _tableView.backgroundColor = [UIColor clearColor];
+        }
+        [_tableView reloadData];
     }
     else {
         UIStoryboard *sb = [UIStoryboard storyboardWithName:@"autolayout_test" bundle:nil];
@@ -65,6 +81,7 @@
     [sheet addButtonWithTitle:@"Reload test"];
     [sheet addButtonWithTitle:@"Multiselect test"];
     [sheet addButtonWithTitle:@"Change accessory button"];
+    [sheet addButtonWithTitle:@"Transparency test"];
     if (!_testingStoryboardCell) {
         [sheet addButtonWithTitle:@"Storyboard test"];
     }
@@ -78,8 +95,13 @@
     tests = [TestData data];
     self.title = @"MGSwipeCell";
     
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
+    if (!_testingStoryboardCell) {
+        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+        [self.view addSubview:_tableView];
+    }
     
     self.navigationItem.rightBarButtonItem =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionClick:)];
 }
@@ -138,14 +160,14 @@
         /**
          * Test using storyboard and prototype cell that uses autolayout
          **/
-        cell = [self.tableView dequeueReusableCellWithIdentifier:@"prototypeCell"];
+        cell = [_tableView dequeueReusableCellWithIdentifier:@"prototypeCell"];
     }
     else {
         /**
          * Test using programmatically created cells
          **/
         static NSString * reuseIdentifier = @"programmaticCell";
-        cell = [self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+        cell = [_tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
         if (!cell) {
             cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
         }
@@ -158,8 +180,17 @@
     cell.detailTextLabel.text = data.detailTitle;
     cell.accessoryType = accessory;
     cell.delegate = self;
-
     
+    if (background) { //transparency test
+        cell.backgroundColor = [UIColor clearColor];
+        cell.selectedBackgroundView = [[UIView alloc] init];
+        cell.selectedBackgroundView.backgroundColor = [[UIColor yellowColor] colorWithAlphaComponent:0.3];
+        cell.contentView.backgroundColor = [UIColor clearColor];
+        cell.swipeBackgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor yellowColor];
+        cell.detailTextLabel.textColor = [UIColor yellowColor];
+    }
+
 #if !TEST_USE_MG_DELEGATE
     cell.leftSwipeSettings.transition = data.transition;
     cell.rightSwipeSettings.transition = data.transition;
@@ -178,7 +209,7 @@
 -(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
              swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings;
 {
-    TestData * data = [tests objectAtIndex:[self.tableView indexPathForCell:cell].row];
+    TestData * data = [tests objectAtIndex:[_tableView indexPathForCell:cell].row];
     swipeSettings.transition = data.transition;
     
     if (direction == MGSwipeDirectionLeftToRight) {
@@ -207,9 +238,9 @@
     
     if (direction == MGSwipeDirectionRightToLeft && index == 0) {
         //delete button
-        NSIndexPath * path = [self.tableView indexPathForCell:cell];
+        NSIndexPath * path = [_tableView indexPathForCell:cell];
         [tests removeObjectAtIndex:path.row];
-        [self.tableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
+        [_tableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
     }
     
     return YES;

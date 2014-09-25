@@ -14,6 +14,7 @@
 		113D5E1C1996AD7400066AE3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 113D5E1B1996AD7400066AE3 /* main.m */; };
 		113D5E201996AD7400066AE3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 113D5E1F1996AD7400066AE3 /* AppDelegate.m */; };
 		113D5E221996AD7400066AE3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 113D5E211996AD7400066AE3 /* Images.xcassets */; };
+		1146855619D4609F00D28118 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1146855519D4609F00D28118 /* background.jpg */; };
 		1162A95D1996AE3F00A1DC80 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1162A95A1996AE3F00A1DC80 /* MGSwipeButton.m */; };
 		1162A95E1996AE3F00A1DC80 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1162A95C1996AE3F00A1DC80 /* MGSwipeTableCell.m */; };
 		1162A9611996AECA00A1DC80 /* TestData.m in Sources */ = {isa = PBXBuildFile; fileRef = 1162A9601996AECA00A1DC80 /* TestData.m */; };
@@ -38,6 +39,7 @@
 		113D5E1F1996AD7400066AE3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		113D5E211996AD7400066AE3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		113D5E281996AD7400066AE3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		1146855519D4609F00D28118 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = background.jpg; path = assets/background.jpg; sourceTree = "<group>"; };
 		1162A9591996AE3F00A1DC80 /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSwipeButton.h; path = ../MGSwipeTableCell/MGSwipeButton.h; sourceTree = "<group>"; };
 		1162A95A1996AE3F00A1DC80 /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSwipeButton.m; path = ../MGSwipeTableCell/MGSwipeButton.m; sourceTree = "<group>"; };
 		1162A95B1996AE3F00A1DC80 /* MGSwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSwipeTableCell.h; path = ../MGSwipeTableCell/MGSwipeTableCell.h; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 		1162A95F1996AE5400A1DC80 /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				1146855519D4609F00D28118 /* background.jpg */,
 				11D0A01D1996C339008D8809 /* cat@2x.png */,
 				11D0A0151996AFF1008D8809 /* check@2x.png */,
 				11D0A0161996AFF1008D8809 /* fav@2x.png */,
@@ -202,6 +205,7 @@
 				113D5E1A1996AD7400066AE3 /* InfoPlist.strings in Resources */,
 				11D0A01E1996C339008D8809 /* cat@2x.png in Resources */,
 				11D0A01A1996AFF1008D8809 /* menu@2x.png in Resources */,
+				1146855619D4609F00D28118 /* background.jpg in Resources */,
 				113D5E221996AD7400066AE3 /* Images.xcassets in Resources */,
 				11D0A0181996AFF1008D8809 /* check@2x.png in Resources */,
 			);

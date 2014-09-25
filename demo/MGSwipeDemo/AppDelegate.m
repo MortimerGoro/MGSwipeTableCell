@@ -12,8 +12,9 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    DemoViewController * vc = [[DemoViewController alloc] initWithStyle:UITableViewStylePlain];
+    DemoViewController * vc = [[DemoViewController alloc] init];
     UINavigationController * navigation = [[UINavigationController alloc] initWithRootViewController:vc];
+    navigation.navigationBar.translucent = NO;
     self.window.rootViewController = navigation;
     
     self.window.backgroundColor = [UIColor whiteColor];
