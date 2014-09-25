@@ -116,7 +116,7 @@
     UIImage * icons[3] = {[UIImage imageNamed:@"check.png"], [UIImage imageNamed:@"fav.png"], [UIImage imageNamed:@"menu.png"]};
     for (int i = 0; i < number; ++i)
     {
-        MGSwipeButton * button = [MGSwipeButton buttonWithTitle:@"" icon:icons[i] backgroundColor:colors[i] width:55 callback:^BOOL(MGSwipeTableCell * sender){
+        MGSwipeButton * button = [MGSwipeButton buttonWithTitle:@"" icon:icons[i] backgroundColor:colors[i] padding:15 callback:^BOOL(MGSwipeTableCell * sender){
             NSLog(@"Convenience callback received (left).");
             return YES;
         }];

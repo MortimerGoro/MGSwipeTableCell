@@ -26,12 +26,14 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
  * Convenience static constructors
  */
 +(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color;
-+(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color width:(NSInteger) width;
++(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color padding:(NSInteger) padding;
 +(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback;
-+(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color width:(NSInteger) width callback:(MGSwipeButtonCallback) callback;
++(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color padding:(NSInteger) padding callback:(MGSwipeButtonCallback) callback;
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color;
-+(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color width:(NSInteger) width;
++(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding;
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback;
-+(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color width:(NSInteger) width callback:(MGSwipeButtonCallback) callback;
++(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding callback:(MGSwipeButtonCallback) callback;
+
+-(void) setPadding:(CGFloat) padding;
 
 @end
