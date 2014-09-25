@@ -716,6 +716,7 @@ typedef struct MGSwipeAnimationData {
         if (expansion) {
             UIView * expandedButton = [expansion getExpandedButton];
             [self setSwipeOffset:targetOffset animated:YES completion:^{
+                [expansion endExpansioAnimated:NO];
                 [expansion handleClick:expandedButton fromExpansion:YES];
             }];
         }
