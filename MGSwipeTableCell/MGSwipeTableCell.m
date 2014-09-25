@@ -365,6 +365,7 @@ typedef struct MGSwipeAnimationData {
     [self addGestureRecognizer:panRecognizer];
     panRecognizer.delegate = self;
     activeExpansion = nil;
+    _swipeAnimationDuration = 0.3;
 }
 
 -(void) cleanViews
@@ -699,7 +700,7 @@ typedef struct MGSwipeAnimationData {
     
     animationData.from = _swipeOffset;
     animationData.to = offset;
-    animationData.duration = 0.3;
+    animationData.duration = _swipeAnimationDuration;
     animationData.start = 0;
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(animationTick:)];
     [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];

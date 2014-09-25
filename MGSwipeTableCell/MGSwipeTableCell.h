@@ -110,6 +110,8 @@ typedef NS_ENUM(NSInteger, MGSwipeDirection) {
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
 /** Property to read or change the current swipe offset programmatically */
 @property (nonatomic, assign) CGFloat swipeOffset;
+/** Property to read or change swipe animation durations. Default value 0.3 */
+@property (nonatomic, assign) CGFloat swipeAnimationDuration;
 
 /** Utility methods to show or hide swipe buttons programmatically */
 -(void) hideSwipeAnimated: (BOOL) animated;
