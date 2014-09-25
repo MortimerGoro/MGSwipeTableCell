@@ -14,9 +14,19 @@
     return [MGSwipeButton buttonWithTitle:title icon:nil backgroundColor:color];
 }
 
++(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color width:(NSInteger) width
+{
+    return [MGSwipeButton buttonWithTitle:title icon:nil backgroundColor:color width:width];
+}
+
 +(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback
 {
     return [MGSwipeButton buttonWithTitle:title icon:nil backgroundColor:color callback:callback];
+}
+
++(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color width:(NSInteger) width callback:(MGSwipeButtonCallback) callback
+{
+    return [MGSwipeButton buttonWithTitle:title icon:nil backgroundColor:color width:width callback:callback];
 }
 
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color
@@ -24,7 +34,17 @@
     return [MGSwipeButton buttonWithTitle:title icon:icon backgroundColor:color callback:nil];
 }
 
++(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color width:(NSInteger) width
+{
+    return [MGSwipeButton buttonWithTitle:title icon:icon backgroundColor:color width:width callback:nil];
+}
+
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback
+{
+    return [MGSwipeButton buttonWithTitle:title icon:icon backgroundColor:color width:0 callback:callback];
+}
+
++(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color width:(NSInteger) width callback:(MGSwipeButtonCallback) callback
 {
     MGSwipeButton * button = [MGSwipeButton buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = color;
@@ -34,8 +54,13 @@
     button.callback = callback;
     [button sizeToFit];
     CGRect frame = button.frame;
-    frame.size.width += 10; //padding
-    frame.size.width = MAX(50, frame.size.width); //initial min size
+    if (width) {
+        frame.size.width = width;
+    }
+    else {
+        frame.size.width += 10; //default padding
+        frame.size.width = MAX(50, frame.size.width); //initial min size
+    }
     button.frame = frame;
     return button;
 }
