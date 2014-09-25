@@ -6,21 +6,19 @@
 #import <UIKit/UIKit.h>
 
 /** Transition types */
-typedef enum MGSwipeTransition {
+typedef NS_ENUM(NSInteger, MGSwipeTransition) {
     MGSwipeTransitionBorder = 0,
     MGSwipeTransitionStatic,
     MGSwipeTransitionDrag,
     MGSwipeTransitionClipCenter,
     MGSwipeTransition3D,
-    
-} MGSwipeTransition;
+};
 
 /** Swipe directions */
-typedef enum MGSwipeDirection {
+typedef NS_ENUM(NSInteger, MGSwipeDirection) {
     MGSwipeDirectionLeftToRight = 0,
     MGSwipeDirectionRightToLeft
-    
-} MGSwipeDirection;
+};
 
 
 /**
