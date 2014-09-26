@@ -122,5 +122,8 @@ typedef NS_ENUM(NSInteger, MGSwipeDirection) {
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
 -(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)()) completion;
 
+/** Refresh method to be used when you want to update the cell contents while the user is swipping */
+-(void) refreshContent;
+
 @end
 

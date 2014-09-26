@@ -487,6 +487,13 @@ typedef struct MGSwipeAnimationData {
     }
 }
 
+-(void) refreshContent
+{
+    CGFloat currentOffset = _swipeOffset;
+    self.swipeOffset = 0;
+    self.swipeOffset = currentOffset;
+}
+
 #pragma mark Handle Table Events
 
 -(void) willMoveToSuperview:(UIView *)newSuperview;
