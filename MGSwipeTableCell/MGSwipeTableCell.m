@@ -750,6 +750,15 @@ typedef struct MGSwipeAnimationData {
             }];
         }
         else {
+            CGFloat velocity = [panRecognizer velocityInView:self].x;
+            CGFloat inertiaThreshold = 100.0; //points per second
+            if (velocity > inertiaThreshold) {
+                targetOffset = _swipeOffset < 0 ? 0 : (leftView ? leftView.bounds.size.width : targetOffset);
+            }
+            else if (velocity < -inertiaThreshold) {
+                targetOffset = _swipeOffset > 0 ? 0 : (rightView ? -rightView.bounds.size.width : targetOffset);
+            }
+            
             [self setSwipeOffset:targetOffset animated:YES completion:nil];
         }
     }
@@ -778,7 +787,7 @@ typedef struct MGSwipeAnimationData {
             return YES; //already swipped, don't need to check buttons or canSwipe delegate
         }
         
-        //make a decision according to existing buttons or using he optional delegate
+        //make a decision according to existing buttons or using the optional delegate
         if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:canSwipe:)]) {
             allowSwipeLeftToRight = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionLeftToRight];
             allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft];
