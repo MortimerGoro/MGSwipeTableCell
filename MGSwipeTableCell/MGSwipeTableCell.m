@@ -487,7 +487,7 @@ typedef struct MGSwipeAnimationData {
     }
 }
 
--(void) refreshContent
+-(void) refreshContentView
 {
     CGFloat currentOffset = _swipeOffset;
     self.swipeOffset = 0;
