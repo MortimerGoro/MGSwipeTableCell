@@ -1,0 +1,303 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11754E2919D5C1EA009CE7B5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 11754E2819D5C1EA009CE7B5 /* main.m */; };
+		11754E2C19D5C1EA009CE7B5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 11754E2B19D5C1EA009CE7B5 /* AppDelegate.m */; };
+		11754E2F19D5C1EA009CE7B5 /* MailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11754E2E19D5C1EA009CE7B5 /* MailViewController.m */; };
+		11754E3419D5C1EA009CE7B5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11754E3319D5C1EA009CE7B5 /* Images.xcassets */; };
+		11754E4E19D5C3A1009CE7B5 /* MailTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11754E4D19D5C3A1009CE7B5 /* MailTableCell.m */; };
+		11754E5419D5C3E5009CE7B5 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 11754E5219D5C3E5009CE7B5 /* MGSwipeButton.m */; };
+		11754E5519D5C3E5009CE7B5 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11754E5319D5C3E5009CE7B5 /* MGSwipeTableCell.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		11754E2319D5C1EA009CE7B5 /* MailAppDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailAppDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		11754E2719D5C1EA009CE7B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		11754E2819D5C1EA009CE7B5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		11754E2A19D5C1EA009CE7B5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		11754E2B19D5C1EA009CE7B5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		11754E2D19D5C1EA009CE7B5 /* MailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MailViewController.h; sourceTree = "<group>"; };
+		11754E2E19D5C1EA009CE7B5 /* MailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MailViewController.m; sourceTree = "<group>"; };
+		11754E3319D5C1EA009CE7B5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		11754E4C19D5C3A1009CE7B5 /* MailTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailTableCell.h; sourceTree = "<group>"; };
+		11754E4D19D5C3A1009CE7B5 /* MailTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MailTableCell.m; sourceTree = "<group>"; };
+		11754E5019D5C3E5009CE7B5 /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSwipeButton.h; path = ../../MGSwipeTableCell/MGSwipeButton.h; sourceTree = "<group>"; };
+		11754E5119D5C3E5009CE7B5 /* MGSwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSwipeTableCell.h; path = ../../MGSwipeTableCell/MGSwipeTableCell.h; sourceTree = "<group>"; };
+		11754E5219D5C3E5009CE7B5 /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSwipeButton.m; path = ../../MGSwipeTableCell/MGSwipeButton.m; sourceTree = "<group>"; };
+		11754E5319D5C3E5009CE7B5 /* MGSwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSwipeTableCell.m; path = ../../MGSwipeTableCell/MGSwipeTableCell.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		11754E2019D5C1EA009CE7B5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		11754E1A19D5C1EA009CE7B5 = {
+			isa = PBXGroup;
+			children = (
+				11754E4F19D5C3CE009CE7B5 /* MGSwipeTableCell */,
+				11754E2519D5C1EA009CE7B5 /* MailAppDemo */,
+				11754E2419D5C1EA009CE7B5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		11754E2419D5C1EA009CE7B5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				11754E2319D5C1EA009CE7B5 /* MailAppDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		11754E2519D5C1EA009CE7B5 /* MailAppDemo */ = {
+			isa = PBXGroup;
+			children = (
+				11754E2A19D5C1EA009CE7B5 /* AppDelegate.h */,
+				11754E2B19D5C1EA009CE7B5 /* AppDelegate.m */,
+				11754E2D19D5C1EA009CE7B5 /* MailViewController.h */,
+				11754E2E19D5C1EA009CE7B5 /* MailViewController.m */,
+				11754E4C19D5C3A1009CE7B5 /* MailTableCell.h */,
+				11754E4D19D5C3A1009CE7B5 /* MailTableCell.m */,
+				11754E3319D5C1EA009CE7B5 /* Images.xcassets */,
+				11754E2619D5C1EA009CE7B5 /* Supporting Files */,
+			);
+			path = MailAppDemo;
+			sourceTree = "<group>";
+		};
+		11754E2619D5C1EA009CE7B5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				11754E2719D5C1EA009CE7B5 /* Info.plist */,
+				11754E2819D5C1EA009CE7B5 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		11754E4F19D5C3CE009CE7B5 /* MGSwipeTableCell */ = {
+			isa = PBXGroup;
+			children = (
+				11754E5019D5C3E5009CE7B5 /* MGSwipeButton.h */,
+				11754E5219D5C3E5009CE7B5 /* MGSwipeButton.m */,
+				11754E5119D5C3E5009CE7B5 /* MGSwipeTableCell.h */,
+				11754E5319D5C3E5009CE7B5 /* MGSwipeTableCell.m */,
+			);
+			name = MGSwipeTableCell;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		11754E2219D5C1EA009CE7B5 /* MailAppDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11754E4619D5C1EA009CE7B5 /* Build configuration list for PBXNativeTarget "MailAppDemo" */;
+			buildPhases = (
+				11754E1F19D5C1EA009CE7B5 /* Sources */,
+				11754E2019D5C1EA009CE7B5 /* Frameworks */,
+				11754E2119D5C1EA009CE7B5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MailAppDemo;
+			productName = MailAppDemo;
+			productReference = 11754E2319D5C1EA009CE7B5 /* MailAppDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		11754E1B19D5C1EA009CE7B5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = Mortimer;
+				TargetAttributes = {
+					11754E2219D5C1EA009CE7B5 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 11754E1E19D5C1EA009CE7B5 /* Build configuration list for PBXProject "MailAppDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 11754E1A19D5C1EA009CE7B5;
+			productRefGroup = 11754E2419D5C1EA009CE7B5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				11754E2219D5C1EA009CE7B5 /* MailAppDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		11754E2119D5C1EA009CE7B5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11754E3419D5C1EA009CE7B5 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		11754E1F19D5C1EA009CE7B5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11754E2F19D5C1EA009CE7B5 /* MailViewController.m in Sources */,
+				11754E5519D5C3E5009CE7B5 /* MGSwipeTableCell.m in Sources */,
+				11754E4E19D5C3A1009CE7B5 /* MailTableCell.m in Sources */,
+				11754E5419D5C3E5009CE7B5 /* MGSwipeButton.m in Sources */,
+				11754E2C19D5C1EA009CE7B5 /* AppDelegate.m in Sources */,
+				11754E2919D5C1EA009CE7B5 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		11754E4419D5C1EA009CE7B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		11754E4519D5C1EA009CE7B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		11754E4719D5C1EA009CE7B5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = MailAppDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		11754E4819D5C1EA009CE7B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				INFOPLIST_FILE = MailAppDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		11754E1E19D5C1EA009CE7B5 /* Build configuration list for PBXProject "MailAppDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11754E4419D5C1EA009CE7B5 /* Debug */,
+				11754E4519D5C1EA009CE7B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		11754E4619D5C1EA009CE7B5 /* Build configuration list for PBXNativeTarget "MailAppDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				11754E4719D5C1EA009CE7B5 /* Debug */,
+				11754E4819D5C1EA009CE7B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 11754E1B19D5C1EA009CE7B5 /* Project object */;
+}

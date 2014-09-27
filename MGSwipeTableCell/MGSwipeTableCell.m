@@ -307,7 +307,7 @@ typedef struct MGSwipeAnimationData {
     CGFloat targetOffset;
     
     UIView * swipeOverlay;
-    UIView * swipeView;
+    UIImageView * swipeView;
     MGSwipeButtonsView * leftView;
     MGSwipeButtonsView * rightView;
     bool allowSwipeRightToLeft;
@@ -351,7 +351,7 @@ typedef struct MGSwipeAnimationData {
 
 -(void) dealloc
 {
-    [self removeInputOverlayIfNeeded];
+    [self hideSwipeOverlayIfNeeded];
 }
 
 -(void) initViews
@@ -410,11 +410,11 @@ typedef struct MGSwipeAnimationData {
 {
     if (!swipeOverlay) {
         swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+        swipeOverlay.hidden = YES;
         swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
         swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
-        swipeView = [[UIImageView alloc] initWithImage:[self imageFromView:self]];
+        swipeView = [[UIImageView alloc] initWithFrame:swipeOverlay.bounds];
         swipeView.autoresizingMask =  UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
-        swipeView.frame = swipeOverlay.bounds;
         swipeView.contentMode = UIViewContentModeCenter;
         swipeView.clipsToBounds = YES;
         [swipeOverlay addSubview:swipeView];
@@ -439,12 +439,15 @@ typedef struct MGSwipeAnimationData {
 }
 
 
-- (void) addInputOverlayIfNeeded
+- (void) showSwipeOverlayIfNeeded
 {
     if (tableInputOverlay) {
         return;
     }
+    swipeView.image = [self imageFromView:self];
     swipeOverlay.hidden = NO;
+    
+    //input overlay on the whole table
     UITableView * table = [self parentTable];
     table.scrollEnabled = NO;
     tableInputOverlay = [[MGSwipeTableInputOverlay alloc] initWithFrame:table.bounds];
@@ -461,13 +464,14 @@ typedef struct MGSwipeAnimationData {
     [self addGestureRecognizer:tapRecognizer];
 }
 
--(void) removeInputOverlayIfNeeded
+-(void) hideSwipeOverlayIfNeeded
 {
     if (!tableInputOverlay) {
         return;
     }
 
     swipeOverlay.hidden = YES;
+    swipeView.image = nil;
     
     UITableView * table = [self parentTable];
     table.scrollEnabled = YES;
@@ -483,12 +487,19 @@ typedef struct MGSwipeAnimationData {
     }
 }
 
+-(void) refreshContentView
+{
+    CGFloat currentOffset = _swipeOffset;
+    self.swipeOffset = 0;
+    self.swipeOffset = currentOffset;
+}
+
 #pragma mark Handle Table Events
 
 -(void) willMoveToSuperview:(UIView *)newSuperview;
 {
     if (newSuperview == nil) { //remove the table overlay when a cell is removed from the table
-        [self removeInputOverlayIfNeeded];
+        [self hideSwipeOverlayIfNeeded];
     }
 }
 
@@ -599,11 +610,11 @@ typedef struct MGSwipeAnimationData {
     
     MGSwipeButtonsView * activeButtons = sign < 0 ? rightView : leftView;
     if (!activeButtons || offset == 0) {
-        [self removeInputOverlayIfNeeded];
+        [self hideSwipeOverlayIfNeeded];
         targetOffset = 0;
     }
     else {
-        [self addInputOverlayIfNeeded];
+        [self showSwipeOverlayIfNeeded];
         CGFloat swipeThreshold = sign < 0 ? _rightSwipeSettings.threshold : _leftSwipeSettings.threshold;
         targetOffset = offset > activeButtons.bounds.size.width * swipeThreshold ? activeButtons.bounds.size.width * sign : 0;
     }
@@ -739,6 +750,15 @@ typedef struct MGSwipeAnimationData {
             }];
         }
         else {
+            CGFloat velocity = [panRecognizer velocityInView:self].x;
+            CGFloat inertiaThreshold = 100.0; //points per second
+            if (velocity > inertiaThreshold) {
+                targetOffset = _swipeOffset < 0 ? 0 : (leftView ? leftView.bounds.size.width : targetOffset);
+            }
+            else if (velocity < -inertiaThreshold) {
+                targetOffset = _swipeOffset > 0 ? 0 : (rightView ? -rightView.bounds.size.width : targetOffset);
+            }
+            
             [self setSwipeOffset:targetOffset animated:YES completion:nil];
         }
     }
@@ -767,7 +787,7 @@ typedef struct MGSwipeAnimationData {
             return YES; //already swipped, don't need to check buttons or canSwipe delegate
         }
         
-        //make a decision according to existing buttons or using he optional delegate
+        //make a decision according to existing buttons or using the optional delegate
         if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:canSwipe:)]) {
             allowSwipeLeftToRight = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionLeftToRight];
             allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft];
