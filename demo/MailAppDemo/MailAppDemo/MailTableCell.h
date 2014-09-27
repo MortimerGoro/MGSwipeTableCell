@@ -12,6 +12,7 @@
 
 @interface MailIndicatorView : UIView
 @property (nonatomic, strong) UIColor * indicatorColor;
+@property (nonatomic, strong) UIColor * innerColor;
 @end
 
 @interface MailTableCell : MGSwipeTableCell

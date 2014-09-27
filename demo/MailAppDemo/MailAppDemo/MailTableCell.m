@@ -16,11 +16,27 @@
     CGContextAddEllipseInRect(ctx, rect);
     CGContextSetFillColor(ctx, CGColorGetComponents(_indicatorColor.CGColor));
     CGContextFillPath(ctx);
+    
+    if (_innerColor) {
+        CGFloat innerSize = rect.size.width * 0.5;
+        CGRect innerRect = CGRectMake(rect.origin.x + rect.size.width * 0.5 - innerSize * 0.5,
+                                      rect.origin.y + rect.size.height * 0.5 - innerSize * 0.5,
+                                      innerSize, innerSize);
+        CGContextAddEllipseInRect(ctx, innerRect);
+        CGContextSetFillColor(ctx, CGColorGetComponents(_innerColor.CGColor));
+        CGContextFillPath(ctx);
+    }
 }
 
 -(void) setIndicatorColor:(UIColor *)indicatorColor
 {
     _indicatorColor = indicatorColor;
+    [self setNeedsDisplay];
+}
+
+-(void) setInnerColor:(UIColor *)innerColor
+{
+    _innerColor = innerColor;
     [self setNeedsDisplay];
 }
 

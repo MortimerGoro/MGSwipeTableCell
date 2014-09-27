@@ -142,8 +142,10 @@ typedef void(^MailActionCallback)(BOOL cancelled, BOOL deleted, NSInteger action
 -(void) updateCellIndicactor:(MailData *) mail cell:(MailTableCell*) cell
 {
     UIColor * color;
+    UIColor * innerColor;
     if (!mail.read && mail.flag) {
-        color = [UIColor redColor];
+        color = [UIColor colorWithRed:1.0 green:149/255.0 blue:0.05 alpha:1.0];
+        innerColor = [UIColor colorWithRed:0 green:122/255.0 blue:1.0 alpha:1.0];
     }
     else if (mail.flag) {
         color = [UIColor colorWithRed:1.0 green:149/255.0 blue:0.05 alpha:1.0];
@@ -156,12 +158,13 @@ typedef void(^MailActionCallback)(BOOL cancelled, BOOL deleted, NSInteger action
     }
     
     cell.indicatorView.indicatorColor = color;
+    cell.indicatorView.innerColor = innerColor;
 }
 
 -(void) showMailActions:(MailData *) mail callback:(MailActionCallback) callback
 {
     actionCallback = callback;
-    UIActionSheet * sheet = [[UIActionSheet alloc] initWithTitle:@"Actions" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Trash" otherButtonTitles:[self readButtonText:mail.read], @"Flag", nil];
+    UIActionSheet * sheet = [[UIActionSheet alloc] initWithTitle:@"Actions" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Trash" otherButtonTitles:mail.read ? @"Mark as unread": @"Mark as read", @"Flag", nil];
     [sheet showInView:self.view];
 }
 
