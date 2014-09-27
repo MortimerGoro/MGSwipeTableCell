@@ -34,7 +34,10 @@ Works on iOS >= 5.0. Tested on all iOS versions on iPhone and iPad: iOS 5, iOS 6
 ## API Reference
 See [`MGSwipeTableCell.h`](MGSwipeTableCell/MGSwipeTableCell.h) header file for a complete overview of the capabilities of the class.
 
-See [`MGSwipeDemo`](demo) for a complete project where you can test the variety of transitions on a real device/simulator.
+
+See [`MailAppDemo`](demo/MailAppDemo) for a complete project which mimics iOS 8.0 Mail App
+
+See [`MGSwipeDemo`](demo/MGSwipeDemo) for a complete project where you can test the variety of transitions on a real device/simulator.
 
 ##Usage
 
