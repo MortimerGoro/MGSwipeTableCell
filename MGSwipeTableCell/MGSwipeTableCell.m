@@ -416,7 +416,7 @@ typedef struct MGSwipeAnimationData {
         swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
         swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
         swipeView = [[UIImageView alloc] initWithFrame:swipeOverlay.bounds];
-        swipeView.autoresizingMask =  UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
+        swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         swipeView.contentMode = UIViewContentModeCenter;
         swipeView.clipsToBounds = YES;
         [swipeOverlay addSubview:swipeView];
@@ -573,7 +573,7 @@ typedef struct MGSwipeAnimationData {
         else if (view != swipeOverlay && !hidden && [previusHiddenViews containsObject:view]) {
             view.hidden = NO;
         }
-        }
+    }
     
     if (!hidden) {
         [previusHiddenViews removeAllObjects];
