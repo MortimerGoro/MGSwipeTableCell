@@ -317,6 +317,7 @@ typedef struct MGSwipeAnimationData {
     MGSwipeTableInputOverlay * tableInputOverlay;
     __weak UITableView * cachedParentTable;
     UITableViewCellSelectionStyle previusSelectionStyle;
+    NSMutableSet * previusHiddenViews;
     
     MGSwipeAnimationData animationData;
     void (^animationCompletion)();
@@ -367,6 +368,7 @@ typedef struct MGSwipeAnimationData {
     panRecognizer.delegate = self;
     activeExpansion = nil;
     _swipeAnimationDuration = 0.3;
+    previusHiddenViews = [NSMutableSet set];
 }
 
 -(void) cleanViews
@@ -562,10 +564,19 @@ typedef struct MGSwipeAnimationData {
             view.hidden = hidden;
         }
     }
+    
     for (UIView * view in self.contentView.subviews) {
-        if (view != swipeOverlay) {
-            view.hidden = hidden;
+        if (view != swipeOverlay && hidden && !view.hidden) {
+            view.hidden = YES;
+            [previusHiddenViews addObject:view];
         }
+        else if (view != swipeOverlay && !hidden && [previusHiddenViews containsObject:view]) {
+            view.hidden = NO;
+        }
+        }
+    
+    if (!hidden) {
+        [previusHiddenViews removeAllObjects];
     }
 }
 
