@@ -1,10 +1,7 @@
-//
-//  ViewController.m
-//  MailAppDemo
-//
-//  Created by Imanol Fernandez Gorostizaga on 26/09/14.
-//  Copyright (c) 2014 Mortimer. All rights reserved.
-//
+/*
+ * MGSwipeTableCell is licensed under MIT license. See LICENSE.md file for more information.
+ * Copyright (c) 2014 Imanol Fernandez @MortimerGoro
+ */
 
 #import "MailViewController.h"
 #import "MailTableCell.h"

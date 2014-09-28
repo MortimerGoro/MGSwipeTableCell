@@ -1,10 +1,7 @@
-//
-//  DemoViewController.h
-//  MGSwipeDemo
-//
-//  Created by Imanol Fernandez Gorostizag on 09/08/14.
-//  Copyright (c) 2014 Imanol Fernandez Gorostizaga. All rights reserved.
-//
+/*
+ * MGSwipeTableCell is licensed under MIT license. See LICENSE.md file for more information.
+ * Copyright (c) 2014 Imanol Fernandez @MortimerGoro
+ */
 
 #import <UIKit/UIKit.h>
 #import "MGSwipeTableCell.h"
