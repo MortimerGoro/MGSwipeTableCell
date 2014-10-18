@@ -83,7 +83,7 @@ In order to listen button click events you have 2 options. You can implement the
 
 ###Delegate
 
-MGSwipeTableCellDelegate is an ptional delegate to configure swipe buttons or to receive triggered actions or another events. Buttons can be configured inline when the cell is created instead of using this delegate, but using the delegate improves memory usage because buttons are only created in demand.
+MGSwipeTableCellDelegate is an optional delegate to configure swipe buttons or to receive triggered actions or another events. Buttons can be configured inline when the cell is created instead of using this delegate, but using the delegate improves memory usage because buttons are only created in demand.
 
 ```objc
 @protocol MGSwipeTableCellDelegate <NSObject>
