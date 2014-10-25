@@ -51,6 +51,15 @@
 
 #pragma mark Layout
 
+- (void)dealloc
+{
+    for (UIButton* button in buttons) {
+        [button removeTarget:self
+                      action:@selector(buttonClicked:)
+            forControlEvents:UIControlEventTouchUpInside];
+    }
+}
+
 -(instancetype) initWithButtons:(NSArray*) buttonsArray direction:(MGSwipeDirection) direction
 {
     CGSize maxSize = CGSizeZero;
@@ -307,11 +316,13 @@ typedef struct MGSwipeAnimationData {
     CGFloat targetOffset;
     
     UIView * swipeOverlay;
-    UIImageView * swipeView;
+    UIView * swipeView;
     MGSwipeButtonsView * leftView;
     MGSwipeButtonsView * rightView;
     bool allowSwipeRightToLeft;
     bool allowSwipeLeftToRight;
+    bool hasChangedLeftButtons;
+    bool hasChangedRightButtons;
     __weak MGSwipeButtonsView * activeExpansion;
 
     MGSwipeTableInputOverlay * tableInputOverlay;
@@ -392,10 +403,12 @@ typedef struct MGSwipeAnimationData {
 
 -(void) layoutSubviews
 {
+    [self doSwipeViewOffsetX:0];
     [super layoutSubviews];
     if (swipeOverlay) {
         swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height);
     }
+    [self doSwipeViewOffsetX:_swipeOffset];
 }
 
 -(void) fetchButtonsIfNeeded
@@ -413,14 +426,9 @@ typedef struct MGSwipeAnimationData {
     if (!swipeOverlay) {
         swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
         swipeOverlay.hidden = YES;
-        swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
+        swipeOverlay.backgroundColor = [UIColor clearColor];
         swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
-        swipeView = [[UIImageView alloc] initWithFrame:swipeOverlay.bounds];
-        swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        swipeView.contentMode = UIViewContentModeCenter;
-        swipeView.clipsToBounds = YES;
-        [swipeOverlay addSubview:swipeView];
-        [self.contentView addSubview:swipeOverlay];
+        [self addSubview:swipeOverlay];
     }
     
     [self fetchButtonsIfNeeded];
@@ -440,13 +448,48 @@ typedef struct MGSwipeAnimationData {
     }
 }
 
+- (BOOL) isShowingSwipe
+{
+    return swipeView != nil;
+}
+
+- (void) setLeftButtons:(NSArray *)leftButtons
+{
+    if (_leftButtons != leftButtons) {
+        _leftButtons = leftButtons;
+        if ([self isShowingSwipe]) {
+            hasChangedLeftButtons = YES;
+        }
+        else {
+            hasChangedLeftButtons = NO;
+            [leftView removeFromSuperview];
+            leftView = nil;
+        }
+    }
+}
+
+- (void) setRightButtons:(NSArray *)rightButtons
+{
+    if (_rightButtons != rightButtons) {
+        _rightButtons = rightButtons;
+        if ([self isShowingSwipe]) {
+            hasChangedRightButtons = YES;
+        }
+        else {
+            hasChangedRightButtons = NO;
+            [rightView removeFromSuperview];
+            rightView = nil;
+        }
+    }
+}
 
 - (void) showSwipeOverlayIfNeeded
 {
     if (tableInputOverlay) {
         return;
     }
-    swipeView.image = [self imageFromView:self];
+    
+    swipeView = self.contentView;
     swipeOverlay.hidden = NO;
     
     //input overlay on the whole table
@@ -458,7 +501,6 @@ typedef struct MGSwipeAnimationData {
 
     previusSelectionStyle = self.selectionStyle;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    [self setAccesoryViewsHidden:YES];
     
     tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHandler:)];
     tapRecognizer.cancelsTouchesInView = YES;
@@ -473,7 +515,7 @@ typedef struct MGSwipeAnimationData {
     }
 
     swipeOverlay.hidden = YES;
-    swipeView.image = nil;
+    swipeView = nil;
     
     UITableView * table = [self parentTable];
     table.scrollEnabled = YES;
@@ -481,11 +523,22 @@ typedef struct MGSwipeAnimationData {
     tableInputOverlay = nil;
     
     self.selectionStyle = previusSelectionStyle;
-    [self setAccesoryViewsHidden:NO];
     
     if (tapRecognizer) {
         [self removeGestureRecognizer:tapRecognizer];
         tapRecognizer = nil;
+    }
+    
+    if (hasChangedLeftButtons) {
+        [leftView removeFromSuperview];
+        leftView = nil;
+        hasChangedLeftButtons = NO;
+    }
+    
+    if (hasChangedRightButtons) {
+        [rightView removeFromSuperview];
+        rightView = nil;
+        hasChangedRightButtons = NO;
     }
 }
 
@@ -544,56 +597,6 @@ typedef struct MGSwipeAnimationData {
     return [super hitTest:point withEvent:event];
 }
 
-#pragma mark Some utility methods
-
-- (UIImage *)imageFromView:(UIView *)view {
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, [[UIScreen mainScreen] scale]);
-    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
-}
-
--(void) setAccesoryViewsHidden: (BOOL) hidden
-{
-    if (self.accessoryView) {
-        self.accessoryView.hidden = hidden;
-    }
-    for (UIView * view in self.contentView.superview.subviews) {
-        if (view != self.contentView && ([view isKindOfClass:[UIButton class]] || [NSStringFromClass(view.class) rangeOfString:@"Disclosure"].location != NSNotFound)) {
-            view.hidden = hidden;
-        }
-    }
-    
-    for (UIView * view in self.contentView.subviews) {
-        if (view != swipeOverlay && hidden && !view.hidden) {
-            view.hidden = YES;
-            [previusHiddenViews addObject:view];
-        }
-        else if (view != swipeOverlay && !hidden && [previusHiddenViews containsObject:view]) {
-            view.hidden = NO;
-        }
-    }
-    
-    if (!hidden) {
-        [previusHiddenViews removeAllObjects];
-    }
-}
-
--(UIColor *) backgroundColorForSwipe
-{
-    if (_swipeBackgroundColor) {
-        return _swipeBackgroundColor; //user defined color
-    }
-    else if (self.contentView.backgroundColor && ![self.contentView.backgroundColor isEqual:[UIColor clearColor]]) {
-        return self.contentView.backgroundColor;
-    }
-    else if (self.backgroundColor && ![self.backgroundColor isEqual:[UIColor clearColor]]) {
-        return self.backgroundColor;
-    }
-    return [UIColor whiteColor];
-}
-
 -(UITableView *) parentTable
 {
     if (cachedParentTable) {
@@ -611,6 +614,13 @@ typedef struct MGSwipeAnimationData {
 }
 
 #pragma mark Swipe Animation
+- (void) doSwipeViewOffsetX:(CGFloat)newOffset
+{
+    for (UIView* aView in swipeView.subviews)
+    {
+        aView.transform = CGAffineTransformMakeTranslation(newOffset, 0);
+    }
+}
 
 - (void)setSwipeOffset:(CGFloat) newOffset;
 {
@@ -630,7 +640,7 @@ typedef struct MGSwipeAnimationData {
         targetOffset = offset > activeButtons.bounds.size.width * swipeThreshold ? activeButtons.bounds.size.width * sign : 0;
     }
     
-    swipeView.transform = CGAffineTransformMakeTranslation(newOffset, 0);
+    [self doSwipeViewOffsetX:newOffset];
     
     //animate existing buttons
     MGSwipeButtonsView* but[2] = {leftView, rightView};
