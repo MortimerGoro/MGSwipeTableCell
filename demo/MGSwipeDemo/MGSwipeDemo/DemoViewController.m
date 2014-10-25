@@ -180,7 +180,6 @@
         cell.selectedBackgroundView = [[UIView alloc] init];
         cell.selectedBackgroundView.backgroundColor = [[UIColor yellowColor] colorWithAlphaComponent:0.3];
         cell.contentView.backgroundColor = [UIColor clearColor];
-        cell.swipeBackgroundColor = [UIColor clearColor];
         cell.textLabel.textColor = [UIColor yellowColor];
         cell.detailTextLabel.textColor = [UIColor yellowColor];
     }

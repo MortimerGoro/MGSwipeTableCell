@@ -110,8 +110,6 @@ typedef NS_ENUM(NSInteger, MGSwipeDirection) {
 @property (nonatomic, strong) MGSwipeExpansionSettings * leftExpansion;
 @property (nonatomic, strong) MGSwipeExpansionSettings * rightExpansion;
 
-/** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
-@property (nonatomic, strong) UIColor * swipeBackgroundColor;
 /** Property to read or change the current swipe offset programmatically */
 @property (nonatomic, assign) CGFloat swipeOffset;
 /** Property to read or change swipe animation durations. Default value 0.3 */
