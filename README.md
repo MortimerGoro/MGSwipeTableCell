@@ -83,7 +83,7 @@ In order to listen button click events you have 2 options. You can implement the
 
 ###Delegate
 
-MGSwipeTableCellDelegate is an ptional delegate to configure swipe buttons or to receive triggered actions or another events. Buttons can be configured inline when the cell is created instead of using this delegate, but using the delegate improves memory usage because buttons are only created in demand.
+MGSwipeTableCellDelegate is an optional delegate to configure swipe buttons or to receive triggered actions or another events. Buttons can be configured inline when the cell is created instead of using this delegate, but using the delegate improves memory usage because buttons are only created in demand.
 
 ```objc
 @protocol MGSwipeTableCellDelegate <NSObject>
@@ -94,6 +94,12 @@ MGSwipeTableCellDelegate is an ptional delegate to configure swipe buttons or to
  * @return YES if swipe is allowed
  **/
 -(BOOL) swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
+/**
+ * Delegate method invoked when the current swipe state changes
+ @param state the current Swipe State
+ @param gestureIsActive YES if the user swipe gesture is active. No if the uses has already ended the gesture
+ **/
+-(void) swipeTableCell:(MGSwipeTableCell*) cell didChangeSwipeState:(MGSwipeState) state gestureIsActive:(BOOL) gestureIsActive;
 /**
  * Called when the user clicks a swipe button or when a expandable button is automatically triggered
  * @return YES to autohide the current swipe buttons

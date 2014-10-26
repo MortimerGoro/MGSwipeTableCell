@@ -45,6 +45,9 @@
     UIView * container;
     BOOL fromLeft;
     UIView * expandedButton;
+    UIView * expandedButtonAnimated;
+    UIView * expansionBackground;
+    UIView * expansionBackgroundAnimated;
     CGFloat expansionOffset;
     BOOL autoHideExpansion;
 }
@@ -93,6 +96,9 @@
 {
     expansionOffset = offset;
     container.frame = CGRectMake(fromLeft ? 0: self.bounds.size.width - offset, 0, offset, self.bounds.size.height);
+    if (expansionBackgroundAnimated && expandedButtonAnimated) {
+        expansionBackgroundAnimated.frame = [self expansionBackgroundRect:expandedButtonAnimated];
+    }
 }
 
 -(void) layoutSubviews
@@ -106,6 +112,20 @@
     }
 }
 
+-(CGRect) expansionBackgroundRect: (UIView *) button
+{
+    CGFloat extra = 100.0f; //extra size to avoid expansion background size issue on iOS 7.0
+    if (fromLeft) {
+        return CGRectMake(-extra, 0, button.frame.origin.x + extra, container.bounds.size.height);
+    }
+    else {
+        return CGRectMake(button.frame.origin.x + button.bounds.size.width, 0,
+                   container.bounds.size.width - (button.frame.origin.x + button.bounds.size.width) + extra
+                          ,container.bounds.size.height);
+    }
+    
+}
+
 -(void) expandToOffset:(CGFloat) offset button:(NSInteger) index
 {
     if (index < 0 || index>= buttons.count) {
@@ -113,11 +133,15 @@
     }
     if (!expandedButton) {
         expandedButton = [buttons objectAtIndex: fromLeft ? index : buttons.count - index - 1];
-        container.backgroundColor = expandedButton.backgroundColor;
-        [UIView animateWithDuration:0.2 animations:^{
-            for (UIView * button in buttons) {
-                button.hidden = YES;
-            }
+        [self layoutExpansion:offset];
+        [self resetButtons];
+        expansionBackground = [[UIView alloc] initWithFrame:[self expansionBackgroundRect:expandedButton]];
+        expansionBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        expansionBackground.backgroundColor = expandedButton.backgroundColor;
+        [container addSubview:expansionBackground];
+        
+        CGFloat duration = fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
+        [UIView animateWithDuration: duration animations:^{
             expandedButton.hidden = NO;
             if (fromLeft) {
                 expandedButton.frame = CGRectMake(container.bounds.size.width - expandedButton.bounds.size.width, 0, expandedButton.bounds.size.width, expandedButton.bounds.size.height);
@@ -127,25 +151,28 @@
                 expandedButton.frame = CGRectMake(0, 0, expandedButton.bounds.size.width, expandedButton.bounds.size.height);
                 expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleRightMargin;
             }
+            expansionBackground.frame = [self expansionBackgroundRect:expandedButton];
 
         }];
+        return;
     }
-    
     [self layoutExpansion:offset];
 }
 
 -(void) endExpansioAnimated:(BOOL) animated
 {
     if (expandedButton) {
-        [UIView animateWithDuration: animated ? 0.2 : 0.0 animations:^{
+        expandedButtonAnimated = expandedButton;
+        expansionBackgroundAnimated = expansionBackground;
+        expansionBackground = nil;
+        expandedButton = nil;
+        CGFloat duration = fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
+        [UIView animateWithDuration: animated ? duration : 0.0 animations:^{
             container.frame = self.bounds;
             [self resetButtons];
-            expandedButton = nil;
+            expansionBackgroundAnimated.frame = [self expansionBackgroundRect:expandedButtonAnimated];
         } completion:^(BOOL finished) {
-            container.backgroundColor = [UIColor clearColor];
-            for (UIView * view in buttons) {
-                view.hidden = NO;
-            }
+            [expansionBackgroundAnimated removeFromSuperview];
         }];
     }
 }
@@ -260,6 +287,9 @@
         case MGSwipeTransitionBorder: [self transtitionFloatBorder:t]; break;
         case MGSwipeTransition3D: [self transition3D:t]; break;
     }
+    if (expandedButtonAnimated && expansionBackgroundAnimated) {
+        expansionBackgroundAnimated.frame = [self expansionBackgroundRect:expandedButtonAnimated];
+    }
 }
 
 @end
@@ -272,6 +302,7 @@
         self.transition = MGSwipeTransitionBorder;
         self.threshold = 0.5;
         self.offset = 0;
+        self.animationDuration = 0.3;
     }
     return self;
 }
@@ -283,6 +314,7 @@
     if (self = [super init]) {
         self.buttonIndex = -1;
         self.threshold = 1.3;
+        self.animationDuration = 0.2;
     }
     return self;
 }
@@ -318,6 +350,7 @@ typedef struct MGSwipeAnimationData {
     __weak UITableView * cachedParentTable;
     UITableViewCellSelectionStyle previusSelectionStyle;
     NSMutableSet * previusHiddenViews;
+    BOOL _triggerStateChanges;
     
     MGSwipeAnimationData animationData;
     void (^animationCompletion)();
@@ -367,8 +400,9 @@ typedef struct MGSwipeAnimationData {
     [self addGestureRecognizer:panRecognizer];
     panRecognizer.delegate = self;
     activeExpansion = nil;
-    _swipeAnimationDuration = 0.3;
     previusHiddenViews = [NSMutableSet set];
+    _swipeState = MGSwipeStateNone;
+    _triggerStateChanges = YES;
 }
 
 -(void) cleanViews
@@ -492,8 +526,29 @@ typedef struct MGSwipeAnimationData {
 -(void) refreshContentView
 {
     CGFloat currentOffset = _swipeOffset;
+    BOOL prevValue = _triggerStateChanges;
+    _triggerStateChanges = NO;
     self.swipeOffset = 0;
     self.swipeOffset = currentOffset;
+    _triggerStateChanges = prevValue;
+}
+
+-(void) refreshButtons: (BOOL) usingDelegate
+{
+    if (usingDelegate) {
+        self.leftButtons = @[];
+        self.rightButtons = @[];
+    }
+    if (leftView) {
+        [leftView removeFromSuperview];
+        leftView = nil;
+    }
+    if (rightView) {
+        [rightView removeFromSuperview];
+        rightView = nil;
+    }
+    [self createSwipeViewIfNeeded];
+    [self refreshContentView];
 }
 
 #pragma mark Handle Table Events
@@ -610,6 +665,17 @@ typedef struct MGSwipeAnimationData {
     return cachedParentTable;
 }
 
+-(void) updateState: (MGSwipeState) newState;
+{
+    if (!_triggerStateChanges || _swipeState == newState) {
+        return;
+    }
+    _swipeState = newState;
+    if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:didChangeSwipeState:gestureIsActive:)]) {
+        [_delegate swipeTableCell:self didChangeSwipeState:_swipeState gestureIsActive: self.isSwipeGestureActive] ;
+    }
+}
+
 #pragma mark Swipe Animation
 
 - (void)setSwipeOffset:(CGFloat) newOffset;
@@ -623,6 +689,8 @@ typedef struct MGSwipeAnimationData {
     if (!activeButtons || offset == 0) {
         [self hideSwipeOverlayIfNeeded];
         targetOffset = 0;
+        [self updateState:MGSwipeStateNone];
+        return;
     }
     else {
         [self showSwipeOverlayIfNeeded];
@@ -651,12 +719,14 @@ typedef struct MGSwipeAnimationData {
             [view expandToOffset:offset button:expansions[i].buttonIndex];
             targetOffset = expansions[i].fillOnTrigger ? self.contentView.bounds.size.width * sign : 0;
             activeExpansion = view;
+            [self updateState:i ? MGSwipeStateExpandingRightToLeft : MGSwipeStateExpandingLeftToRight];
         }
         else {
             [view endExpansioAnimated:YES];
             activeExpansion = nil;
             CGFloat t = MIN(1.0f, offset/view.bounds.size.width);
             [view transition:settings[i].transition percent:t];
+            [self updateState:i ? MGSwipeStateSwippingRightToLeft : MGSwipeStateSwippingLeftToRight];
         }
     }
 }
@@ -696,6 +766,9 @@ typedef struct MGSwipeAnimationData {
     CFTimeInterval elapsed = timer.timestamp - animationData.start;
     CGFloat t = MIN(elapsed/animationData.duration, 1.0f);
     bool completed = t>=1.0f;
+    if (completed) {
+        _triggerStateChanges = YES;
+    }
     //CubicEaseOut interpolation
     t--;
     self.swipeOffset = (t * t * t + 1.0) * (animationData.to - animationData.from) + animationData.from;
@@ -721,9 +794,10 @@ typedef struct MGSwipeAnimationData {
         return;
     }
     
+    _triggerStateChanges = NO;
     animationData.from = _swipeOffset;
     animationData.to = offset;
-    animationData.duration = _swipeAnimationDuration;
+    animationData.duration = _swipeOffset > 0 ? _leftSwipeSettings.animationDuration : _rightSwipeSettings.animationDuration;
     animationData.start = 0;
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(animationTick:)];
     [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
@@ -816,6 +890,11 @@ typedef struct MGSwipeAnimationData {
         return CGRectContainsPoint(swipeView.bounds, point);
     }
     return YES;
+}
+
+-(BOOL) isSwipeGestureActive
+{
+    return panRecognizer.state == UIGestureRecognizerStateBegan || panRecognizer.state == UIGestureRecognizerStateChanged;
 }
 
 @end
