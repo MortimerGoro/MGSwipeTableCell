@@ -128,6 +128,8 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
 
 /** Readonly property to fetch the current swipe state */
 @property (nonatomic, readonly) MGSwipeState swipeState;
+/** Readonly property to check if the user swipe gesture is currently active */
+@property (nonatomic, readonly) BOOL isSwipeGestureActive;
 
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;

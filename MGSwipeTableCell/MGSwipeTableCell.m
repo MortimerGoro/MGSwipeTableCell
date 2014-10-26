@@ -660,8 +660,7 @@ typedef struct MGSwipeAnimationData {
     }
     _swipeState = newState;
     if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:didChangeSwipeState:gestureIsActive:)]) {
-        bool gestureActive = panRecognizer.state == UIGestureRecognizerStateBegan || panRecognizer.state == UIGestureRecognizerStateChanged;
-        [_delegate swipeTableCell:self didChangeSwipeState:_swipeState gestureIsActive: gestureActive] ;
+        [_delegate swipeTableCell:self didChangeSwipeState:_swipeState gestureIsActive: self.isSwipeGestureActive] ;
     }
 }
 
@@ -879,6 +878,11 @@ typedef struct MGSwipeAnimationData {
         return CGRectContainsPoint(swipeView.bounds, point);
     }
     return YES;
+}
+
+-(BOOL) isSwipeGestureActive
+{
+    return panRecognizer.state == UIGestureRecognizerStateBegan || panRecognizer.state == UIGestureRecognizerStateChanged;
 }
 
 @end
