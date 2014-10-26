@@ -134,7 +134,8 @@
         expansionBackground.backgroundColor = expandedButton.backgroundColor;
         [container addSubview:expansionBackground];
         
-        [UIView animateWithDuration:0.2 animations:^{
+        CGFloat duration = fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
+        [UIView animateWithDuration: duration animations:^{
             expandedButton.hidden = NO;
             if (fromLeft) {
                 expandedButton.frame = CGRectMake(container.bounds.size.width - expandedButton.bounds.size.width, 0, expandedButton.bounds.size.width, expandedButton.bounds.size.height);
@@ -157,7 +158,8 @@
     if (expandedButton) {
         UIView * background = expansionBackground;
         expansionBackground = nil;
-        [UIView animateWithDuration: animated ? 0.2 : 0.0 animations:^{
+        CGFloat duration = fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
+        [UIView animateWithDuration: animated ? duration : 0.0 animations:^{
             container.frame = self.bounds;
             [self resetButtons];
             background.frame = [self expansionBackgroundRect:expandedButton];
@@ -291,6 +293,7 @@
         self.transition = MGSwipeTransitionBorder;
         self.threshold = 0.5;
         self.offset = 0;
+        self.animationDuration = 0.3;
     }
     return self;
 }
@@ -302,6 +305,7 @@
     if (self = [super init]) {
         self.buttonIndex = -1;
         self.threshold = 1.3;
+        self.animationDuration = 0.2;
     }
     return self;
 }
@@ -387,7 +391,6 @@ typedef struct MGSwipeAnimationData {
     [self addGestureRecognizer:panRecognizer];
     panRecognizer.delegate = self;
     activeExpansion = nil;
-    _swipeAnimationDuration = 0.3;
     previusHiddenViews = [NSMutableSet set];
     _swipeState = MGSwipeStateNone;
     _triggerStateChanges = YES;
@@ -785,7 +788,7 @@ typedef struct MGSwipeAnimationData {
     _triggerStateChanges = NO;
     animationData.from = _swipeOffset;
     animationData.to = offset;
-    animationData.duration = _swipeAnimationDuration;
+    animationData.duration = _swipeOffset > 0 ? _leftSwipeSettings.animationDuration : _rightSwipeSettings.animationDuration;
     animationData.start = 0;
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(animationTick:)];
     [displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];

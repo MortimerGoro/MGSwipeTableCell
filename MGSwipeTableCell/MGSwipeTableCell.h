@@ -41,6 +41,10 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
  ** For example it can be used to avoid cropped buttons when sectionIndexTitlesForTableView is used in the UITableView
  **/
 @property (nonatomic, assign) CGFloat offset;
+
+/** Property to read or change swipe animation durations. Default value 0.3 */
+@property (nonatomic, assign) CGFloat animationDuration;
+
 @end
 
 
@@ -55,6 +59,11 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
 @property (nonatomic, assign) BOOL fillOnTrigger;
 /** Size proportional threshold to trigger the expansion button. Default value 1.5 */
 @property (nonatomic, assign) CGFloat threshold;
+
+/** Property to read or change expansion animation durations. Default value 0.2 
+ * The target animation is the change of a button from normal state to expanded state
+ */
+@property (nonatomic, assign) CGFloat animationDuration;
 @end
 
 
@@ -135,8 +144,6 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
 /** Property to read or change the current swipe offset programmatically */
 @property (nonatomic, assign) CGFloat swipeOffset;
-/** Property to read or change swipe animation durations. Default value 0.3 */
-@property (nonatomic, assign) CGFloat swipeAnimationDuration;
 
 /** Utility methods to show or hide swipe buttons programmatically */
 -(void) hideSwipeAnimated: (BOOL) animated;
