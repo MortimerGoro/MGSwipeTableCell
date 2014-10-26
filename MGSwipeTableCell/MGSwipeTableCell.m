@@ -45,6 +45,7 @@
     UIView * container;
     BOOL fromLeft;
     UIView * expandedButton;
+    UIView * expansionBackground;
     CGFloat expansionOffset;
     BOOL autoHideExpansion;
 }
@@ -106,6 +107,19 @@
     }
 }
 
+-(CGRect) expansionBackgroundRect: (UIView *) button
+{
+    if (fromLeft) {
+        return CGRectMake(0, 0, button.frame.origin.x, container.bounds.size.height);
+    }
+    else {
+        return CGRectMake(button.frame.origin.x + button.bounds.size.width, 0,
+                   container.bounds.size.width - (button.frame.origin.x + button.bounds.size.width)
+                          ,container.bounds.size.height);
+    }
+    
+}
+
 -(void) expandToOffset:(CGFloat) offset button:(NSInteger) index
 {
     if (index < 0 || index>= buttons.count) {
@@ -113,11 +127,14 @@
     }
     if (!expandedButton) {
         expandedButton = [buttons objectAtIndex: fromLeft ? index : buttons.count - index - 1];
-        container.backgroundColor = expandedButton.backgroundColor;
+        [self layoutExpansion:offset];
+        [self resetButtons];
+        expansionBackground = [[UIView alloc] initWithFrame:[self expansionBackgroundRect:expandedButton]];
+        expansionBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        expansionBackground.backgroundColor = expandedButton.backgroundColor;
+        [container addSubview:expansionBackground];
+        
         [UIView animateWithDuration:0.2 animations:^{
-            for (UIView * button in buttons) {
-                button.hidden = YES;
-            }
             expandedButton.hidden = NO;
             if (fromLeft) {
                 expandedButton.frame = CGRectMake(container.bounds.size.width - expandedButton.bounds.size.width, 0, expandedButton.bounds.size.width, expandedButton.bounds.size.height);
@@ -127,25 +144,27 @@
                 expandedButton.frame = CGRectMake(0, 0, expandedButton.bounds.size.width, expandedButton.bounds.size.height);
                 expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleRightMargin;
             }
+            expansionBackground.frame = [self expansionBackgroundRect:expandedButton];
 
         }];
+        return;
     }
-    
     [self layoutExpansion:offset];
 }
 
 -(void) endExpansioAnimated:(BOOL) animated
 {
     if (expandedButton) {
+        UIView * background = expansionBackground;
+        expansionBackground = nil;
         [UIView animateWithDuration: animated ? 0.2 : 0.0 animations:^{
             container.frame = self.bounds;
             [self resetButtons];
+            background.frame = [self expansionBackgroundRect:expandedButton];
             expandedButton = nil;
         } completion:^(BOOL finished) {
-            container.backgroundColor = [UIColor clearColor];
-            for (UIView * view in buttons) {
-                view.hidden = NO;
-            }
+            [background removeFromSuperview];
+            
         }];
     }
 }
