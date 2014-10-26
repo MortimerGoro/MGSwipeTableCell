@@ -45,7 +45,9 @@
     UIView * container;
     BOOL fromLeft;
     UIView * expandedButton;
+    UIView * expandedButtonAnimated;
     UIView * expansionBackground;
+    UIView * expansionBackgroundAnimated;
     CGFloat expansionOffset;
     BOOL autoHideExpansion;
 }
@@ -94,6 +96,9 @@
 {
     expansionOffset = offset;
     container.frame = CGRectMake(fromLeft ? 0: self.bounds.size.width - offset, 0, offset, self.bounds.size.height);
+    if (expansionBackgroundAnimated && expandedButtonAnimated) {
+        expansionBackgroundAnimated.frame = [self expansionBackgroundRect:expandedButtonAnimated];
+    }
 }
 
 -(void) layoutSubviews
@@ -109,12 +114,13 @@
 
 -(CGRect) expansionBackgroundRect: (UIView *) button
 {
+    CGFloat extra = 100.0f; //extra size to avoid expansion background size issue on iOS 7.0
     if (fromLeft) {
-        return CGRectMake(0, 0, button.frame.origin.x, container.bounds.size.height);
+        return CGRectMake(-extra, 0, button.frame.origin.x + extra, container.bounds.size.height);
     }
     else {
         return CGRectMake(button.frame.origin.x + button.bounds.size.width, 0,
-                   container.bounds.size.width - (button.frame.origin.x + button.bounds.size.width)
+                   container.bounds.size.width - (button.frame.origin.x + button.bounds.size.width) + extra
                           ,container.bounds.size.height);
     }
     
@@ -156,17 +162,17 @@
 -(void) endExpansioAnimated:(BOOL) animated
 {
     if (expandedButton) {
-        UIView * background = expansionBackground;
+        expandedButtonAnimated = expandedButton;
+        expansionBackgroundAnimated = expansionBackground;
         expansionBackground = nil;
+        expandedButton = nil;
         CGFloat duration = fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
         [UIView animateWithDuration: animated ? duration : 0.0 animations:^{
             container.frame = self.bounds;
             [self resetButtons];
-            background.frame = [self expansionBackgroundRect:expandedButton];
-            expandedButton = nil;
+            expansionBackgroundAnimated.frame = [self expansionBackgroundRect:expandedButtonAnimated];
         } completion:^(BOOL finished) {
-            [background removeFromSuperview];
-            
+            [expansionBackgroundAnimated removeFromSuperview];
         }];
     }
 }
@@ -280,6 +286,9 @@
         case MGSwipeTransitionClipCenter: [self transitionClip:t]; break;
         case MGSwipeTransitionBorder: [self transtitionFloatBorder:t]; break;
         case MGSwipeTransition3D: [self transition3D:t]; break;
+    }
+    if (expandedButtonAnimated && expansionBackgroundAnimated) {
+        expansionBackgroundAnimated.frame = [self expansionBackgroundRect:expandedButtonAnimated];
     }
 }
 
