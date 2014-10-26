@@ -517,8 +517,26 @@ typedef struct MGSwipeAnimationData {
     BOOL prevValue = _triggerStateChanges;
     _triggerStateChanges = NO;
     self.swipeOffset = 0;
-    _triggerStateChanges = prevValue;
     self.swipeOffset = currentOffset;
+    _triggerStateChanges = prevValue;
+}
+
+-(void) refreshButtons: (BOOL) usingDelegate
+{
+    if (usingDelegate) {
+        self.leftButtons = @[];
+        self.rightButtons = @[];
+    }
+    if (leftView) {
+        [leftView removeFromSuperview];
+        leftView = nil;
+    }
+    if (rightView) {
+        [rightView removeFromSuperview];
+        rightView = nil;
+    }
+    [self createSwipeViewIfNeeded];
+    [self refreshContentView];
 }
 
 #pragma mark Handle Table Events

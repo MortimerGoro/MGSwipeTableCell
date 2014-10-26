@@ -143,6 +143,11 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
 
 /** Refresh method to be used when you want to update the cell contents while the user is swipping */
 -(void) refreshContentView;
+/** Refresh method to be used when you want to dinamically change the left or right buttons (add or remove)
+ * If you only want to change the title or the backgroundColor of a button you can change it's properties (get the button instance from leftButtons or rightButtons arrays)
+ * @param usingDelegate if YES new buttons will be fetched using the MGSwipeTableCellDelegate. Otherwise new buttons will be fetched from leftButtons/rightButtons properties.
+ */
+-(void) refreshButtons: (BOOL) usingDelegate;
 
 @end
 
