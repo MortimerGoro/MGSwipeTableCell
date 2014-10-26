@@ -337,6 +337,7 @@ typedef struct MGSwipeAnimationData {
     __weak UITableView * cachedParentTable;
     UITableViewCellSelectionStyle previusSelectionStyle;
     NSMutableSet * previusHiddenViews;
+    BOOL _triggerStateChanges;
     
     MGSwipeAnimationData animationData;
     void (^animationCompletion)();
@@ -388,6 +389,8 @@ typedef struct MGSwipeAnimationData {
     activeExpansion = nil;
     _swipeAnimationDuration = 0.3;
     previusHiddenViews = [NSMutableSet set];
+    _swipeState = MGSwipeStateNone;
+    _triggerStateChanges = YES;
 }
 
 -(void) cleanViews
@@ -511,7 +514,10 @@ typedef struct MGSwipeAnimationData {
 -(void) refreshContentView
 {
     CGFloat currentOffset = _swipeOffset;
+    BOOL prevValue = _triggerStateChanges;
+    _triggerStateChanges = NO;
     self.swipeOffset = 0;
+    _triggerStateChanges = prevValue;
     self.swipeOffset = currentOffset;
 }
 
@@ -629,6 +635,18 @@ typedef struct MGSwipeAnimationData {
     return cachedParentTable;
 }
 
+-(void) updateState: (MGSwipeState) newState;
+{
+    if (!_triggerStateChanges || _swipeState == newState) {
+        return;
+    }
+    _swipeState = newState;
+    if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:didChangeSwipeState:gestureIsActive:)]) {
+        bool gestureActive = panRecognizer.state == UIGestureRecognizerStateBegan || panRecognizer.state == UIGestureRecognizerStateChanged;
+        [_delegate swipeTableCell:self didChangeSwipeState:_swipeState gestureIsActive: gestureActive] ;
+    }
+}
+
 #pragma mark Swipe Animation
 
 - (void)setSwipeOffset:(CGFloat) newOffset;
@@ -642,6 +660,8 @@ typedef struct MGSwipeAnimationData {
     if (!activeButtons || offset == 0) {
         [self hideSwipeOverlayIfNeeded];
         targetOffset = 0;
+        [self updateState:MGSwipeStateNone];
+        return;
     }
     else {
         [self showSwipeOverlayIfNeeded];
@@ -670,12 +690,14 @@ typedef struct MGSwipeAnimationData {
             [view expandToOffset:offset button:expansions[i].buttonIndex];
             targetOffset = expansions[i].fillOnTrigger ? self.contentView.bounds.size.width * sign : 0;
             activeExpansion = view;
+            [self updateState:i ? MGSwipeStateExpandingRightToLeft : MGSwipeStateExpandingLeftToRight];
         }
         else {
             [view endExpansioAnimated:YES];
             activeExpansion = nil;
             CGFloat t = MIN(1.0f, offset/view.bounds.size.width);
             [view transition:settings[i].transition percent:t];
+            [self updateState:i ? MGSwipeStateSwippingRightToLeft : MGSwipeStateSwippingLeftToRight];
         }
     }
 }
@@ -715,6 +737,9 @@ typedef struct MGSwipeAnimationData {
     CFTimeInterval elapsed = timer.timestamp - animationData.start;
     CGFloat t = MIN(elapsed/animationData.duration, 1.0f);
     bool completed = t>=1.0f;
+    if (completed) {
+        _triggerStateChanges = YES;
+    }
     //CubicEaseOut interpolation
     t--;
     self.swipeOffset = (t * t * t + 1.0) * (animationData.to - animationData.from) + animationData.from;
@@ -740,6 +765,7 @@ typedef struct MGSwipeAnimationData {
         return;
     }
     
+    _triggerStateChanges = NO;
     animationData.from = _swipeOffset;
     animationData.to = offset;
     animationData.duration = _swipeAnimationDuration;

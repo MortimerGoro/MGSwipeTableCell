@@ -20,6 +20,14 @@ typedef NS_ENUM(NSInteger, MGSwipeDirection) {
     MGSwipeDirectionRightToLeft
 };
 
+/** Swipe state */
+typedef NS_ENUM(NSInteger, MGSwipeState) {
+    MGSwipeStateNone = 0,
+    MGSwipeStateSwippingLeftToRight,
+    MGSwipeStateSwippingRightToLeft,
+    MGSwipeStateExpandingLeftToRight,
+    MGSwipeStateExpandingRightToLeft,
+};
 
 /**
  * Swipe settings
@@ -66,6 +74,14 @@ typedef NS_ENUM(NSInteger, MGSwipeDirection) {
  * @return YES if swipe is allowed
  **/
 -(BOOL) swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
+
+/**
+ * Delegate method invoked when the current swipe state changes
+ @param state the current Swipe State
+ @param gestureIsActive YES if the user swipe gesture is active. No if the uses has already ended the gesture
+ **/
+-(void) swipeTableCell:(MGSwipeTableCell*) cell didChangeSwipeState:(MGSwipeState) state gestureIsActive:(BOOL) gestureIsActive;
+
 /**
  * Called when the user clicks a swipe button or when a expandable button is automatically triggered
  * @return YES to autohide the current swipe buttons
@@ -109,6 +125,9 @@ typedef NS_ENUM(NSInteger, MGSwipeDirection) {
 /** Optional settings to allow expandable buttons */
 @property (nonatomic, strong) MGSwipeExpansionSettings * leftExpansion;
 @property (nonatomic, strong) MGSwipeExpansionSettings * rightExpansion;
+
+/** Readonly property to fetch the current swipe state */
+@property (nonatomic, readonly) MGSwipeState swipeState;
 
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
