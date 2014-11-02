@@ -122,6 +122,9 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
 /** optional delegate (not retained) */
 @property (nonatomic, assign) id<MGSwipeTableCellDelegate> delegate;
 
+/** optional to use contentView alternative. Use this property instead of contentView to support animated views while swipping */
+@property (nonatomic, strong, readonly) UIView * swipeContentView;
+
 /** 
  * Left and right swipe buttons and its settings.
  * Buttons can be any kind of UIView but it's recommended to use the convenience MGSwipeButton class
