@@ -340,6 +340,7 @@ typedef struct MGSwipeAnimationData {
     
     UIView * swipeOverlay;
     UIImageView * swipeView;
+    UIView * _swipeContentView;
     MGSwipeButtonsView * leftView;
     MGSwipeButtonsView * rightView;
     bool allowSwipeRightToLeft;
@@ -424,9 +425,24 @@ typedef struct MGSwipeAnimationData {
     }
 }
 
+-(UIView *) swipeContentView
+{
+    if (!_swipeContentView) {
+        _swipeContentView = [[UIView alloc] initWithFrame:self.contentView.bounds];
+        _swipeContentView.backgroundColor = [UIColor clearColor];
+        _swipeContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _swipeContentView.layer.zPosition = 9;
+        [self.contentView addSubview:_swipeContentView];
+    }
+    return _swipeContentView;
+}
+
 -(void) layoutSubviews
 {
     [super layoutSubviews];
+    if (_swipeContentView) {
+        _swipeContentView.frame = self.contentView.bounds;
+    }
     if (swipeOverlay) {
         swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height);
     }
@@ -480,8 +496,12 @@ typedef struct MGSwipeAnimationData {
     if (tableInputOverlay) {
         return;
     }
+    if (_swipeContentView)
+        [_swipeContentView removeFromSuperview];
     swipeView.image = [self imageFromView:self];
     swipeOverlay.hidden = NO;
+    if (_swipeContentView)
+        [swipeView addSubview:_swipeContentView];
     
     //input overlay on the whole table
     UITableView * table = [self parentTable];
@@ -508,6 +528,10 @@ typedef struct MGSwipeAnimationData {
 
     swipeOverlay.hidden = YES;
     swipeView.image = nil;
+    if (_swipeContentView) {
+        [_swipeContentView removeFromSuperview];
+        [self.contentView addSubview:_swipeContentView];
+    }
     
     UITableView * table = [self parentTable];
     table.scrollEnabled = YES;
@@ -621,11 +645,12 @@ typedef struct MGSwipeAnimationData {
     }
     
     for (UIView * view in self.contentView.subviews) {
-        if (view != swipeOverlay && hidden && !view.hidden) {
+        if (view == swipeOverlay || view == _swipeContentView) continue;
+        if (hidden && !view.hidden) {
             view.hidden = YES;
             [previusHiddenViews addObject:view];
         }
-        else if (view != swipeOverlay && !hidden && [previusHiddenViews containsObject:view]) {
+        else if (!hidden && [previusHiddenViews containsObject:view]) {
             view.hidden = NO;
         }
     }
@@ -699,7 +724,6 @@ typedef struct MGSwipeAnimationData {
     }
     
     swipeView.transform = CGAffineTransformMakeTranslation(newOffset, 0);
-    
     //animate existing buttons
     MGSwipeButtonsView* but[2] = {leftView, rightView};
     MGSwipeSettings* settings[2] = {_leftSwipeSettings, _rightSwipeSettings};
