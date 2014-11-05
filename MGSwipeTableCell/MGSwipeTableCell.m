@@ -138,6 +138,10 @@
         _expansionBackground = [[UIView alloc] initWithFrame:[self expansionBackgroundRect:_expandedButton]];
         _expansionBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _expansionBackground.backgroundColor = _expandedButton.backgroundColor;
+        if (UIColor.clearColor == _expandedButton.backgroundColor) {
+          // Provides access to more complex content for display on the background
+          _expansionBackground.layer.contents = _expandedButton.layer.contents;
+        }
         [_container addSubview:_expansionBackground];
         
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
