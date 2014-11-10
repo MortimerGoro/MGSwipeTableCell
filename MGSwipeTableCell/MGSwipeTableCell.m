@@ -613,15 +613,17 @@ typedef struct MGSwipeAnimationData {
 
 -(UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    //override hitTest to give swipe buttons a higher priority (diclosure buttons can steal input)
-    UIView * targets[] = {_leftView, _rightView};
-    for (int i = 0; i< 2; ++i) {
-        UIView * target = targets[i];
-        if (!target) continue;
-        
-        CGPoint p = [self convertPoint:point toView:target];
-        if (CGRectContainsPoint(target.bounds, p)) {
-            return [target hitTest:p withEvent:event];
+    if (_swipeOverlay && !_swipeOverlay.hidden) {
+        //override hitTest to give swipe buttons a higher priority (diclosure buttons can steal input)
+        UIView * targets[] = {_leftView, _rightView};
+        for (int i = 0; i< 2; ++i) {
+            UIView * target = targets[i];
+            if (!target) continue;
+            
+            CGPoint p = [self convertPoint:point toView:target];
+            if (CGRectContainsPoint(target.bounds, p)) {
+                return [target hitTest:p withEvent:event];
+            }
         }
     }
     return [super hitTest:point withEvent:event];
