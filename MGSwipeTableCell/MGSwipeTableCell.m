@@ -368,7 +368,7 @@ typedef struct MGSwipeAnimationData {
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self initViews];
+        [self initViews:YES];
     }
     return self;
 }
@@ -376,7 +376,7 @@ typedef struct MGSwipeAnimationData {
 - (id)initWithCoder:(NSCoder*)aDecoder
 {
     if(self = [super initWithCoder:aDecoder]) {
-        [self initViews];
+        [self initViews:YES];
     }
     return self;
 }
@@ -384,7 +384,7 @@ typedef struct MGSwipeAnimationData {
 -(void) awakeFromNib
 {
     if (!_panRecognizer) {
-        [self initViews];
+        [self initViews:YES];
     }
 }
 
@@ -393,14 +393,16 @@ typedef struct MGSwipeAnimationData {
     [self hideSwipeOverlayIfNeeded];
 }
 
--(void) initViews
+-(void) initViews: (BOOL) cleanButtons
 {
-    _leftButtons = [NSArray array];
-    _rightButtons = [NSArray array];
-    _leftSwipeSettings = [[MGSwipeSettings alloc] init];
-    _rightSwipeSettings = [[MGSwipeSettings alloc] init];
-    _leftExpansion = [[MGSwipeExpansionSettings alloc] init];
-    _rightExpansion = [[MGSwipeExpansionSettings alloc] init];
+    if (cleanButtons) {
+        _leftButtons = [NSArray array];
+        _rightButtons = [NSArray array];
+        _leftSwipeSettings = [[MGSwipeSettings alloc] init];
+        _rightSwipeSettings = [[MGSwipeSettings alloc] init];
+        _leftExpansion = [[MGSwipeExpansionSettings alloc] init];
+        _rightExpansion = [[MGSwipeExpansionSettings alloc] init];
+    }
     _panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panHandler:)];
     [self addGestureRecognizer:_panRecognizer];
     _panRecognizer.delegate = self;
@@ -592,7 +594,8 @@ typedef struct MGSwipeAnimationData {
 {
     [super prepareForReuse];
     [self cleanViews];
-    [self initViews];
+    BOOL cleanButtons = _delegate && [_delegate respondsToSelector:@selector(swipeTableCell:swipeButtonsForDirection:swipeSettings:expansionSettings:)];
+    [self initViews:cleanButtons];
 }
 
 -(void) setEditing:(BOOL)editing animated:(BOOL)animated
