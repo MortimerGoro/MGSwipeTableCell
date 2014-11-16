@@ -141,6 +141,9 @@
             frame.origin.x += _container.bounds.size.width - previusRect.size.width;
             _expandedButton.frame = frame;
         }
+        for (int i = 0; i < _buttons.count; ++i) { //hide buttons behind expanded button (useful when the expansion index is not 0)
+            ((UIView*)[_buttons objectAtIndex:i]).hidden = _fromLeft ? i < index : _buttons.count - 1 - i < index;
+        }
         _expansionBackground = [[UIView alloc] initWithFrame:[self expansionBackgroundRect:_expandedButton]];
         _expansionBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _expansionBackground.backgroundColor = _expandedButton.backgroundColor;
@@ -163,6 +166,10 @@
             }
             _expansionBackground.frame = [self expansionBackgroundRect:_expandedButton];
 
+        } completion:^(BOOL finished) {
+            for (UIView * button in _buttons) {
+                button.hidden = NO;
+            }
         }];
         return;
     }
@@ -176,6 +183,9 @@
         _expansionBackgroundAnimated = _expansionBackground;
         _expansionBackground = nil;
         _expandedButton = nil;
+        for (UIView * button in _buttons) {
+            button.hidden = NO;
+        }
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
         [UIView animateWithDuration: animated ? duration : 0.0 animations:^{
             _container.frame = self.bounds;
