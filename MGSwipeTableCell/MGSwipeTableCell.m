@@ -92,6 +92,15 @@
     }
 }
 
+-(CGFloat) calculateButtonsWidth
+{
+    CGFloat width = 0.0;
+    for (UIView * button in _buttons) {
+        width += button.bounds.size.width;
+    }
+    return width;
+}
+
 -(void) layoutExpansion: (CGFloat) offset
 {
     _expansionOffset = offset;
@@ -135,6 +144,10 @@
         _expandedButton = [_buttons objectAtIndex: _fromLeft ? index : _buttons.count - index - 1];
         [self layoutExpansion:offset];
         [self resetButtons];
+        
+        CGRect frame = [self expansionBackgroundRect:_expandedButton];
+        frame.origin.x = _fromLeft ? frame.origin.x : _container.bounds.size.width - [self calculateButtonsWidth];
+        
         _expansionBackground = [[UIView alloc] initWithFrame:[self expansionBackgroundRect:_expandedButton]];
         _expansionBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _expansionBackground.backgroundColor = _expandedButton.backgroundColor;
@@ -143,6 +156,12 @@
           _expansionBackground.layer.contents = _expandedButton.layer.contents;
         }
         [_container addSubview:_expansionBackground];
+        
+        if (!_fromLeft) {
+            CGRect buttonFrame = _expandedButton.frame;
+            buttonFrame.origin.x = frame.origin.x - buttonFrame.size.width;
+            _expandedButton.frame = buttonFrame;
+        }
         
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
         [UIView animateWithDuration: duration animations:^{
