@@ -136,13 +136,12 @@
         CGRect previusRect = _container.frame;
         [self layoutExpansion:offset];
         [self resetButtons];
-        if (!_fromLeft && index == _buttons.count - 1) { //Fix expansion animation for the first right button
-            CGRect frame = _expandedButton.frame;
-            frame.origin.x += _container.bounds.size.width - previusRect.size.width;
-            _expandedButton.frame = frame;
-        }
-        for (int i = 0; i < _buttons.count; ++i) { //hide buttons behind expanded button (useful when the expansion index is not 0)
-            ((UIView*)[_buttons objectAtIndex:i]).hidden = _fromLeft ? i < index : _buttons.count - 1 - i < index;
+        if (!_fromLeft) { //Fix expansion animation for right buttons
+            for (UIView * button in _buttons) {
+                CGRect frame = button.frame;
+                frame.origin.x += _container.bounds.size.width - previusRect.size.width;
+                button.frame = frame;
+            }
         }
         _expansionBackground = [[UIView alloc] initWithFrame:[self expansionBackgroundRect:_expandedButton]];
         _expansionBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -167,9 +166,6 @@
             _expansionBackground.frame = [self expansionBackgroundRect:_expandedButton];
 
         } completion:^(BOOL finished) {
-            for (UIView * button in _buttons) {
-                button.hidden = NO;
-            }
         }];
         return;
     }
@@ -186,9 +182,6 @@
         _expansionBackgroundAnimated = _expansionBackground;
         _expansionBackground = nil;
         _expandedButton = nil;
-        for (UIView * button in _buttons) {
-            button.hidden = NO;
-        }
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
         [UIView animateWithDuration: animated ? duration : 0.0 animations:^{
             _container.frame = self.bounds;
