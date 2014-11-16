@@ -133,8 +133,14 @@
     }
     if (!_expandedButton) {
         _expandedButton = [_buttons objectAtIndex: _fromLeft ? index : _buttons.count - index - 1];
+        CGRect previusRect = _container.frame;
         [self layoutExpansion:offset];
         [self resetButtons];
+        if (!_fromLeft && index == _buttons.count - 1) { //Fix expansion animation for the first right button
+            CGRect frame = _expandedButton.frame;
+            frame.origin.x += _container.bounds.size.width - previusRect.size.width;
+            _expandedButton.frame = frame;
+        }
         _expansionBackground = [[UIView alloc] initWithFrame:[self expansionBackgroundRect:_expandedButton]];
         _expansionBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _expansionBackground.backgroundColor = _expandedButton.backgroundColor;
