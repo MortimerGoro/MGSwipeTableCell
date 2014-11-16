@@ -803,6 +803,8 @@ typedef struct MGSwipeAnimationData {
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated
 {
     [self createSwipeViewIfNeeded];
+    _allowSwipeLeftToRight = _leftButtons.count > 0;
+    _allowSwipeRightToLeft = _rightButtons.count > 0;
     UIView * buttonsView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
     
     if (buttonsView) {
