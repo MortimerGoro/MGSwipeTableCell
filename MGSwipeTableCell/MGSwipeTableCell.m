@@ -180,6 +180,9 @@
 {
     if (_expandedButton) {
         _expandedButtonAnimated = _expandedButton;
+        if (_expansionBackgroundAnimated && _expansionBackgroundAnimated != _expansionBackground) {
+            [_expansionBackgroundAnimated removeFromSuperview];
+        }
         _expansionBackgroundAnimated = _expansionBackground;
         _expansionBackground = nil;
         _expandedButton = nil;
@@ -194,6 +197,10 @@
         } completion:^(BOOL finished) {
             [_expansionBackgroundAnimated removeFromSuperview];
         }];
+    }
+    else if (_expansionBackground) {
+        [_expansionBackground removeFromSuperview];
+        _expansionBackground = nil;
     }
 }
 
@@ -737,6 +744,10 @@ typedef struct MGSwipeAnimationData {
     
     MGSwipeButtonsView * activeButtons = sign < 0 ? _rightView : _leftView;
     if (!activeButtons || offset == 0) {
+        if (_leftView)
+            [_leftView endExpansioAnimated:NO];
+        if (_rightView)
+            [_rightView endExpansioAnimated:NO];
         [self hideSwipeOverlayIfNeeded];
         _targetOffset = 0;
         [self updateState:MGSwipeStateNone];
