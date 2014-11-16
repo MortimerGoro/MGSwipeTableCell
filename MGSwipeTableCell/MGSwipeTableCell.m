@@ -159,7 +159,7 @@
         
         if (!_fromLeft) {
             CGRect buttonFrame = _expandedButton.frame;
-            buttonFrame.origin.x = frame.origin.x - buttonFrame.size.width;
+            buttonFrame.origin.x = _expansionBackground.frame.origin.x - buttonFrame.size.width;
             _expandedButton.frame = buttonFrame;
         }
         
