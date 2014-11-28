@@ -813,6 +813,29 @@ typedef struct MGSwipeAnimationData {
     }
 }
 
+-(void) expandSwipe: (MGSwipeDirection) direction animated: (BOOL) animated
+{
+    CGFloat s = direction == MGSwipeDirectionLeftToRight ? 1.0 : -1.0;
+    MGSwipeExpansionSettings* expSetting = direction == MGSwipeDirectionLeftToRight ? _leftExpansion : _rightExpansion;
+    
+    // only perform animation if there's no pending expansion animation and requested direction has fillOnTrigger enabled
+    if(!_activeExpansion && expSetting.fillOnTrigger) {
+        [self createSwipeViewIfNeeded];
+        _allowSwipeLeftToRight = _leftButtons.count > 0;
+        _allowSwipeRightToLeft = _rightButtons.count > 0;
+        UIView * buttonsView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
+        
+        if (buttonsView) {
+            __weak typeof(_activeExpansion) w_expantionView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
+            __weak typeof(self) weakself = self;
+            [self setSwipeOffset:buttonsView.bounds.size.width * s * expSetting.threshold * 2 animated:animated completion:^{
+                [w_expantionView endExpansioAnimated:YES];
+                [weakself setSwipeOffset:0 animated:NO completion:nil];
+            }];
+        }
+    }
+}
+
 -(void) animationTick: (CADisplayLink *) timer
 {
     if (!_animationData.start) {
