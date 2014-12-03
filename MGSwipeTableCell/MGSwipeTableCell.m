@@ -71,6 +71,7 @@
         _buttons = _fromLeft ? buttonsArray: [[buttonsArray reverseObjectEnumerator] allObjects];
         for (UIView * button in _buttons) {
             if ([button isKindOfClass:[UIButton class]]) {
+                [(UIButton *)button removeTarget:nil action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [(UIButton *)button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
             button.frame = CGRectMake(0, 0, maxSize.width, maxSize.height);
