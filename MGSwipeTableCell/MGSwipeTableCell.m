@@ -82,6 +82,15 @@
     return self;
 }
 
+-(void) dealloc
+{
+    for (UIView * button in _buttons) {
+        if ([button isKindOfClass:[UIButton class]]) {
+            [(UIButton *)button removeTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+}
+
 -(void) resetButtons
 {
     int index = 0;
