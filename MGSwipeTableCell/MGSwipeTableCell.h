@@ -45,6 +45,9 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
 /** Property to read or change swipe animation durations. Default value 0.3 */
 @property (nonatomic, assign) CGFloat animationDuration;
 
+/** Disable the scrolling when swipe buttons are visible. Default value YES */
+@property (nonatomic, assign) BOOL shouldDisableScroll;
+
 @end
 
 

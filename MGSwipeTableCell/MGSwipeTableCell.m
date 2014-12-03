@@ -332,6 +332,7 @@
         self.threshold = 0.5;
         self.offset = 0;
         self.animationDuration = 0.3;
+        self.shouldDisableScroll = YES;
     }
     return self;
 }
@@ -522,7 +523,7 @@ typedef struct MGSwipeAnimationData {
 }
 
 
-- (void) showSwipeOverlayIfNeeded
+- (void) showSwipeOverlayIfNeeded:(BOOL)shouldDisableScroll
 {
     if (_tableInputOverlay) {
         return;
@@ -536,7 +537,9 @@ typedef struct MGSwipeAnimationData {
     
     //input overlay on the whole table
     UITableView * table = [self parentTable];
-    table.scrollEnabled = NO;
+    if (shouldDisableScroll) {
+        table.scrollEnabled = NO;
+    }
     _tableInputOverlay = [[MGSwipeTableInputOverlay alloc] initWithFrame:table.bounds];
     _tableInputOverlay.currentCell = self;
     [table addSubview:_tableInputOverlay];
@@ -756,7 +759,8 @@ typedef struct MGSwipeAnimationData {
         return;
     }
     else {
-        [self showSwipeOverlayIfNeeded];
+        BOOL shouldDisableScroll = sign < 0 ? _rightSwipeSettings.shouldDisableScroll : _leftSwipeSettings.shouldDisableScroll;
+        [self showSwipeOverlayIfNeeded:shouldDisableScroll];
         CGFloat swipeThreshold = sign < 0 ? _rightSwipeSettings.threshold : _leftSwipeSettings.threshold;
         _targetOffset = offset > activeButtons.bounds.size.width * swipeThreshold ? activeButtons.bounds.size.width * sign : 0;
     }
@@ -864,7 +868,7 @@ typedef struct MGSwipeAnimationData {
     _animationData.duration = _swipeOffset > 0 ? _leftSwipeSettings.animationDuration : _rightSwipeSettings.animationDuration;
     _animationData.start = 0;
     _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(animationTick:)];
-    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+    [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 }
 
 #pragma mark Gestures
