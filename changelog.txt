@@ -1,0 +1,4 @@
+1.3.5
+---------------------
+
+Fixed issue #43: Two Cell Can Swipe simultaneously
