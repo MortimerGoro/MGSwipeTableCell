@@ -359,6 +359,8 @@ typedef struct MGSwipeAnimationData {
 
 #pragma mark MGSwipeTableCell Implementation
 
+static NSMutableSet * singleSwipePerTable;
+
 @implementation MGSwipeTableCell
 {
     UITapGestureRecognizer * _tapRecognizer;
@@ -907,6 +909,7 @@ typedef struct MGSwipeAnimationData {
             
             [self setSwipeOffset:_targetOffset animated:YES completion:nil];
         }
+        [singleSwipePerTable removeObject:[NSValue valueWithNonretainedObject:[self parentTable]]];
     }
 }
 
@@ -943,8 +946,19 @@ typedef struct MGSwipeAnimationData {
             _allowSwipeLeftToRight = _leftButtons.count > 0;
             _allowSwipeRightToLeft = _rightButtons.count > 0;
         }
+        if (!singleSwipePerTable) {
+            singleSwipePerTable = [[NSMutableSet alloc] init];
+        }
+        NSValue * key = [NSValue valueWithNonretainedObject:[self parentTable]];
+        if ([singleSwipePerTable containsObject:key]) {
+            return NO;
+        }
         
-        return (_allowSwipeLeftToRight && translation.x > 0) || (_allowSwipeRightToLeft && translation.x < 0);
+        BOOL result =  (_allowSwipeLeftToRight && translation.x > 0) || (_allowSwipeRightToLeft && translation.x < 0);
+        if (result) {
+            [singleSwipePerTable addObject:key];
+        }
+        return result;
     }
     else if (gestureRecognizer == _tapRecognizer) {
         CGPoint point = [_tapRecognizer locationInView:_swipeView];
