@@ -704,7 +704,7 @@ static NSMutableSet * singleSwipePerTable;
     else if (self.backgroundColor && ![self.backgroundColor isEqual:[UIColor clearColor]]) {
         return self.backgroundColor;
     }
-    return [UIColor whiteColor];
+    return [UIColor clearColor];
 }
 
 -(UITableView *) parentTable
