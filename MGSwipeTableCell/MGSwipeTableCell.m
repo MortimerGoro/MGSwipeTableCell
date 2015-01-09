@@ -883,12 +883,13 @@ static NSMutableSet * singleSwipePerTable;
         [self createSwipeViewIfNeeded];
         _panStartPoint = current;
         _panStartOffset = _swipeOffset;
+        [singleSwipePerTable addObject:[NSValue valueWithNonretainedObject:[self parentTable]]];
     }
     else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGFloat offset = _panStartOffset + current.x - _panStartPoint.x;
         [self updateSwipe:offset];
     }
-    else if (gesture.state == UIGestureRecognizerStateEnded) {
+    else {
         MGSwipeButtonsView * expansion = _activeExpansion;
         if (expansion) {
             UIView * expandedButton = [expansion getExpandedButton];
@@ -954,11 +955,7 @@ static NSMutableSet * singleSwipePerTable;
             return NO;
         }
         
-        BOOL result =  (_allowSwipeLeftToRight && translation.x > 0) || (_allowSwipeRightToLeft && translation.x < 0);
-        if (result) {
-            [singleSwipePerTable addObject:key];
-        }
-        return result;
+        return (_allowSwipeLeftToRight && translation.x > 0) || (_allowSwipeRightToLeft && translation.x < 0);
     }
     else if (gestureRecognizer == _tapRecognizer) {
         CGPoint point = [_tapRecognizer locationInView:_swipeView];
