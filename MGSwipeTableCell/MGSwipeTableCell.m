@@ -701,7 +701,7 @@ static NSMutableSet * singleSwipePerTable;
     else if (self.contentView.backgroundColor && ![self.contentView.backgroundColor isEqual:[UIColor clearColor]]) {
         return self.contentView.backgroundColor;
     }
-    else if (self.backgroundColor && ![self.backgroundColor isEqual:[UIColor clearColor]]) {
+    else if (self.backgroundColor) {
         return self.backgroundColor;
     }
     return [UIColor clearColor];
