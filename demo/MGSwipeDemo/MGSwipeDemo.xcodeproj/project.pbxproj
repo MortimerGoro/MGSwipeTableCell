@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1130ABC61AAA6B3400BEB4D3 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1130ABC51AAA6B3400BEB4D3 /* LaunchScreen.xib */; };
 		113D5E101996AD7400066AE3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 113D5E0F1996AD7400066AE3 /* Foundation.framework */; };
 		113D5E121996AD7400066AE3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 113D5E111996AD7400066AE3 /* CoreGraphics.framework */; };
 		113D5E141996AD7400066AE3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 113D5E131996AD7400066AE3 /* UIKit.framework */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1130ABC51AAA6B3400BEB4D3 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		113D5E0C1996AD7400066AE3 /* MGSwipeDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MGSwipeDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		113D5E0F1996AD7400066AE3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		113D5E111996AD7400066AE3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -111,6 +113,7 @@
 				11D0A01B1996B2BE008D8809 /* autolayout_test.storyboard */,
 				113D5E211996AD7400066AE3 /* Images.xcassets */,
 				113D5E161996AD7400066AE3 /* Supporting Files */,
+				1130ABC51AAA6B3400BEB4D3 /* LaunchScreen.xib */,
 			);
 			path = MGSwipeDemo;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				11D0A01A1996AFF1008D8809 /* menu@2x.png in Resources */,
 				1146855619D4609F00D28118 /* background.jpg in Resources */,
 				113D5E221996AD7400066AE3 /* Images.xcassets in Resources */,
+				1130ABC61AAA6B3400BEB4D3 /* LaunchScreen.xib in Resources */,
 				11D0A0181996AFF1008D8809 /* check@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
