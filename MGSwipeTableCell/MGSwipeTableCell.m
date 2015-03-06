@@ -28,7 +28,7 @@
         return nil;
     }
     [_currentCell hideSwipeAnimated:YES];
-    return self;
+    return nil; //return nil to allow swipping a new cell while the current one is hidding
 }
 
 @end
