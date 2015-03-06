@@ -531,6 +531,7 @@ static NSMutableSet * singleSwipePerTable;
     if (_tableInputOverlay) {
         return;
     }
+    self.selected = NO;
     if (_swipeContentView)
         [_swipeContentView removeFromSuperview];
     _swipeView.image = [self imageFromView:self];
@@ -571,6 +572,10 @@ static NSMutableSet * singleSwipePerTable;
     _tableInputOverlay = nil;
     
     self.selectionStyle = _previusSelectionStyle;
+    NSArray * selectedRows = self.parentTable.indexPathsForSelectedRows;
+    if ([selectedRows containsObject:[self.parentTable indexPathForCell:self]]) {
+        self.selected = YES;
+    }
     [self setAccesoryViewsHidden:NO];
     
     if (_tapRecognizer) {
@@ -904,7 +909,6 @@ static NSMutableSet * singleSwipePerTable;
     
     if (gesture.state == UIGestureRecognizerStateBegan) {
         self.highlighted = NO;
-        self.selected = NO;
         [self createSwipeViewIfNeeded];
         _panStartPoint = current;
         _panStartOffset = _swipeOffset;
