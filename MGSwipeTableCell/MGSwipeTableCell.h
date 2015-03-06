@@ -143,6 +143,9 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
 /** Readonly property to check if the user swipe gesture is currently active */
 @property (nonatomic, readonly) BOOL isSwipeGestureActive;
 
+// default is NO. Controls whether multiple cells can be swipped simultaneously
+@property (nonatomic) BOOL allowsMultipleSwipe;
+
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
 /** Property to read or change the current swipe offset programmatically */
