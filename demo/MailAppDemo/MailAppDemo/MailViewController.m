@@ -252,7 +252,7 @@ typedef void(^MailActionCallback)(BOOL cancelled, BOOL deleted, NSInteger action
             
             NSIndexPath * indexPath = [me.tableView indexPathForCell:sender];
             [me deleteMail:indexPath];
-            return YES;
+            return NO; //don't autohide to improve delete animation
         }];
         MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Flag" backgroundColor:[UIColor colorWithRed:1.0 green:149/255.0 blue:0.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             

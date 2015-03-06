@@ -213,7 +213,7 @@
 
 #pragma mark Trigger Actions
 
--(void) handleClick: (id) sender fromExpansion:(BOOL) fromExpansion
+-(BOOL) handleClick: (id) sender fromExpansion:(BOOL) fromExpansion
 {
     bool autoHide = false;
 #pragma clang diagnostic push
@@ -232,13 +232,15 @@
         autoHide|= [_cell.delegate swipeTableCell:_cell tappedButtonAtIndex:index direction:_fromLeft ? MGSwipeDirectionLeftToRight : MGSwipeDirectionRightToLeft fromExpansion:fromExpansion];
     }
     
-    if (fromExpansion) {
+    if (fromExpansion && autoHide) {
         _expandedButton = nil;
         _cell.swipeOffset = 0;
     }
     else if (autoHide) {
         [_cell hideSwipeAnimated:YES];
     }
+    
+    return autoHide;
 
 }
 //button listener
@@ -917,8 +919,10 @@ static NSMutableSet * singleSwipePerTable;
         if (expansion) {
             UIView * expandedButton = [expansion getExpandedButton];
             [self setSwipeOffset:_targetOffset animated:YES completion:^{
-                [expansion endExpansioAnimated:NO];
-                [expansion handleClick:expandedButton fromExpansion:YES];
+                BOOL autoHide = [expansion handleClick:expandedButton fromExpansion:YES];
+                if (autoHide) {
+                    [expansion endExpansioAnimated:NO];
+                }
             }];
         }
         else {
