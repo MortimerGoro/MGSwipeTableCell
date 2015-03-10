@@ -22,9 +22,6 @@
 typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 @property (nonatomic, strong) MGSwipeButtonCallback callback;
 
-/** A width for the expanded buttons. Defaults to 0, which means sizeToFit will be called. */
-@property (nonatomic, assign) CGFloat buttonWidth;
-
 /** 
  * Convenience static constructors
  */
@@ -35,8 +32,10 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color;
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding;
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback;
++(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color paddingEdgeInsets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback;
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding callback:(MGSwipeButtonCallback) callback;
 
 -(void) setPadding:(CGFloat) padding;
+-(void) setPaddingEdgeInsets:(UIEdgeInsets)insets;
 
 @end

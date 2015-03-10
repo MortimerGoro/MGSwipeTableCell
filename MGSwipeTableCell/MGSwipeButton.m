@@ -11,42 +11,56 @@
 
 +(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color
 {
-    return [self buttonWithTitle:title icon:nil backgroundColor:color];
+    return [MGSwipeButton buttonWithTitle:title icon:nil backgroundColor:color];
 }
 
 +(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color padding:(NSInteger) padding
 {
-    return [self buttonWithTitle:title icon:nil backgroundColor:color padding:padding];
+    return [MGSwipeButton buttonWithTitle:title icon:nil backgroundColor:color padding:padding];
 }
 
 +(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback
 {
-    return [self buttonWithTitle:title icon:nil backgroundColor:color callback:callback];
+    return [MGSwipeButton buttonWithTitle:title icon:nil backgroundColor:color callback:callback];
 }
 
 +(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color padding:(NSInteger) padding callback:(MGSwipeButtonCallback) callback
 {
-    return [self buttonWithTitle:title icon:nil backgroundColor:color padding:padding callback:callback];
+    return [MGSwipeButton buttonWithTitle:title icon:nil backgroundColor:color padding:padding callback:callback];
 }
 
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color
 {
-    return [self buttonWithTitle:title icon:icon backgroundColor:color callback:nil];
+    return [MGSwipeButton buttonWithTitle:title icon:icon backgroundColor:color callback:nil];
 }
 
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding
 {
-    return [self buttonWithTitle:title icon:icon backgroundColor:color padding:padding callback:nil];
+    return [MGSwipeButton buttonWithTitle:title icon:icon backgroundColor:color padding:padding callback:nil];
 }
 
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback
 {
-    return [self buttonWithTitle:title icon:icon backgroundColor:color padding:10 callback:callback];
+    return [MGSwipeButton buttonWithTitle:title icon:icon backgroundColor:color padding:10 callback:callback];
+}
+
++(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color paddingEdgeInsets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback
+{
+    MGSwipeButton * button = [MGSwipeButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = color;
+    button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setImage:icon forState:UIControlStateNormal];
+    button.callback = callback;
+    [button setPaddingEdgeInsets:insets];
+    return button;
 }
 
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding callback:(MGSwipeButtonCallback) callback
 {
-    MGSwipeButton * button = [self buttonWithType:UIButtonTypeCustom];
+    MGSwipeButton * button = [MGSwipeButton buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = color;
     button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -72,19 +86,10 @@
     [self sizeToFit];
 }
 
-- (void)setButtonWidth:(CGFloat)buttonWidth
+-(void) setPaddingEdgeInsets:(UIEdgeInsets)insets
 {
-    _buttonWidth = buttonWidth;
-    if (_buttonWidth > 0)
-    {
-        CGRect frame = self.frame;
-        frame.size.width = _buttonWidth;
-        self.frame = frame;
-    }
-    else
-    {
-        [self sizeToFit];
-    }
+    self.contentEdgeInsets = insets;
+    [self sizeToFit];
 }
 
 @end
