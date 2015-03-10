@@ -92,4 +92,19 @@
     [self sizeToFit];
 }
 
+- (void)setButtonWidth:(CGFloat)buttonWidth
+{
+    _buttonWidth = buttonWidth;
+    if (_buttonWidth > 0)
+    {
+        CGRect frame = self.frame;
+        frame.size.width = _buttonWidth;
+        self.frame = frame;
+    }
+    else
+    {
+        [self sizeToFit];
+    }
+}
+
 @end
