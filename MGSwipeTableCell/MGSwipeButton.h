@@ -38,5 +38,6 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding callback:(MGSwipeButtonCallback) callback;
 
 -(void) setPadding:(CGFloat) padding;
+-(void) centerIconOverText;
 
 @end
