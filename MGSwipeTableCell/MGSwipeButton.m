@@ -66,6 +66,20 @@
     return NO;
 }
 
+-(void) centerIconOverText {
+	const CGFloat spacing = 3.0;
+	CGSize size = self.imageView.image.size;
+	self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+											-size.width,
+											-(size.height + spacing),
+											0.0);
+	size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName: self.titleLabel.font }];
+	self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + spacing),
+											0.0,
+											0.0,
+											-size.width);
+}
+
 -(void) setPadding:(CGFloat) padding
 {
     self.contentEdgeInsets = UIEdgeInsetsMake(0, padding, 0, padding);
