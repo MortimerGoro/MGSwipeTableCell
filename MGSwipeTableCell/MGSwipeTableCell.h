@@ -145,6 +145,8 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
 
 // default is NO. Controls whether multiple cells can be swipped simultaneously
 @property (nonatomic) BOOL allowsMultipleSwipe;
+// default is NO. Controls whether buttons with different width are allowed. Buttons are resized to have the same size by default.
+@property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
 
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
