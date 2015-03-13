@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'MGSwipeTableCell'
-  s.version  = '1.3.6'
+  s.version  = '1.4.0'
   s.author   = { 'Imanol Fernandez' => 'mortimergoro@gmail.com' }
   s.homepage = 'https://github.com/MortimerGoro/MGSwipeTableCell'
   s.summary  = 'An easy to use UITableViewCell subclass that allows to display swippable buttons with a variety of transitions'
