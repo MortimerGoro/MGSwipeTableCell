@@ -166,6 +166,9 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
  * @param usingDelegate if YES new buttons will be fetched using the MGSwipeTableCellDelegate. Otherwise new buttons will be fetched from leftButtons/rightButtons properties.
  */
 -(void) refreshButtons: (BOOL) usingDelegate;
-
+/** This is an override point so that subclasses can to any last-minute tweaking to the swipe buttons view
+ * @param swipeButtonView will be of the private type MGSwipeButtonsView.
+ */
+-(void) customizeSwipeButtonsView: (UIView *) swipeButtonView;
 @end
 
