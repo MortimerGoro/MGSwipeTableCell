@@ -29,6 +29,12 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
     MGSwipeStateExpandingRightToLeft,
 };
 
+/** Swipe state */
+typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
+    MGSwipeExpansionLayoutBorder = 0,
+    MGSwipeExpansionLayoutCenter
+};
+
 /**
  * Swipe settings
  **/
@@ -59,6 +65,10 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
 @property (nonatomic, assign) BOOL fillOnTrigger;
 /** Size proportional threshold to trigger the expansion button. Default value 1.5 */
 @property (nonatomic, assign) CGFloat threshold;
+/** Optional expansion color. Expanded button's background color is used by default **/
+@property (nonatomic, strong) UIColor * expansionColor;
+/** Defines the layout of the expanded button **/
+@property (nonatomic, assign) MGSwipeExpansionLayout expansionLayout;
 
 /** Property to read or change expansion animation durations. Default value 0.2 
  * The target animation is the change of a button from normal state to expanded state

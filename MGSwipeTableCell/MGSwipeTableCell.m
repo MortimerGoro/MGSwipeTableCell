@@ -48,6 +48,9 @@
     UIView * _expandedButtonAnimated;
     UIView * _expansionBackground;
     UIView * _expansionBackgroundAnimated;
+    UIColor * _backgroundCopy;
+    CGRect _expandedButtonBoundsCopy;
+    MGSwipeExpansionLayout _expansionLayout;
     CGFloat _expansionOffset;
     BOOL _autoHideExpansion;
 }
@@ -136,20 +139,20 @@
         return CGRectMake(-extra, 0, button.frame.origin.x + extra, _container.bounds.size.height);
     }
     else {
-        return CGRectMake(button.frame.origin.x + button.bounds.size.width, 0,
-                   _container.bounds.size.width - (button.frame.origin.x + button.bounds.size.width) + extra
+        return CGRectMake(button.frame.origin.x +  button.bounds.size.width, 0,
+                   _container.bounds.size.width - (button.frame.origin.x + button.bounds.size.width ) + extra
                           ,_container.bounds.size.height);
     }
     
 }
 
--(void) expandToOffset:(CGFloat) offset button:(NSInteger) index
+-(void) expandToOffset:(CGFloat) offset settings:(MGSwipeExpansionSettings*) settings
 {
-    if (index < 0 || index>= _buttons.count) {
+    if (settings.buttonIndex < 0 || settings.buttonIndex >= _buttons.count) {
         return;
     }
     if (!_expandedButton) {
-        _expandedButton = [_buttons objectAtIndex: _fromLeft ? index : _buttons.count - index - 1];
+        _expandedButton = [_buttons objectAtIndex: _fromLeft ? settings.buttonIndex : _buttons.count - settings.buttonIndex - 1];
         CGRect previusRect = _container.frame;
         [self layoutExpansion:offset];
         [self resetButtons];
@@ -162,17 +165,31 @@
         }
         _expansionBackground = [[UIView alloc] initWithFrame:[self expansionBackgroundRect:_expandedButton]];
         _expansionBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        if (settings.expansionColor) {
+            _backgroundCopy = _expandedButton.backgroundColor;
+            _expandedButton.backgroundColor = settings.expansionColor;
+        }
         _expansionBackground.backgroundColor = _expandedButton.backgroundColor;
         if (UIColor.clearColor == _expandedButton.backgroundColor) {
           // Provides access to more complex content for display on the background
           _expansionBackground.layer.contents = _expandedButton.layer.contents;
         }
         [_container addSubview:_expansionBackground];
+        _expansionLayout = settings.expansionLayout;
         
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
         [UIView animateWithDuration: duration animations:^{
             _expandedButton.hidden = NO;
-            if (_fromLeft) {
+
+            if (_expansionLayout == MGSwipeExpansionLayoutCenter) {
+                _expandedButtonBoundsCopy = _expandedButton.bounds;
+                _expandedButton.layer.mask = nil;
+                _expandedButton.layer.transform = CATransform3DIdentity;
+                _expandedButton.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+                [_expandedButton.superview bringSubviewToFront:_expandedButton];
+                _expandedButton.frame = _container.bounds;
+            }
+            else if (_fromLeft) {
                 _expandedButton.frame = CGRectMake(_container.bounds.size.width - _expandedButton.bounds.size.width, 0, _expandedButton.bounds.size.width, _expandedButton.bounds.size.height);
                 _expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleLeftMargin;
             }
@@ -199,9 +216,17 @@
         _expansionBackgroundAnimated = _expansionBackground;
         _expansionBackground = nil;
         _expandedButton = nil;
+        if (_backgroundCopy) {
+            _expansionBackgroundAnimated.backgroundColor = _backgroundCopy;
+            _expandedButtonAnimated.backgroundColor = _backgroundCopy;
+            _backgroundCopy = nil;
+        }
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
         [UIView animateWithDuration: animated ? duration : 0.0 animations:^{
             _container.frame = self.bounds;
+            if (_expansionLayout == MGSwipeExpansionLayoutCenter) {
+                _expandedButtonAnimated.frame = _expandedButtonBoundsCopy;
+            }
             [self resetButtons];
             _expansionBackgroundAnimated.frame = [self expansionBackgroundRect:_expandedButtonAnimated];
         } completion:^(BOOL finished) {
@@ -810,7 +835,7 @@ static NSMutableSet * singleSwipePerTable;
         if (view != activeButtons) continue; //only transition if active (perf. improvement)
         bool expand = expansions[i].buttonIndex >= 0 && offset > view.bounds.size.width * expansions[i].threshold;
         if (expand) {
-            [view expandToOffset:offset button:expansions[i].buttonIndex];
+            [view expandToOffset:offset settings:expansions[i]];
             _targetOffset = expansions[i].fillOnTrigger ? self.contentView.bounds.size.width * sign : 0;
             _activeExpansion = view;
             [self updateState:i ? MGSwipeStateExpandingRightToLeft : MGSwipeStateExpandingLeftToRight];
