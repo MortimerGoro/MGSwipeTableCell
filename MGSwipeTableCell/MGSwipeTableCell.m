@@ -653,6 +653,7 @@ static NSMutableSet * singleSwipePerTable;
     [self cleanViews];
     BOOL cleanButtons = _delegate && [_delegate respondsToSelector:@selector(swipeTableCell:swipeButtonsForDirection:swipeSettings:expansionSettings:)];
     [self initViews:cleanButtons];
+    [singleSwipePerTable removeObject:[NSValue valueWithNonretainedObject:[self parentTable]]];
 }
 
 -(void) setEditing:(BOOL)editing animated:(BOOL)animated
