@@ -892,10 +892,10 @@ static NSMutableSet * singleSwipePerTable;
         UIView * buttonsView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
         
         if (buttonsView) {
-            __weak typeof(_activeExpansion) w_expantionView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
-            __weak typeof(self) weakself = self;
+            __weak MGSwipeButtonsView * expansionView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
+            __weak MGSwipeTableCell * weakself = self;
             [self setSwipeOffset:buttonsView.bounds.size.width * s * expSetting.threshold * 2 animated:animated completion:^{
-                [w_expantionView endExpansioAnimated:YES];
+                [expansionView endExpansioAnimated:YES];
                 [weakself setSwipeOffset:0 animated:NO completion:nil];
             }];
         }
