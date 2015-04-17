@@ -836,7 +836,7 @@ static NSMutableSet * singleSwipePerTable;
         bool expand = expansions[i].buttonIndex >= 0 && offset > view.bounds.size.width * expansions[i].threshold;
         if (expand) {
             [view expandToOffset:offset settings:expansions[i]];
-            _targetOffset = expansions[i].fillOnTrigger ? self.contentView.bounds.size.width * sign : 0;
+            _targetOffset = expansions[i].fillOnTrigger ? self.bounds.size.width * sign : 0;
             _activeExpansion = view;
             [self updateState:i ? MGSwipeStateExpandingRightToLeft : MGSwipeStateExpandingLeftToRight];
         }
