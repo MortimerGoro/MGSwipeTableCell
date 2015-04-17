@@ -677,6 +677,10 @@ static NSMutableSet * singleSwipePerTable;
 {
     [super prepareForReuse];
     [self cleanViews];
+    if (_swipeState != MGSwipeStateNone) {
+        _triggerStateChanges = YES;
+        [self updateState:MGSwipeStateNone];
+    }
     BOOL cleanButtons = _delegate && [_delegate respondsToSelector:@selector(swipeTableCell:swipeButtonsForDirection:swipeSettings:expansionSettings:)];
     [self initViews:cleanButtons];
 }
