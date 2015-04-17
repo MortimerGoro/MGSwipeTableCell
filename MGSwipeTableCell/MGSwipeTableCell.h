@@ -5,14 +5,17 @@
 
 #import <UIKit/UIKit.h>
 
+
 /** Transition types */
 typedef NS_ENUM(NSInteger, MGSwipeTransition) {
     MGSwipeTransitionBorder = 0,
     MGSwipeTransitionStatic,
     MGSwipeTransitionDrag,
     MGSwipeTransitionClipCenter,
-    MGSwipeTransition3D,
+    MGSwipeTransitionRotate3D
 };
+
+#define MGSwipeTransition3D MGSwipeTransitionRotate3D
 
 /** Swipe directions */
 typedef NS_ENUM(NSInteger, MGSwipeDirection) {
