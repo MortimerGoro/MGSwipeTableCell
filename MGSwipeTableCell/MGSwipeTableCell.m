@@ -484,6 +484,7 @@ static NSMutableSet * singleSwipePerTable;
     _previusHiddenViews = [NSMutableSet set];
     _swipeState = MGSwipeStateNone;
     _triggerStateChanges = YES;
+    _allowsSwipeWhenTappingButtons = YES;
 }
 
 -(void) cleanViews
@@ -1011,7 +1012,7 @@ static NSMutableSet * singleSwipePerTable;
         if (_swipeView) {
             CGPoint point = [_tapRecognizer locationInView:_swipeView];
             if (!CGRectContainsPoint(_swipeView.bounds, point)) {
-                return NO; //user clicked outside the cell or in the buttons area
+                return _allowsSwipeWhenTappingButtons; //user clicked outside the cell or in the buttons area
             }
         }
         

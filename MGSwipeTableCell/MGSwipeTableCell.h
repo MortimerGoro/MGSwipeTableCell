@@ -160,6 +160,8 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 @property (nonatomic) BOOL allowsMultipleSwipe;
 // default is NO. Controls whether buttons with different width are allowed. Buttons are resized to have the same size by default.
 @property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
+//default is YES. Controls wheter swipe gesture is allowed when the touch starts into the swiped buttons
+@property (nonatomic) BOOL allowsSwipeWhenTappingButtons;
 
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
