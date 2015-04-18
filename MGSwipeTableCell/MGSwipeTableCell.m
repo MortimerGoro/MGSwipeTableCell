@@ -953,7 +953,7 @@ typedef struct MGSwipeAnimationData {
 
 #pragma mark Gestures
 
--(void) cancelGestures
+-(void) cancelPanGesture
 {
     if (_panRecognizer.state != UIGestureRecognizerStateEnded) {
         _panRecognizer.enabled = NO;
@@ -981,7 +981,7 @@ typedef struct MGSwipeAnimationData {
             NSArray * cells = [self parentTable].visibleCells;
             for (MGSwipeTableCell * cell in cells) {
                 if (cell != self) {
-                    [cell cancelGestures];
+                    [cell cancelPanGesture];
                 }
             }
         }
