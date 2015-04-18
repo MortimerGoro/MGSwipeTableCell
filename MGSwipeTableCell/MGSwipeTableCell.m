@@ -405,7 +405,6 @@ typedef struct MGSwipeAnimationData {
 
 #pragma mark MGSwipeTableCell Implementation
 
-static NSMutableSet * singleSwipePerTable;
 
 @implementation MGSwipeTableCell
 {
@@ -954,6 +953,15 @@ static NSMutableSet * singleSwipePerTable;
 
 #pragma mark Gestures
 
+-(void) cancelGestures
+{
+    if (_panRecognizer.state != UIGestureRecognizerStateEnded) {
+        _panRecognizer.enabled = NO;
+        _panRecognizer.enabled = YES;
+        [self hideSwipeAnimated:YES];
+    }
+}
+
 -(void) tapHandler: (UITapGestureRecognizer *) recognizer
 {
     [self hideSwipeAnimated:YES];
@@ -968,7 +976,15 @@ static NSMutableSet * singleSwipePerTable;
         [self createSwipeViewIfNeeded];
         _panStartPoint = current;
         _panStartOffset = _swipeOffset;
-        [singleSwipePerTable addObject:[NSValue valueWithNonretainedObject:[self parentTable]]];
+        
+        if (!_allowsMultipleSwipe) {
+            NSArray * cells = [self parentTable].visibleCells;
+            for (MGSwipeTableCell * cell in cells) {
+                if (cell != self) {
+                    [cell cancelGestures];
+                }
+            }
+        }
     }
     else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGFloat offset = _panStartOffset + current.x - _panStartPoint.x;
@@ -997,7 +1013,6 @@ static NSMutableSet * singleSwipePerTable;
             
             [self setSwipeOffset:_targetOffset animated:YES completion:nil];
         }
-        [singleSwipePerTable removeObject:[NSValue valueWithNonretainedObject:[self parentTable]]];
     }
 }
 
@@ -1033,13 +1048,6 @@ static NSMutableSet * singleSwipePerTable;
             [self fetchButtonsIfNeeded];
             _allowSwipeLeftToRight = _leftButtons.count > 0;
             _allowSwipeRightToLeft = _rightButtons.count > 0;
-        }
-        if (!singleSwipePerTable) {
-            singleSwipePerTable = [[NSMutableSet alloc] init];
-        }
-        NSValue * key = [NSValue valueWithNonretainedObject:[self parentTable]];
-        if ([singleSwipePerTable containsObject:key]) {
-            return NO;
         }
         
         return (_allowSwipeLeftToRight && translation.x > 0) || (_allowSwipeRightToLeft && translation.x < 0);
