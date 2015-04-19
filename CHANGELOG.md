@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.2
+
+- Fixed issue #89: Swipe fails after table reload while swipping gesture is active
+
 ## 1.4.1
 
 - Implemented Spotify App style cell expansion: added expansionLayout and expansionColor properties to MGSwipeExpansionSettings
