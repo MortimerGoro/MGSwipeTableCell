@@ -980,7 +980,7 @@ typedef struct MGSwipeAnimationData {
         if (!_allowsMultipleSwipe) {
             NSArray * cells = [self parentTable].visibleCells;
             for (MGSwipeTableCell * cell in cells) {
-                if (cell != self) {
+                if ([cell isKindOfClass:[MGSwipeTableCell class]] && cell != self) {
                     [cell cancelPanGesture];
                 }
             }
