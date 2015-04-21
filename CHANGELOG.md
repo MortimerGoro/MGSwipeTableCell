@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.3
+
+- Fixed crash with different class cells in multiple section tables
+- Add completion handlers to convenience show/hide methods
+
 ## 1.4.2
 
 - Fixed issue #89: Swipe fails after table reload while swipping gesture is active
