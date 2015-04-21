@@ -877,7 +877,7 @@ typedef struct MGSwipeAnimationData {
 
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated
 {
-    [self showSwipe:direction animated:animated completion:nil]
+    [self showSwipe:direction animated:animated completion:nil];
 }
 
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)()) completion
