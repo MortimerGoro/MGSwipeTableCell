@@ -170,7 +170,9 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 
 /** Utility methods to show or hide swipe buttons programmatically */
 -(void) hideSwipeAnimated: (BOOL) animated;
+-(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)()) completion;
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
+-(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)()) completion;
 -(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)()) completion;
 -(void) expandSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
 

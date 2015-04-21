@@ -865,12 +865,22 @@ typedef struct MGSwipeAnimationData {
     self.swipeOffset = offset;
 }
 
+-(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)()) completion
+{
+    [self setSwipeOffset:0 animated:animated completion:completion];
+}
+
 -(void) hideSwipeAnimated: (BOOL) animated
 {
     [self setSwipeOffset:0 animated:animated completion:nil];
 }
 
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated
+{
+    [self showSwipe:direction animated:animated completion:nil];
+}
+
+-(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)()) completion
 {
     [self createSwipeViewIfNeeded];
     _allowSwipeLeftToRight = _leftButtons.count > 0;
@@ -879,7 +889,7 @@ typedef struct MGSwipeAnimationData {
     
     if (buttonsView) {
         CGFloat s = direction == MGSwipeDirectionLeftToRight ? 1.0 : -1.0;
-        [self setSwipeOffset:buttonsView.bounds.size.width * s animated:animated completion:nil];
+        [self setSwipeOffset:buttonsView.bounds.size.width * s animated:animated completion:completion];
     }
 }
 
