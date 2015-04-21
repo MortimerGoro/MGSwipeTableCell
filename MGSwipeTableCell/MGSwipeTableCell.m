@@ -559,6 +559,7 @@ typedef struct MGSwipeAnimationData {
         _leftView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         _leftView.cell = self;
         _leftView.frame = CGRectMake(-_leftView.bounds.size.width, 0, _leftView.bounds.size.width, _swipeOverlay.bounds.size.height);
+        [self customizeSwipeButtonsView:_leftView];
         [_swipeOverlay addSubview:_leftView];
     }
     if (!_rightView && _rightButtons.count > 0) {
@@ -566,6 +567,7 @@ typedef struct MGSwipeAnimationData {
         _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         _rightView.cell = self;
         _rightView.frame = CGRectMake(_swipeOverlay.bounds.size.width, 0, _rightView.bounds.size.width, _swipeOverlay.bounds.size.height);
+        [self customizeSwipeButtonsView:_rightView];
         [_swipeOverlay addSubview:_rightView];
     }
 }
@@ -1072,6 +1074,10 @@ typedef struct MGSwipeAnimationData {
 -(BOOL) isSwipeGestureActive
 {
     return _panRecognizer.state == UIGestureRecognizerStateBegan || _panRecognizer.state == UIGestureRecognizerStateChanged;
+}
+
+-(void) customizeSwipeButtonsView:(UIView *)swipeButtonView
+{
 }
 
 @end
