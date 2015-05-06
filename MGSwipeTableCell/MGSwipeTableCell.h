@@ -26,8 +26,8 @@ typedef NS_ENUM(NSInteger, MGSwipeDirection) {
 /** Swipe state */
 typedef NS_ENUM(NSInteger, MGSwipeState) {
     MGSwipeStateNone = 0,
-    MGSwipeStateSwippingLeftToRight,
-    MGSwipeStateSwippingRightToLeft,
+    MGSwipeStateSwipingLeftToRight,
+    MGSwipeStateSwipingRightToLeft,
     MGSwipeStateExpandingLeftToRight,
     MGSwipeStateExpandingRightToLeft,
 };
@@ -42,9 +42,9 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
  * Swipe settings
  **/
 @interface MGSwipeSettings: NSObject
-/** Transition used while swipping buttons */
+/** Transition used while swiping buttons */
 @property (nonatomic, assign) MGSwipeTransition transition;
-/** Size proportional threshold to hide/keep the buttons when the user ends swipping. Default value 0.5 */
+/** Size proportional threshold to hide/keep the buttons when the user ends swiping. Default value 0.5 */
 @property (nonatomic, assign) CGFloat threshold;
 /** Optional offset to change the swipe buttons position. Relative to the cell border position. Default value: 0 
  ** For example it can be used to avoid cropped buttons when sectionIndexTitlesForTableView is used in the UITableView
@@ -135,7 +135,7 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 /** optional delegate (not retained) */
 @property (nonatomic, weak) id<MGSwipeTableCellDelegate> delegate;
 
-/** optional to use contentView alternative. Use this property instead of contentView to support animated views while swipping */
+/** optional to use contentView alternative. Use this property instead of contentView to support animated views while swiping */
 @property (nonatomic, strong, readonly) UIView * swipeContentView;
 
 /** 
@@ -156,7 +156,7 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 /** Readonly property to check if the user swipe gesture is currently active */
 @property (nonatomic, readonly) BOOL isSwipeGestureActive;
 
-// default is NO. Controls whether multiple cells can be swipped simultaneously
+// default is NO. Controls whether multiple cells can be swiped simultaneously
 @property (nonatomic) BOOL allowsMultipleSwipe;
 // default is NO. Controls whether buttons with different width are allowed. Buttons are resized to have the same size by default.
 @property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
@@ -176,7 +176,7 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 -(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)()) completion;
 -(void) expandSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
 
-/** Refresh method to be used when you want to update the cell contents while the user is swipping */
+/** Refresh method to be used when you want to update the cell contents while the user is swiping */
 -(void) refreshContentView;
 /** Refresh method to be used when you want to dinamically change the left or right buttons (add or remove)
  * If you only want to change the title or the backgroundColor of a button you can change it's properties (get the button instance from leftButtons or rightButtons arrays)
