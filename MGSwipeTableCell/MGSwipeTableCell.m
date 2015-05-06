@@ -28,7 +28,7 @@
         return nil;
     }
     [_currentCell hideSwipeAnimated:YES];
-    return nil; //return nil to allow swipping a new cell while the current one is hidding
+    return nil; //return nil to allow swiping a new cell while the current one is hidding
 }
 
 @end
@@ -849,7 +849,7 @@ typedef struct MGSwipeAnimationData {
             _activeExpansion = nil;
             CGFloat t = MIN(1.0f, offset/view.bounds.size.width);
             [view transition:settings[i].transition percent:t];
-            [self updateState:i ? MGSwipeStateSwippingRightToLeft : MGSwipeStateSwippingLeftToRight];
+            [self updateState:i ? MGSwipeStateSwipingRightToLeft : MGSwipeStateSwipingLeftToRight];
         }
     }
 }
@@ -1046,7 +1046,7 @@ typedef struct MGSwipeAnimationData {
         }
         
         if (_swipeOffset != 0.0) {
-            return YES; //already swipped, don't need to check buttons or canSwipe delegate
+            return YES; //already swiped, don't need to check buttons or canSwipe delegate
         }
         
         //make a decision according to existing buttons or using the optional delegate
