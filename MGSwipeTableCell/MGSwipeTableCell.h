@@ -92,6 +92,16 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 
 @optional
 /**
+ * Called when overlay will be created
+ **/
+-(void) swipeTableCellWillCreateOverlay:(MGSwipeTableCell*)cell;
+
+/**
+ * Called when overlay will be hidden
+ **/
+-(void) swipeTableCellWillHideOverlay:(MGSwipeTableCell*)cell;
+
+/**
  * Delegate method to enable/disable swipe gestures
  * @return YES if swipe is allowed
  **/
