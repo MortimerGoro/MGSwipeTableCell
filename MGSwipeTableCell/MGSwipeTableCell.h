@@ -95,7 +95,7 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
  * Delegate method to enable/disable swipe gestures
  * @return YES if swipe is allowed
  **/
--(BOOL) swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
+-(BOOL) swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction offset:(CGFloat)offset;
 
 /**
  * Delegate method invoked when the current swipe state changes
