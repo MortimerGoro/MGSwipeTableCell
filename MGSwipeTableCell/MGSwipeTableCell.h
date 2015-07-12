@@ -15,7 +15,10 @@ typedef NS_ENUM(NSInteger, MGSwipeTransition) {
     MGSwipeTransitionRotate3D
 };
 
+/** Compatibility with older versions */
 #define MGSwipeTransition3D MGSwipeTransitionRotate3D
+#define MGSwipeStateSwippingLeftToRight MGSwipeStateSwipingLeftToRight
+#define MGSwipeStateSwippingRightToLeft MGSwipeStateSwipingRightToLeft
 
 /** Swipe directions */
 typedef NS_ENUM(NSInteger, MGSwipeDirection) {
