@@ -854,17 +854,6 @@ typedef struct MGSwipeAnimationData {
     }
 }
 
-
--(void) updateSwipe: (CGFloat) offset
-{
-    bool allowed = offset > 0 ? _allowSwipeLeftToRight : _allowSwipeRightToLeft;
-    UIView * buttons = offset > 0 ? _leftView : _rightView;
-    if (!buttons || ! allowed) {
-        offset = 0;
-    }
-    self.swipeOffset = offset;
-}
-
 -(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)()) completion
 {
     [self setSwipeOffset:0 animated:animated completion:completion];
@@ -977,6 +966,16 @@ typedef struct MGSwipeAnimationData {
     [self hideSwipeAnimated:YES];
 }
 
+-(CGFloat) filterSwipe: (CGFloat) offset
+{
+    bool allowed = offset > 0 ? _allowSwipeLeftToRight : _allowSwipeRightToLeft;
+    UIView * buttons = offset > 0 ? _leftView : _rightView;
+    if (!buttons || ! allowed) {
+        offset = 0;
+    }
+    return offset;
+}
+
 -(void) panHandler: (UIPanGestureRecognizer *)gesture
 {
     CGPoint current = [gesture translationInView:self];
@@ -998,7 +997,7 @@ typedef struct MGSwipeAnimationData {
     }
     else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGFloat offset = _panStartOffset + current.x - _panStartPoint.x;
-        [self updateSwipe:offset];
+        self.swipeOffset = [self filterSwipe:offset];
     }
     else {
         MGSwipeButtonsView * expansion = _activeExpansion;
@@ -1020,7 +1019,7 @@ typedef struct MGSwipeAnimationData {
             else if (velocity < -inertiaThreshold) {
                 _targetOffset = _swipeOffset > 0 ? 0 : (_rightView ? -_rightView.bounds.size.width : _targetOffset);
             }
-            
+            _targetOffset = [self filterSwipe:_targetOffset];
             [self setSwipeOffset:_targetOffset animated:YES completion:nil];
         }
     }
