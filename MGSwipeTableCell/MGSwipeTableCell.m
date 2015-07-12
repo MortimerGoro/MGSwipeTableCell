@@ -484,6 +484,7 @@ typedef struct MGSwipeAnimationData {
     _swipeState = MGSwipeStateNone;
     _triggerStateChanges = YES;
     _allowsSwipeWhenTappingButtons = YES;
+    _preservesSelectionStatus = NO;
 }
 
 -(void) cleanViews
@@ -578,7 +579,8 @@ typedef struct MGSwipeAnimationData {
     }
     _overlayEnabled = YES;
     
-    self.selected = NO;
+    if (!_preservesSelectionStatus)
+        self.selected = NO;
     if (_swipeContentView)
         [_swipeContentView removeFromSuperview];
     _swipeView.image = [self imageFromView:self];
@@ -983,7 +985,8 @@ typedef struct MGSwipeAnimationData {
     CGPoint current = [gesture translationInView:self];
     
     if (gesture.state == UIGestureRecognizerStateBegan) {
-        self.highlighted = NO;
+        if (!_preservesSelectionStatus)
+            self.highlighted = NO;
         [self createSwipeViewIfNeeded];
         _panStartPoint = current;
         _panStartOffset = _swipeOffset;

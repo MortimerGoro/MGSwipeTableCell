@@ -168,6 +168,8 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 @property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
 //default is YES. Controls wheter swipe gesture is allowed when the touch starts into the swiped buttons
 @property (nonatomic) BOOL allowsSwipeWhenTappingButtons;
+// default is NO.  Controls whether the cell selection/highlight status is preserved when expansion occurs
+@property (nonatomic) BOOL preservesSelectionStatus;
 
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
