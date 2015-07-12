@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.4.3
+
+- Fixed crash with different class cells in multiple section tables
+- Add completion handlers to convenience show/hide methods
+
+## 1.4.2
+
+- Fixed issue #89: Swipe fails after table reload while swipping gesture is active
+
+## 1.4.1
+
+- Implemented Spotify App style cell expansion: added expansionLayout and expansionColor properties to MGSwipeExpansionSettings
+- New property allowsSwipeWhenTappingButtons. Fixed issue #80: swiping the cell when you swipe the buttons in the cell
+- Fixed issue #78: Swift problem with one enum
+- Fixed issue #82: fillOnTrigger not working properly with UITableViewCellAccessoryDisclosureIndicator
+- Fixed issue #84: can't compile in xcode 6.3
+- Fixed issue #76: Swiped cell state issue when table view is scrolling
+
 ## 1.4.0
 
 - Implemented allowsButtonsWithDifferentWidth property to support buttons with different widths

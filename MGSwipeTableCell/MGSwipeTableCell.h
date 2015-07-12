@@ -5,14 +5,17 @@
 
 #import <UIKit/UIKit.h>
 
+
 /** Transition types */
 typedef NS_ENUM(NSInteger, MGSwipeTransition) {
     MGSwipeTransitionBorder = 0,
     MGSwipeTransitionStatic,
     MGSwipeTransitionDrag,
     MGSwipeTransitionClipCenter,
-    MGSwipeTransition3D,
+    MGSwipeTransitionRotate3D
 };
+
+#define MGSwipeTransition3D MGSwipeTransitionRotate3D
 
 /** Swipe directions */
 typedef NS_ENUM(NSInteger, MGSwipeDirection) {
@@ -157,6 +160,8 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 @property (nonatomic) BOOL allowsMultipleSwipe;
 // default is NO. Controls whether buttons with different width are allowed. Buttons are resized to have the same size by default.
 @property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
+//default is YES. Controls wheter swipe gesture is allowed when the touch starts into the swiped buttons
+@property (nonatomic) BOOL allowsSwipeWhenTappingButtons;
 
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
@@ -165,7 +170,9 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 
 /** Utility methods to show or hide swipe buttons programmatically */
 -(void) hideSwipeAnimated: (BOOL) animated;
+-(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)()) completion;
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
+-(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)()) completion;
 -(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)()) completion;
 -(void) expandSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
 

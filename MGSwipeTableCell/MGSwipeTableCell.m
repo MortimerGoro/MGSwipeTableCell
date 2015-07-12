@@ -405,7 +405,6 @@ typedef struct MGSwipeAnimationData {
 
 #pragma mark MGSwipeTableCell Implementation
 
-static NSMutableSet * singleSwipePerTable;
 
 @implementation MGSwipeTableCell
 {
@@ -484,6 +483,7 @@ static NSMutableSet * singleSwipePerTable;
     _previusHiddenViews = [NSMutableSet set];
     _swipeState = MGSwipeStateNone;
     _triggerStateChanges = YES;
+    _allowsSwipeWhenTappingButtons = YES;
 }
 
 -(void) cleanViews
@@ -676,6 +676,10 @@ static NSMutableSet * singleSwipePerTable;
 {
     [super prepareForReuse];
     [self cleanViews];
+    if (_swipeState != MGSwipeStateNone) {
+        _triggerStateChanges = YES;
+        [self updateState:MGSwipeStateNone];
+    }
     BOOL cleanButtons = _delegate && [_delegate respondsToSelector:@selector(swipeTableCell:swipeButtonsForDirection:swipeSettings:expansionSettings:)];
     [self initViews:cleanButtons];
 }
@@ -836,7 +840,7 @@ static NSMutableSet * singleSwipePerTable;
         bool expand = expansions[i].buttonIndex >= 0 && offset > view.bounds.size.width * expansions[i].threshold;
         if (expand) {
             [view expandToOffset:offset settings:expansions[i]];
-            _targetOffset = expansions[i].fillOnTrigger ? self.contentView.bounds.size.width * sign : 0;
+            _targetOffset = expansions[i].fillOnTrigger ? self.bounds.size.width * sign : 0;
             _activeExpansion = view;
             [self updateState:i ? MGSwipeStateExpandingRightToLeft : MGSwipeStateExpandingLeftToRight];
         }
@@ -861,12 +865,22 @@ static NSMutableSet * singleSwipePerTable;
     self.swipeOffset = offset;
 }
 
+-(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)()) completion
+{
+    [self setSwipeOffset:0 animated:animated completion:completion];
+}
+
 -(void) hideSwipeAnimated: (BOOL) animated
 {
     [self setSwipeOffset:0 animated:animated completion:nil];
 }
 
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated
+{
+    [self showSwipe:direction animated:animated completion:nil];
+}
+
+-(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)()) completion
 {
     [self createSwipeViewIfNeeded];
     _allowSwipeLeftToRight = _leftButtons.count > 0;
@@ -875,7 +889,7 @@ static NSMutableSet * singleSwipePerTable;
     
     if (buttonsView) {
         CGFloat s = direction == MGSwipeDirectionLeftToRight ? 1.0 : -1.0;
-        [self setSwipeOffset:buttonsView.bounds.size.width * s animated:animated completion:nil];
+        [self setSwipeOffset:buttonsView.bounds.size.width * s animated:animated completion:completion];
     }
 }
 
@@ -892,10 +906,10 @@ static NSMutableSet * singleSwipePerTable;
         UIView * buttonsView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
         
         if (buttonsView) {
-            __weak typeof(_activeExpansion) w_expantionView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
-            __weak typeof(self) weakself = self;
+            __weak MGSwipeButtonsView * expansionView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
+            __weak MGSwipeTableCell * weakself = self;
             [self setSwipeOffset:buttonsView.bounds.size.width * s * expSetting.threshold * 2 animated:animated completion:^{
-                [w_expantionView endExpansioAnimated:YES];
+                [expansionView endExpansioAnimated:YES];
                 [weakself setSwipeOffset:0 animated:NO completion:nil];
             }];
         }
@@ -949,6 +963,15 @@ static NSMutableSet * singleSwipePerTable;
 
 #pragma mark Gestures
 
+-(void) cancelPanGesture
+{
+    if (_panRecognizer.state != UIGestureRecognizerStateEnded) {
+        _panRecognizer.enabled = NO;
+        _panRecognizer.enabled = YES;
+        [self hideSwipeAnimated:YES];
+    }
+}
+
 -(void) tapHandler: (UITapGestureRecognizer *) recognizer
 {
     [self hideSwipeAnimated:YES];
@@ -963,7 +986,15 @@ static NSMutableSet * singleSwipePerTable;
         [self createSwipeViewIfNeeded];
         _panStartPoint = current;
         _panStartOffset = _swipeOffset;
-        [singleSwipePerTable addObject:[NSValue valueWithNonretainedObject:[self parentTable]]];
+        
+        if (!_allowsMultipleSwipe) {
+            NSArray * cells = [self parentTable].visibleCells;
+            for (MGSwipeTableCell * cell in cells) {
+                if ([cell isKindOfClass:[MGSwipeTableCell class]] && cell != self) {
+                    [cell cancelPanGesture];
+                }
+            }
+        }
     }
     else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGFloat offset = _panStartOffset + current.x - _panStartPoint.x;
@@ -992,7 +1023,6 @@ static NSMutableSet * singleSwipePerTable;
             
             [self setSwipeOffset:_targetOffset animated:YES completion:nil];
         }
-        [singleSwipePerTable removeObject:[NSValue valueWithNonretainedObject:[self parentTable]]];
     }
 }
 
@@ -1011,7 +1041,7 @@ static NSMutableSet * singleSwipePerTable;
         if (_swipeView) {
             CGPoint point = [_tapRecognizer locationInView:_swipeView];
             if (!CGRectContainsPoint(_swipeView.bounds, point)) {
-                return NO; //user clicked outside the cell or in the buttons area
+                return _allowsSwipeWhenTappingButtons; //user clicked outside the cell or in the buttons area
             }
         }
         
@@ -1028,13 +1058,6 @@ static NSMutableSet * singleSwipePerTable;
             [self fetchButtonsIfNeeded];
             _allowSwipeLeftToRight = _leftButtons.count > 0;
             _allowSwipeRightToLeft = _rightButtons.count > 0;
-        }
-        if (!singleSwipePerTable) {
-            singleSwipePerTable = [[NSMutableSet alloc] init];
-        }
-        NSValue * key = [NSValue valueWithNonretainedObject:[self parentTable]];
-        if ([singleSwipePerTable containsObject:key]) {
-            return NO;
         }
         
         return (_allowSwipeLeftToRight && translation.x > 0) || (_allowSwipeRightToLeft && translation.x < 0);
