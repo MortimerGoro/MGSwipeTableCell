@@ -822,7 +822,9 @@ typedef struct MGSwipeAnimationData {
         _targetOffset = offset > activeButtons.bounds.size.width * swipeThreshold ? activeButtons.bounds.size.width * sign : 0;
     }
     
-    _swipeView.transform = CGAffineTransformMakeTranslation(newOffset, 0);
+    BOOL onlyButtons = sign < 0 ? _rightSwipeSettings.onlySwipeButtons : _leftSwipeSettings.onlySwipeButtons;
+    _swipeView.transform = CGAffineTransformMakeTranslation(onlyButtons ? 0 : newOffset, 0);
+    
     //animate existing buttons
     MGSwipeButtonsView* but[2] = {_leftView, _rightView};
     MGSwipeSettings* settings[2] = {_leftSwipeSettings, _rightSwipeSettings};
