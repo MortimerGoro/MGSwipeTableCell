@@ -378,6 +378,7 @@
         self.threshold = 0.5;
         self.offset = 0;
         self.animationDuration = 0.3;
+        self.keepButtonsSwiped = YES;
     }
     return self;
 }
@@ -826,7 +827,8 @@ typedef struct MGSwipeAnimationData {
     else {
         [self showSwipeOverlayIfNeeded];
         CGFloat swipeThreshold = sign < 0 ? _rightSwipeSettings.threshold : _leftSwipeSettings.threshold;
-        _targetOffset = offset > activeButtons.bounds.size.width * swipeThreshold ? activeButtons.bounds.size.width * sign : 0;
+        BOOL keepButtons = sign < 0 ? _rightSwipeSettings.keepButtonsSwiped : _leftSwipeSettings.keepButtonsSwiped;
+        _targetOffset = keepButtons && offset > activeButtons.bounds.size.width * swipeThreshold ? activeButtons.bounds.size.width * sign : 0;
     }
     
     BOOL onlyButtons = sign < 0 ? _rightSwipeSettings.onlySwipeButtons : _leftSwipeSettings.onlySwipeButtons;
@@ -1024,10 +1026,10 @@ typedef struct MGSwipeAnimationData {
             CGFloat velocity = [_panRecognizer velocityInView:self].x;
             CGFloat inertiaThreshold = 100.0; //points per second
             if (velocity > inertiaThreshold) {
-                _targetOffset = _swipeOffset < 0 ? 0 : (_leftView ? _leftView.bounds.size.width : _targetOffset);
+                _targetOffset = _swipeOffset < 0 ? 0 : (_leftView  && _leftSwipeSettings.keepButtonsSwiped ? _leftView.bounds.size.width : _targetOffset);
             }
             else if (velocity < -inertiaThreshold) {
-                _targetOffset = _swipeOffset > 0 ? 0 : (_rightView ? -_rightView.bounds.size.width : _targetOffset);
+                _targetOffset = _swipeOffset > 0 ? 0 : (_rightView && _rightSwipeSettings.keepButtonsSwiped ? -_rightView.bounds.size.width : _targetOffset);
             }
             _targetOffset = [self filterSwipe:_targetOffset];
             [self setSwipeOffset:_targetOffset animated:YES completion:nil];

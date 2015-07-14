@@ -57,6 +57,11 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 /** Property to read or change swipe animation durations. Default value 0.3 */
 @property (nonatomic, assign) CGFloat animationDuration;
 
+/** If true the buttons are kept swiped when the threshold is reached and the user ends the gesture
+ * If false, the buttons are always hidden when the user ends the swipe gesture
+ */
+@property (nonatomic, assign) BOOL keepButtonsSwiped;
+
 /** If true the table cell is not swiped, just the buttons **/
 @property (nonatomic, assign) BOOL onlySwipeButtons;
 
