@@ -525,7 +525,12 @@ typedef struct MGSwipeAnimationData {
         _swipeContentView.frame = self.contentView.bounds;
     }
     if (_swipeOverlay) {
+        CGSize prevSize = _swipeView.bounds.size;
         _swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height);
+        if (_swipeView.image &&  !CGSizeEqualToSize(prevSize, _swipeOverlay.bounds.size)) {
+            //refresh contentView in situations like layout change, orientation chage, table resize, etc.
+            [self refreshContentView];
+        }
     }
 }
 
