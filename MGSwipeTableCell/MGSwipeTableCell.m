@@ -24,10 +24,17 @@
 
 -(UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    if (_currentCell && CGRectContainsPoint(_currentCell.bounds, [self convertPoint:point toView:_currentCell])) {
+    CGPoint p = [self convertPoint:point toView:_currentCell];
+    if (_currentCell && CGRectContainsPoint(_currentCell.bounds, p)) {
         return nil;
     }
-    [_currentCell hideSwipeAnimated:YES];
+    BOOL hide = YES;
+    if (_currentCell && _currentCell.delegate && [_currentCell.delegate respondsToSelector:@selector(swipeTableCell:shouldHideSwipeOnTap:)]) {
+        hide = [_currentCell.delegate swipeTableCell:_currentCell shouldHideSwipeOnTap:p];
+    }
+    if (hide) {
+        [_currentCell hideSwipeAnimated:YES];
+    }
     return nil; //return nil to allow swiping a new cell while the current one is hidding
 }
 
@@ -974,7 +981,13 @@ typedef struct MGSwipeAnimationData {
 
 -(void) tapHandler: (UITapGestureRecognizer *) recognizer
 {
-    [self hideSwipeAnimated:YES];
+    BOOL hide = YES;
+    if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:shouldHideSwipeOnTap:)]) {
+        hide = [_delegate swipeTableCell:self shouldHideSwipeOnTap:[recognizer locationInView:self]];
+    }
+    if (hide) {
+        [self hideSwipeAnimated:YES];
+    }
 }
 
 -(CGFloat) filterSwipe: (CGFloat) offset

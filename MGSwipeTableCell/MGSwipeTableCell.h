@@ -134,6 +134,12 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 -(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
              swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings;
 
+/**
+ * Called when the user taps on a swiped cell
+ * @return YES to autohide the current swipe buttons
+ **/
+-(BOOL) swipeTableCell:(MGSwipeTableCell *)cell shouldHideSwipeOnTap:(CGPoint) point;
+
 @end
 
 
