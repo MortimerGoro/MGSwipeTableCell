@@ -367,7 +367,7 @@
         case MGSwipeTransitionDrag: [self transitionDrag:t]; break;
         case MGSwipeTransitionClipCenter: [self transitionClip:t]; break;
         case MGSwipeTransitionBorder: [self transtitionFloatBorder:t]; break;
-        case MGSwipeTransition3D: [self transition3D:t]; break;
+        case MGSwipeTransitionRotate3D: [self transition3D:t]; break;
     }
     if (_expandedButtonAnimated && _expansionBackgroundAnimated) {
         _expansionBackgroundAnimated.frame = [self expansionBackgroundRect:_expandedButtonAnimated];
