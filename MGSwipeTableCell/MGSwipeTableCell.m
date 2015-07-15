@@ -1081,10 +1081,10 @@ typedef struct MGSwipeAnimationData {
         }
         
         //make a decision according to existing buttons or using the optional delegate
-        if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:canSwipe:fromOffset:)]) {
+        if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:canSwipe:fromPoint:)]) {
             CGPoint point = [_panRecognizer locationInView:self];
-            _allowSwipeLeftToRight = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionLeftToRight fromOffset:point.x];
-            _allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft fromOffset:self.bounds.size.width - point.x];
+            _allowSwipeLeftToRight = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionLeftToRight fromPoint:point];
+            _allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft fromPoint:point];
         }
         else if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:canSwipe:)]) {
             #pragma clang diagnostic push
