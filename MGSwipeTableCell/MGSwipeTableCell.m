@@ -596,6 +596,9 @@ typedef struct MGSwipeAnimationData {
         self.selected = NO;
     if (_swipeContentView)
         [_swipeContentView removeFromSuperview];
+    if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCellWillBeginSwiping:)]) {
+        [_delegate swipeTableCellWillBeginSwiping:self];
+    }
     _swipeView.image = [self imageFromView:self];
     _swipeOverlay.hidden = NO;
     if (_swipeContentView)
@@ -643,6 +646,10 @@ typedef struct MGSwipeAnimationData {
         self.selected = YES;
     }
     [self setAccesoryViewsHidden:NO];
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCellWillEndSwiping:)]) {
+        [_delegate swipeTableCellWillEndSwiping:self];
+    }
     
     if (_tapRecognizer) {
         [self removeGestureRecognizer:_tapRecognizer];

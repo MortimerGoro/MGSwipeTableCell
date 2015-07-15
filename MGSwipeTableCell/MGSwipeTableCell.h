@@ -140,6 +140,17 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
  **/
 -(BOOL) swipeTableCell:(MGSwipeTableCell *)cell shouldHideSwipeOnTap:(CGPoint) point;
 
+/**
+ * Called when the cell will begin swiping
+ * Useful to make cell changes that only are shown after the cell is swiped open
+ **/
+-(void) swipeTableCellWillBeginSwiping:(MGSwipeTableCell *) cell;
+
+/**
+ * Called when the cell will end swiping
+ **/
+-(void) swipeTableCellWillEndSwiping:(MGSwipeTableCell *) cell;
+
 @end
 
 
