@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.5.0
+
+- Feature: add onlySwipeButtons property that allows to only swipe the buttons and keep the cell static
+- Feature: add fromOffset argument to the canSwipe delegate method. Useful for supporting sidebar menus with swipe to open. You can use it to restrict the cell from being swiped if the offset is to close to the edge.
+- Feature: add preservesSelectionStatus property that allows to control whether selection/highlight is changed when swiped.
+- Feature: add keepButtonsSwiped property to Swipe settings
+- Feature: new delegate method: shouldHideSwipeOnTap:(CGPoint) point. Now you can cancel to hide opened swipe depending on the tap point
+- Feature: new delegate methods: swipeTableCellWillBeginSwiping & swipeTableCellWillEndSwiping. Useful to make cell changes that only are shown after the cell is swiped open
+- Fixed issue #113: Bug when changing the orientation of the device
+- Fixed typo throughout readme and source of "swiping"
+- Fixed issue #100: canSwipe not working when swipe to the allowed direction and swipe with inertia to the forbidden direction
+
 ## 1.4.3
 
 - Fixed crash with different class cells in multiple section tables
