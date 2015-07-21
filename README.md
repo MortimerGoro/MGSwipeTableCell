@@ -37,6 +37,8 @@ See [`MGSwipeTableCell.h`](MGSwipeTableCell/MGSwipeTableCell.h) header file for 
 
 See [`MailAppDemo`](demo/MailAppDemo) for a complete project which mimics iOS 8.0 Mail App
 
+See [`SpotifyDemo`](demo/SpotifyDemo) for a complete project which mimics Spotify App swipe style
+
 See [`MGSwipeDemo`](demo/MGSwipeDemo) for a complete project where you can test the variety of transitions on a real device/simulator.
 
 ##Usage
