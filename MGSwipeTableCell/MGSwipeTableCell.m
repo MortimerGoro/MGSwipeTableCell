@@ -44,6 +44,7 @@
 
 @interface MGSwipeButtonsView : UIView
 @property (nonatomic, weak) MGSwipeTableCell * cell;
+@property (nonatomic, strong) UIColor * backgroundColorCopy;
 @end
 
 @implementation MGSwipeButtonsView
@@ -55,7 +56,6 @@
     UIView * _expandedButtonAnimated;
     UIView * _expansionBackground;
     UIView * _expansionBackgroundAnimated;
-    UIColor * _backgroundCopy;
     CGRect _expandedButtonBoundsCopy;
     MGSwipeExpansionLayout _expansionLayout;
     CGFloat _expansionOffset;
@@ -173,7 +173,7 @@
         _expansionBackground = [[UIView alloc] initWithFrame:[self expansionBackgroundRect:_expandedButton]];
         _expansionBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         if (settings.expansionColor) {
-            _backgroundCopy = _expandedButton.backgroundColor;
+            _backgroundColorCopy = _expandedButton.backgroundColor;
             _expandedButton.backgroundColor = settings.expansionColor;
         }
         _expansionBackground.backgroundColor = _expandedButton.backgroundColor;
@@ -223,10 +223,10 @@
         _expansionBackgroundAnimated = _expansionBackground;
         _expansionBackground = nil;
         _expandedButton = nil;
-        if (_backgroundCopy) {
-            _expansionBackgroundAnimated.backgroundColor = _backgroundCopy;
-            _expandedButtonAnimated.backgroundColor = _backgroundCopy;
-            _backgroundCopy = nil;
+        if (_backgroundColorCopy) {
+            _expansionBackgroundAnimated.backgroundColor = _backgroundColorCopy;
+            _expandedButtonAnimated.backgroundColor = _backgroundColorCopy;
+            _backgroundColorCopy = nil;
         }
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
         [UIView animateWithDuration: animated ? duration : 0.0 animations:^{
@@ -1036,16 +1036,26 @@ typedef struct MGSwipeAnimationData {
         MGSwipeButtonsView * expansion = _activeExpansion;
         if (expansion) {
             UIView * expandedButton = [expansion getExpandedButton];
-            [self setSwipeOffset:_targetOffset animated:YES completion:^{
+            MGSwipeExpansionSettings * expSettings = _swipeOffset > 0 ? _leftExpansion : _rightExpansion;
+            UIColor * backgroundColor = nil;
+            if (!expSettings.fillOnTrigger && expSettings.expansionColor) {
+                backgroundColor = expansion.backgroundColorCopy; //keep expansion background color
+                expansion.backgroundColorCopy = expSettings.expansionColor;
+            }
+            [self setSwipeOffset:_targetOffset animation:expSettings.triggerAnimation completion:^{
                 BOOL autoHide = [expansion handleClick:expandedButton fromExpansion:YES];
                 if (autoHide) {
                     [expansion endExpansioAnimated:NO];
+                }
+                if (backgroundColor) {
+                    expandedButton.backgroundColor = backgroundColor;
                 }
             }];
         }
         else {
             CGFloat velocity = [_panRecognizer velocityInView:self].x;
             CGFloat inertiaThreshold = 100.0; //points per second
+            
             if (velocity > inertiaThreshold) {
                 _targetOffset = _swipeOffset < 0 ? 0 : (_leftView  && _leftSwipeSettings.keepButtonsSwiped ? _leftView.bounds.size.width : _targetOffset);
             }
