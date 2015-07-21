@@ -321,13 +321,14 @@
         frame.origin.x = _fromLeft ? (selfWidth - frame.size.width - offsetX) * (1.0 - t) + offsetX + dx : offsetX * t - dx;
         button.frame = frame;
 
+        if (_buttons.count > 1) {
         CAShapeLayer *maskLayer = [CAShapeLayer new];
         CGRect maskRect = CGRectMake(dx - 0.5, 0, frame.size.width - 2 * dx + 1.5, frame.size.height);
         CGPathRef path = CGPathCreateWithRect(maskRect, NULL);
         maskLayer.path = path;
         CGPathRelease(path);
-        
         button.layer.mask = maskLayer;
+        }
 
         offsetX += frame.size.width;
     }
