@@ -41,6 +41,33 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
     MGSwipeExpansionLayoutCenter
 };
 
+/** Swipe Easing Function */
+typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
+    MGSwipeEasingFunctionLinear = 0,
+    MGSwipeEasingFunctionQuadIn,
+    MGSwipeEasingFunctionQuadOut,
+    MGSwipeEasingFunctionQuadInOut,
+    MGSwipeEasingFunctionCubicIn,
+    MGSwipeEasingFunctionCubicOut,
+    MGSwipeEasingFunctionCubicInOut,
+    MGSwipeEasingFunctionBounceIn,
+    MGSwipeEasingFunctionBounceOut,
+    MGSwipeEasingFunctionBounceInOut
+};
+
+/**
+ * Swipe animation settings
+ **/
+@interface MGSwipeAnimation : NSObject
+/** Animation duration in seconds. Default value 0.3 */
+@property (nonatomic, assign) CGFloat duration;
+/** Animation easing function. Default value EaseOutBounce */
+@property (nonatomic, assign) MGSwipeEasingFunction easingFunction;
+/** Override this method to implement custom easing functions */
+-(CGFloat) value:(CGFloat) elapsed duration:(CGFloat) duration from:(CGFloat) from to:(CGFloat) to;
+
+@end
+
 /**
  * Swipe settings
  **/
@@ -53,9 +80,15 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
  ** For example it can be used to avoid cropped buttons when sectionIndexTitlesForTableView is used in the UITableView
  **/
 @property (nonatomic, assign) CGFloat offset;
+/** Animation settings when the swipe buttons are shown */
+@property (nonatomic, strong) MGSwipeAnimation * showAnimation;
+/** Animation settings when the swipe buttons are hided */
+@property (nonatomic, strong) MGSwipeAnimation * hideAnimation;
+/** Animation settings when the cell is stretched from the swipe buttons */
+@property (nonatomic, strong) MGSwipeAnimation * stretchAnimation;
 
 /** Property to read or change swipe animation durations. Default value 0.3 */
-@property (nonatomic, assign) CGFloat animationDuration;
+@property (nonatomic, assign) CGFloat animationDuration DEPRECATED_ATTRIBUTE;
 
 /** If true the buttons are kept swiped when the threshold is reached and the user ends the gesture
  * If false, the buttons are always hidden when the user ends the swipe gesture
@@ -83,6 +116,8 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 @property (nonatomic, strong) UIColor * expansionColor;
 /** Defines the layout of the expanded button **/
 @property (nonatomic, assign) MGSwipeExpansionLayout expansionLayout;
+/** Animation settings when the expansion is triggered **/
+@property (nonatomic, strong) MGSwipeAnimation * triggerAnimation;
 
 /** Property to read or change expansion animation durations. Default value 0.2 
  * The target animation is the change of a button from normal state to expanded state
@@ -205,6 +240,7 @@ typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)()) completion;
 -(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)()) completion;
+-(void) setSwipeOffset:(CGFloat)offset animation: (MGSwipeAnimation *) animation completion:(void(^)()) completion;
 -(void) expandSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
 
 /** Refresh method to be used when you want to update the cell contents while the user is swiping */
