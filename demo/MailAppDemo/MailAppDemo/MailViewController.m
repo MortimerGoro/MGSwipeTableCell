@@ -243,8 +243,12 @@ typedef void(^MailActionCallback)(BOOL cancelled, BOOL deleted, NSInteger action
     }
     else {
         
+        expansionSettings.buttonIndex = 0;
+        expansionSettings.threshold = 1.1f;
         expansionSettings.fillOnTrigger = YES;
-        expansionSettings.threshold = 1.1;
+        swipeSettings.showAnimation.duration = 0.2f;
+        swipeSettings.hideAnimation.duration = 0.2f;
+        swipeSettings.transition = MGSwipeTransitionDrag;
 
         CGFloat padding = 15;
         
