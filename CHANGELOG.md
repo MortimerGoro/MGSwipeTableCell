@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1
+
+- Fix default animation values
+
 ## 1.5.0
 
 - Feature: Add predefined and configurable easing functions to the API. Swipe animations are now splitted into different settings so you can now use different animations (easing function, duration, etc) for each kind of animations: show swipe, hide swipe, stretch cell from already swiped buttons and more.

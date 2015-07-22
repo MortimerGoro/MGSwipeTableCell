@@ -484,20 +484,11 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     return mgEaseOutBounce (1.0 - t*2, 0, c) * .5 + c*.5 + b;
 };
 
-static inline CGFloat mgEaseOutElastic(CGFloat t, CGFloat b, CGFloat c)  {
-    CGFloat s=1.70158;CGFloat p=0;CGFloat a=c; CGFloat d = 0.6;
-    if (t==0) return b;  if (t==1) return b+c;  if (!p) p=d*.3;
-    if (a < fabs(c)) { a=c; s=p/4; }
-    else s = p/(2*M_PI) * asin(c/a);
-    return a*pow(2,-10*t) * sin( (t*d-s)*(2*M_PI)/p ) + c + b;
-}
-
-
 @implementation MGSwipeAnimation
 
 -(instancetype) init {
     if (self = [super init]) {
-        _duration = 0.6;
+        _duration = 0.3;
         _easingFunction = MGSwipeEasingFunctionCubicOut;
     }
     return self;
@@ -523,7 +514,6 @@ static inline CGFloat mgEaseOutElastic(CGFloat t, CGFloat b, CGFloat c)  {
         case MGSwipeEasingFunctionBounceOut: easingFunction = mgEaseOutBounce;break;
         case MGSwipeEasingFunctionBounceInOut: easingFunction = mgEaseInOutBounce;break;
     }
-    easingFunction = mgEaseOutBounce;
     return (*easingFunction)(t, from, to - from);
 }
 
