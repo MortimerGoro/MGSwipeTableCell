@@ -1150,10 +1150,36 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         self.swipeOffset = [self filterSwipe:offset];
     }
     else {
+        CGFloat velocity = [_panRecognizer velocityInView:self].x;
+        CGFloat inertiaThreshold = 100.0; //points per second
+        
         MGSwipeButtonsView * expansion = _activeExpansion;
         if (expansion) {
             UIView * expandedButton = [expansion getExpandedButton];
             MGSwipeExpansionSettings * expSettings = _swipeOffset > 0 ? _leftExpansion : _rightExpansion;
+
+            if (expSettings.cancelOnOppisite && ((_swipeOffset > 0 && velocity < 0) || (_swipeOffset < 0 && velocity > 0))) {
+                if (fabs(velocity) < inertiaThreshold) {
+                    MGSwipeDirection direction = (_swipeOffset > 0) ? MGSwipeDirectionLeftToRight : MGSwipeDirectionRightToLeft;
+                    
+                    [self createSwipeViewIfNeeded];
+                    _allowSwipeLeftToRight = _leftButtons.count > 0;
+                    _allowSwipeRightToLeft = _rightButtons.count > 0;
+                    UIView * buttonsView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
+                    
+                    if (buttonsView) {
+                        CGFloat s = direction == MGSwipeDirectionLeftToRight ? 1.0 : -1.0;
+                        MGSwipeAnimation * animation = [[MGSwipeAnimation alloc] init];
+                        animation.easingFunction = MGSwipeEasingFunctionLinear;
+                        [self setSwipeOffset:buttonsView.bounds.size.width * s animation:animation completion:nil];
+                    }
+                }
+                else {
+                    [self hideSwipeAnimated:YES];
+                }
+                return;
+            }
+            
             UIColor * backgroundColor = nil;
             if (!expSettings.fillOnTrigger && expSettings.expansionColor) {
                 backgroundColor = expansion.backgroundColorCopy; //keep expansion background color
@@ -1170,9 +1196,6 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             }];
         }
         else {
-            CGFloat velocity = [_panRecognizer velocityInView:self].x;
-            CGFloat inertiaThreshold = 100.0; //points per second
-            
             if (velocity > inertiaThreshold) {
                 _targetOffset = _swipeOffset < 0 ? 0 : (_leftView  && _leftSwipeSettings.keepButtonsSwiped ? _leftView.bounds.size.width : _targetOffset);
             }
