@@ -1158,7 +1158,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             UIView * expandedButton = [expansion getExpandedButton];
             MGSwipeExpansionSettings * expSettings = _swipeOffset > 0 ? _leftExpansion : _rightExpansion;
 
-            if (expSettings.cancelOnOppisite && ((_swipeOffset > 0 && velocity < 0) || (_swipeOffset < 0 && velocity > 0))) {
+            if (expSettings.cancellable && ((_swipeOffset > 0 && velocity < 0) || (_swipeOffset < 0 && velocity > 0))) {
                 if (fabs(velocity) < inertiaThreshold) {
                     MGSwipeDirection direction = (_swipeOffset > 0) ? MGSwipeDirectionLeftToRight : MGSwipeDirectionRightToLeft;
                     
