@@ -48,6 +48,7 @@ Integrating MGSwipeTableCell in your project is veary easy. Basically, you only 
 
 Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set an array of buttons to cell.leftButtons and/or cell.rightButtons properties. MGSwipeButton is a convenience class, you are not force to use it. You can use your own UIButtons or UIViews. You can configure transitions (and swipe thresholds) with the leftSwipeSettings and/or rightSwipeSettings properties
 
+#####Objective-C
 ```objc
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -74,13 +75,51 @@ Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set
     return cell;
 }
 ```
+#####Swift
+```swift
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+  {
+    let reuseIdentifier = "programmaticCell"
+    var cell = self.table.dequeueReusableCellWithIdentifier(reuseIdentifier) as! MGSwipeTableCell!
+    if cell == nil
+    {
+      cell = MGSwipeTableCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
+    }
+
+    cell.textLabel!.text = "Title"
+    cell.detailTextLabel!.text = "Detail text"
+    cell.delegate = self //optional
+    
+    //configure left buttons
+    cell.leftButtons = [MGSwipeButton(title: "", icon: UIImage(named:"check.png"), backgroundColor: UIColor.greenColor())
+      ,MGSwipeButton(title: "", icon: UIImage(named:"fav.png"), backgroundColor: UIColor.blueColor())]
+    cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
+    
+    //configure right buttons
+    cell.rightButtons = [MGSwipeButton(title: "Delete", backgroundColor: UIColor.redColor())
+      ,MGSwipeButton(title: "More",backgroundColor: UIColor.lightGrayColor())]
+    cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
+    
+    return cell
+  }
+```
 
 In order to listen button click events you have 2 options. You can implement the optional MGSwipeTableCellDelegate. If you are lazy to do that MGSwipeButton class comes with a convenience block callback ;)
 
+#####Objective-c
 ```objc
 [MGSwipeButton buttonWithTitle:@"More" backgroundColor:[UIColor lightGrayColor] callback:^BOOL(MGSwipeTableCell *sender) {
       NSLog(@"Convenience callback for swipe buttons!");
 }]
+```
+#####Swift
+```swift
+MGSwipeButton(title: "Delete", backgroundColor: UIColor.redColor(), callback: {
+      (sender: MGSwipeTableCell!) -> Bool in
+      println("Convenience callback for swipe buttons!")
+      return true
+    })
+
 ```
 
 ###Delegate
