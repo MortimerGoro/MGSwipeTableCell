@@ -43,6 +43,6 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 
 -(void) setPadding:(CGFloat) padding;
 -(void) setEdgeInsets:(UIEdgeInsets)insets;
--(void) centerIconOverText;
+-(void) centerIconOverTextWithSpacing: (CGFloat) spacing;
 
 @end
