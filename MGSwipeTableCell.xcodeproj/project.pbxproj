@@ -10,7 +10,7 @@
 		C63EE56F1BBA07ED008F46BB /* MGSwipeTableCell.h in Headers */ = {isa = PBXBuildFile; fileRef = C63EE56E1BBA07ED008F46BB /* MGSwipeTableCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C63EE5761BBA07ED008F46BB /* MGSwipeTableCell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C63EE56B1BBA07ED008F46BB /* MGSwipeTableCell.framework */; settings = {ASSET_TAGS = (); }; };
 		C63EE57B1BBA07ED008F46BB /* MGSwipeTableCellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C63EE57A1BBA07ED008F46BB /* MGSwipeTableCellTests.m */; };
-		C63EE5881BBA083B008F46BB /* MGSwipeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = C63EE5851BBA083B008F46BB /* MGSwipeButton.h */; settings = {ASSET_TAGS = (); }; };
+		C63EE5881BBA083B008F46BB /* MGSwipeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = C63EE5851BBA083B008F46BB /* MGSwipeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C63EE5891BBA083B008F46BB /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C63EE5861BBA083B008F46BB /* MGSwipeButton.m */; settings = {ASSET_TAGS = (); }; };
 		C63EE58A1BBA083B008F46BB /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C63EE5871BBA083B008F46BB /* MGSwipeTableCell.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
