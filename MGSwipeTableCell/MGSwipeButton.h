@@ -25,6 +25,9 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 /** A width for the expanded buttons. Defaults to 0, which means sizeToFit will be called. */
 @property (nonatomic, assign) CGFloat buttonWidth;
 
+/** Seperation height between the icon and the text label. Defaults to 3. */
+@property (nonatomic, assign) CGFloat buttonTextSpacing;
+
 /** 
  * Convenience static constructors
  */

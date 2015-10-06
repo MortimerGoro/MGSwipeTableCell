@@ -75,6 +75,7 @@
     [button setImage:icon forState:UIControlStateNormal];
     button.callback = callback;
     [button setEdgeInsets:insets];
+    button.buttonTextSpacing = 3.0;
     return button;
 }
 
@@ -87,14 +88,13 @@
 }
 
 -(void) centerIconOverText {
-	const CGFloat spacing = 3.0;
 	CGSize size = self.imageView.image.size;
 	self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
 											-size.width,
-											-(size.height + spacing),
+											-(size.height + self.buttonTextSpacing),
 											0.0);
 	size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName: self.titleLabel.font }];
-	self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + spacing),
+	self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + self.buttonTextSpacing),
 											0.0,
 											0.0,
 											-size.width);
