@@ -1252,4 +1252,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     return _panRecognizer.state == UIGestureRecognizerStateBegan || _panRecognizer.state == UIGestureRecognizerStateChanged;
 }
 
+-(void)setSwipeBackgroundColor:(UIColor *)swipeBackgroundColor {
+    _swipeBackgroundColor = swipeBackgroundColor;
+    _swipeOverlay.backgroundColor = swipeBackgroundColor;
+}
+
 @end
