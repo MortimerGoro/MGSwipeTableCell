@@ -87,6 +87,7 @@
         _buttons = _fromLeft ? buttonsArray: [[buttonsArray reverseObjectEnumerator] allObjects];
         for (UIView * button in _buttons) {
             if ([button isKindOfClass:[UIButton class]]) {
+                [(UIButton *)button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
                 [(UIButton *)button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
             if (!differentWidth) {
