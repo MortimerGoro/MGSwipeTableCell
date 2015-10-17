@@ -752,7 +752,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     self.selectionStyle = _previusSelectionStyle;
     NSArray * selectedRows = self.parentTable.indexPathsForSelectedRows;
     if ([selectedRows containsObject:[self.parentTable indexPathForCell:self]]) {
-        self.selected = NO;
+        self.selected = NO; //Hack: in some iOS versions setting the selected property to YES own isn't enough to force the cell to redraw the chosen selectionStyle
         self.selected = YES;
     }
     [self setAccesoryViewsHidden:NO];
@@ -1255,7 +1255,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void)setSwipeBackgroundColor:(UIColor *)swipeBackgroundColor {
     _swipeBackgroundColor = swipeBackgroundColor;
-    _swipeOverlay.backgroundColor = swipeBackgroundColor;
+    if (_swipeOverlay) {
+        _swipeOverlay.backgroundColor = swipeBackgroundColor;
+    }
 }
 
 @end
