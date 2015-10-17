@@ -86,8 +86,7 @@
     return NO;
 }
 
--(void) centerIconOverText {
-	const CGFloat spacing = 3.0;
+-(void) centerIconOverTextWithSpacing: (CGFloat) spacing {
 	CGSize size = self.imageView.image.size;
 	self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
 											-size.width,
