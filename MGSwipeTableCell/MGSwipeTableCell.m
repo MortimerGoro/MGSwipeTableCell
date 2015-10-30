@@ -213,7 +213,7 @@
     [self layoutExpansion:offset];
 }
 
--(void) endExpansioAnimated:(BOOL) animated
+-(void) endExpansionAnimated:(BOOL) animated
 {
     if (_expandedButton) {
         _expandedButtonAnimated = _expandedButton;
@@ -940,9 +940,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     MGSwipeButtonsView * activeButtons = sign < 0 ? _rightView : _leftView;
     if (!activeButtons || offset == 0) {
         if (_leftView)
-            [_leftView endExpansioAnimated:NO];
+            [_leftView endExpansionAnimated:NO];
         if (_rightView)
-            [_rightView endExpansioAnimated:NO];
+            [_rightView endExpansionAnimated:NO];
         [self hideSwipeOverlayIfNeeded];
         _targetOffset = 0;
         [self updateState:MGSwipeStateNone];
@@ -980,7 +980,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             [self updateState:i ? MGSwipeStateExpandingRightToLeft : MGSwipeStateExpandingLeftToRight];
         }
         else {
-            [view endExpansioAnimated:YES];
+            [view endExpansionAnimated:YES];
             _activeExpansion = nil;
             CGFloat t = MIN(1.0f, offset/view.bounds.size.width);
             [view transition:settings[i].transition percent:t];
@@ -1035,7 +1035,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             __weak MGSwipeButtonsView * expansionView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
             __weak MGSwipeTableCell * weakself = self;
             [self setSwipeOffset:buttonsView.bounds.size.width * s * expSetting.threshold * 2 animation:expSetting.triggerAnimation completion:^{
-                [expansionView endExpansioAnimated:YES];
+                [expansionView endExpansionAnimated:YES];
                 [weakself setSwipeOffset:0 animated:NO completion:nil];
             }];
         }
@@ -1163,7 +1163,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             [self setSwipeOffset:_targetOffset animation:expSettings.triggerAnimation completion:^{
                 BOOL autoHide = [expansion handleClick:expandedButton fromExpansion:YES];
                 if (autoHide) {
-                    [expansion endExpansioAnimated:NO];
+                    [expansion endExpansionAnimated:NO];
                 }
                 if (backgroundColor) {
                     expandedButton.backgroundColor = backgroundColor;
