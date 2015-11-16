@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.5.2
+
+- Add Carthage support
+- Fix issues #160 and #162: Delegate call multiple time on single touch on iOS 9
+- Fix programmatic call to setSwipeOffset when swipeView is not yet created
+- Fix Swipe backgroundColor change without re-initializing the cell
+- Fix UITableCellSelectionStyle on end swipe
+- centerIconOverText now takes a spacing argument
+
 ## 1.5.1
 
 - Fix default animation values
