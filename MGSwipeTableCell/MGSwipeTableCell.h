@@ -4,6 +4,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <MGSwipeTableCell/MGSwipeButton.h>
 
 
 /** Transition types */
