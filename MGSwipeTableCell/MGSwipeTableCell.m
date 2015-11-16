@@ -1073,6 +1073,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void) setSwipeOffset:(CGFloat)offset animation: (MGSwipeAnimation *) animation completion:(void(^)()) completion
 {
+    if (offset !=0) {
+        [self createSwipeViewIfNeeded];
+    }
     _animationCompletion = completion;
     if (_displayLink) {
         [_displayLink invalidate];
