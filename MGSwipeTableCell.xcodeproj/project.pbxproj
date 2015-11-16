@@ -8,30 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		C63EE56F1BBA07ED008F46BB /* MGSwipeTableCell.h in Headers */ = {isa = PBXBuildFile; fileRef = C63EE56E1BBA07ED008F46BB /* MGSwipeTableCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C63EE5761BBA07ED008F46BB /* MGSwipeTableCell.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C63EE56B1BBA07ED008F46BB /* MGSwipeTableCell.framework */; settings = {ASSET_TAGS = (); }; };
-		C63EE57B1BBA07ED008F46BB /* MGSwipeTableCellTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C63EE57A1BBA07ED008F46BB /* MGSwipeTableCellTests.m */; };
 		C63EE5881BBA083B008F46BB /* MGSwipeButton.h in Headers */ = {isa = PBXBuildFile; fileRef = C63EE5851BBA083B008F46BB /* MGSwipeButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C63EE5891BBA083B008F46BB /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C63EE5861BBA083B008F46BB /* MGSwipeButton.m */; settings = {ASSET_TAGS = (); }; };
-		C63EE58A1BBA083B008F46BB /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C63EE5871BBA083B008F46BB /* MGSwipeTableCell.m */; settings = {ASSET_TAGS = (); }; };
+		C63EE5891BBA083B008F46BB /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C63EE5861BBA083B008F46BB /* MGSwipeButton.m */; };
+		C63EE58A1BBA083B008F46BB /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C63EE5871BBA083B008F46BB /* MGSwipeTableCell.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		C63EE5771BBA07ED008F46BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C63EE5621BBA07ED008F46BB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C63EE56A1BBA07ED008F46BB;
-			remoteInfo = MGSwipeTableCell;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		C63EE56B1BBA07ED008F46BB /* MGSwipeTableCell.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MGSwipeTableCell.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C63EE56E1BBA07ED008F46BB /* MGSwipeTableCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MGSwipeTableCell.h; sourceTree = "<group>"; };
 		C63EE5701BBA07ED008F46BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C63EE5751BBA07ED008F46BB /* MGSwipeTableCellTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MGSwipeTableCellTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C63EE57A1BBA07ED008F46BB /* MGSwipeTableCellTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MGSwipeTableCellTests.m; sourceTree = "<group>"; };
-		C63EE57C1BBA07ED008F46BB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C63EE5851BBA083B008F46BB /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
 		C63EE5861BBA083B008F46BB /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeButton.m; sourceTree = "<group>"; };
 		C63EE5871BBA083B008F46BB /* MGSwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeTableCell.m; sourceTree = "<group>"; };
@@ -45,14 +30,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C63EE5721BBA07ED008F46BB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C63EE5761BBA07ED008F46BB /* MGSwipeTableCell.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -60,7 +37,6 @@
 			isa = PBXGroup;
 			children = (
 				C63EE56D1BBA07ED008F46BB /* MGSwipeTableCell */,
-				C63EE5791BBA07ED008F46BB /* MGSwipeTableCellTests */,
 				C63EE56C1BBA07ED008F46BB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -69,7 +45,6 @@
 			isa = PBXGroup;
 			children = (
 				C63EE56B1BBA07ED008F46BB /* MGSwipeTableCell.framework */,
-				C63EE5751BBA07ED008F46BB /* MGSwipeTableCellTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,15 +59,6 @@
 				C63EE5701BBA07ED008F46BB /* Info.plist */,
 			);
 			path = MGSwipeTableCell;
-			sourceTree = "<group>";
-		};
-		C63EE5791BBA07ED008F46BB /* MGSwipeTableCellTests */ = {
-			isa = PBXGroup;
-			children = (
-				C63EE57A1BBA07ED008F46BB /* MGSwipeTableCellTests.m */,
-				C63EE57C1BBA07ED008F46BB /* Info.plist */,
-			);
-			path = MGSwipeTableCellTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,24 +94,6 @@
 			productReference = C63EE56B1BBA07ED008F46BB /* MGSwipeTableCell.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		C63EE5741BBA07ED008F46BB /* MGSwipeTableCellTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C63EE5821BBA07ED008F46BB /* Build configuration list for PBXNativeTarget "MGSwipeTableCellTests" */;
-			buildPhases = (
-				C63EE5711BBA07ED008F46BB /* Sources */,
-				C63EE5721BBA07ED008F46BB /* Frameworks */,
-				C63EE5731BBA07ED008F46BB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C63EE5781BBA07ED008F46BB /* PBXTargetDependency */,
-			);
-			name = MGSwipeTableCellTests;
-			productName = MGSwipeTableCellTests;
-			productReference = C63EE5751BBA07ED008F46BB /* MGSwipeTableCellTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -156,9 +104,6 @@
 				ORGANIZATIONNAME = mortimergoro;
 				TargetAttributes = {
 					C63EE56A1BBA07ED008F46BB = {
-						CreatedOnToolsVersion = 7.0;
-					};
-					C63EE5741BBA07ED008F46BB = {
 						CreatedOnToolsVersion = 7.0;
 					};
 				};
@@ -176,20 +121,12 @@
 			projectRoot = "";
 			targets = (
 				C63EE56A1BBA07ED008F46BB /* MGSwipeTableCell */,
-				C63EE5741BBA07ED008F46BB /* MGSwipeTableCellTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C63EE5691BBA07ED008F46BB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C63EE5731BBA07ED008F46BB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -208,23 +145,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C63EE5711BBA07ED008F46BB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C63EE57B1BBA07ED008F46BB /* MGSwipeTableCellTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C63EE5781BBA07ED008F46BB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C63EE56A1BBA07ED008F46BB /* MGSwipeTableCell */;
-			targetProxy = C63EE5771BBA07ED008F46BB /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C63EE57D1BBA07ED008F46BB /* Debug */ = {
@@ -324,6 +245,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MGSwipeTableCell/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mortimergoro.MGSwipeTableCell;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -340,30 +262,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = MGSwipeTableCell/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mortimergoro.MGSwipeTableCell;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		C63EE5831BBA07ED008F46BB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = MGSwipeTableCellTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mortimergoro.MGSwipeTableCellTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		C63EE5841BBA07ED008F46BB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = MGSwipeTableCellTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mortimergoro.MGSwipeTableCellTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -384,15 +287,6 @@
 			buildConfigurations = (
 				C63EE5801BBA07ED008F46BB /* Debug */,
 				C63EE5811BBA07ED008F46BB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C63EE5821BBA07ED008F46BB /* Build configuration list for PBXNativeTarget "MGSwipeTableCellTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C63EE5831BBA07ED008F46BB /* Debug */,
-				C63EE5841BBA07ED008F46BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
