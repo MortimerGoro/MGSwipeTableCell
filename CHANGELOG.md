@@ -1,5 +1,11 @@
 # Changelog
 
+
+## 1.5.3
+
+- Fix duplicated callbacks with reused button instances among many cells
+- Fix Carthage header for normal projects
+
 ## 1.5.2
 
 - Add Carthage support
