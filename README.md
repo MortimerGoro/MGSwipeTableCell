@@ -1,8 +1,9 @@
 MGSwipeTableCell
 ================
 
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-MGSwipeTableCell is an easy to use UITableViewCell subclass that allows to display swipeable buttons with a variety of transitions. 
+MGSwipeTableCell is an easy to use UITableViewCell subclass that allows to display swipeable buttons with a variety of transitions.
 
 
 This library is compatible with all the different ways to create a UITableViewCell: system predefined styles, programmatically created cells, cells loaded from a xib and prototype cells within a storyboard. You can use autolayout if you want.
@@ -43,7 +44,7 @@ See [`MGSwipeDemo`](demo/MGSwipeDemo) for a complete project where you can test 
 
 ##Usage
 
-###Basic 
+###Basic
 Integrating MGSwipeTableCell in your project is veary easy. Basically, you only have to inherit from MGSwipeTableCell instead of UITableViewCell, or directly instantiate MGSwipeTableCell instances with iOS predefined cell styles. You can layout your cell content as you are used to do, MGSwipeTableCell doesn't force you to change layouts.
 
 Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set an array of buttons to cell.leftButtons and/or cell.rightButtons properties. MGSwipeButton is a convenience class, you are not force to use it. You can use your own UIButtons or UIViews. You can configure transitions (and swipe thresholds) with the leftSwipeSettings and/or rightSwipeSettings properties
@@ -56,17 +57,17 @@ Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set
     if (!cell) {
         cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     }
-    
+
     cell.textLabel.text = @"Title";
     cell.detailTextLabel.text = @"Detail text";
     cell.delegate = self; //optional
 
-    
+
     //configure left buttons
     cell.leftButtons = @[[MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"check.png"] backgroundColor:[UIColor greenColor]],
                           [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"fav.png"] backgroundColor:[UIColor blueColor]]];
     cell.leftSwipeSettings.transition = MGSwipeTransition3D;
-    
+
     //configure right buttons
     cell.rightButtons = @[[MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor redColor]],
                            [MGSwipeButton buttonWithTitle:@"More" backgroundColor:[UIColor lightGrayColor]]];
