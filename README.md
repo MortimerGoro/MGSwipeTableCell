@@ -54,7 +54,7 @@ You can use Carthage to include MGSwipeTableCell into your project. Just add thi
 ##Usage
 
 ###Basic 
-Integrating MGSwipeTableCell in your project is veary easy. Basically, you only have to inherit from MGSwipeTableCell instead of UITableViewCell, or directly instantiate MGSwipeTableCell instances with iOS predefined cell styles. You can layout your cell content as you are used to do, MGSwipeTableCell doesn't force you to change layouts.
+Integrating MGSwipeTableCell in your project is very easy. Basically, you only have to inherit from MGSwipeTableCell instead of UITableViewCell, or directly instantiate MGSwipeTableCell instances with iOS predefined cell styles. You can layout your cell content as you are used to do, MGSwipeTableCell doesn't force you to change layouts.
 
 Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set an array of buttons to cell.leftButtons and/or cell.rightButtons properties. MGSwipeButton is a convenience class, you are not force to use it. You can use your own UIButtons or UIViews. You can configure transitions (and swipe thresholds) with the leftSwipeSettings and/or rightSwipeSettings properties
 
@@ -114,7 +114,7 @@ Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set
   }
 ```
 
-In order to listen button click events you have 2 options. You can implement the optional MGSwipeTableCellDelegate. If you are lazy to do that MGSwipeButton class comes with a convenience block callback ;)
+In order to listen for button click events you can implement the optional MGSwipeTableCellDelegate, or if you are too lazy to do that, the MGSwipeButton class comes with a convenience block callback ;)
 
 #####Objective-c
 ```objc
@@ -134,7 +134,7 @@ MGSwipeButton(title: "Delete", backgroundColor: UIColor.redColor(), callback: {
 
 ###Delegate
 
-MGSwipeTableCellDelegate is an optional delegate to configure swipe buttons or to receive triggered actions or another events. Buttons can be configured inline when the cell is created instead of using this delegate, but using the delegate improves memory usage because buttons are only created in demand.
+MGSwipeTableCellDelegate is an optional delegate to configure swipe buttons or to receive triggered actions or another events. Buttons can be configured inline when the cell is created instead of using this delegate, but using the delegate improves memory usage since buttons are only created on demand.
 
 ```objc
 @protocol MGSwipeTableCellDelegate <NSObject>
