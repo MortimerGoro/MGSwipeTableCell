@@ -25,7 +25,15 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 /** A width for the expanded buttons. Defaults to 0, which means sizeToFit will be called. */
 @property (nonatomic, assign) CGFloat buttonWidth;
 
-/** 
+/** Add a dark overlay when button is highlighted. Default is NO */
+@property (nonatomic, assign) BOOL darkerWhenHighlighted;
+
+/** normalColor for backgroundColor.
+    darkerColor for backgroundColor when button highlighted **/
+@property (nonatomic, strong) UIColor *normalColor;
+@property (nonatomic, strong) UIColor *darkerColor;
+
+/**
  * Convenience static constructors
  */
 +(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color;
@@ -43,6 +51,7 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 
 -(void) setPadding:(CGFloat) padding;
 -(void) setEdgeInsets:(UIEdgeInsets)insets;
+-(void) iconTintColor:(UIColor *)tintColor;
 -(void) centerIconOverText;
 -(void) centerIconOverTextWithSpacing: (CGFloat) spacing;
 

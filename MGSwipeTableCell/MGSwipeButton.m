@@ -75,6 +75,9 @@
     [button setImage:icon forState:UIControlStateNormal];
     button.callback = callback;
     [button setEdgeInsets:insets];
+    button.darkerWhenHighlighted = NO;
+    button.normalColor = color;
+    button.darkerColor = [self darkerColorForColor:color];
     return button;
 }
 
@@ -84,6 +87,16 @@
         return _callback(sender);
     }
     return NO;
+}
+
+-(void) iconTintColor:(UIColor *)tintColor
+{
+    UIImage *currentIcon = self.imageView.image;
+    if (currentIcon.renderingMode != UIImageRenderingModeAlwaysTemplate) {
+        currentIcon = [currentIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self setImage:currentIcon forState:UIControlStateNormal];
+    }
+    self.tintColor = tintColor;
 }
 
 -(void) centerIconOverText
@@ -129,6 +142,28 @@
 {
     self.contentEdgeInsets = insets;
     [self sizeToFit];
+}
+
+-(void) setHighlighted:(BOOL)highlighted
+{
+    if (self.darkerWhenHighlighted) {
+        if (highlighted) {
+            self.backgroundColor = self.darkerColor;
+        } else {
+            self.backgroundColor = self.normalColor;
+        }
+    }
+}
+
++ (UIColor *)darkerColorForColor:(UIColor *)color
+{
+    CGFloat r, g, b, a;
+    if ([color getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MAX(r - 0.2f, 0.0f)
+                               green:MAX(g - 0.2f, 0.0f)
+                                blue:MAX(b - 0.2f, 0.0f)
+                               alpha:a];
+    return color;
 }
 
 @end
