@@ -645,7 +645,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
     if (_swipeOverlay) {
         CGSize prevSize = _swipeView.bounds.size;
-        _swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height);
+        _swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height - _bottomOffset);
         if (_swipeView.image &&  !CGSizeEqualToSize(prevSize, _swipeOverlay.bounds.size)) {
             //refresh contentView in situations like layout change, orientation chage, table resize, etc.
             [self refreshContentView];
@@ -666,13 +666,13 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 -(void) createSwipeViewIfNeeded
 {
     if (!_swipeOverlay) {
-        _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+        _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - _bottomOffset)];
         _swipeOverlay.hidden = YES;
         _swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
         _swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
         _swipeView = [[UIImageView alloc] initWithFrame:_swipeOverlay.bounds];
         _swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _swipeView.contentMode = UIViewContentModeCenter;
+        _swipeView.contentMode = _bottomOffset > 0.0f ? UIViewContentModeTop : UIViewContentModeCenter;
         _swipeView.clipsToBounds = YES;
         [_swipeOverlay addSubview:_swipeView];
         [self.contentView addSubview:_swipeOverlay];
