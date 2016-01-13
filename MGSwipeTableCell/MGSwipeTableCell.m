@@ -388,6 +388,7 @@
         self.threshold = 0.5;
         self.offset = 0;
         self.keepButtonsSwiped = YES;
+        self.disableSwipeBounces = NO;
         self.showAnimation = [[MGSwipeAnimation alloc] init];
         self.hideAnimation = [[MGSwipeAnimation alloc] init];
         self.stretchAnimation = [[MGSwipeAnimation alloc] init];
@@ -934,12 +935,19 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 - (void)setSwipeOffset:(CGFloat) newOffset;
 {
-    _swipeOffset = newOffset;
-    
     CGFloat sign = newOffset > 0 ? 1.0 : -1.0;
-    CGFloat offset = fabs(newOffset);
-    
     MGSwipeButtonsView * activeButtons = sign < 0 ? _rightView : _leftView;
+    MGSwipeSettings * activeSettings = sign < 0 ? _rightSwipeSettings : _leftSwipeSettings;
+  
+    if(activeSettings.disableSwipeBounces) {
+      CGFloat maxOffset = sign * activeButtons.bounds.size.width;
+      _swipeOffset = sign > 0 ? MIN(newOffset, maxOffset) : MAX(newOffset, maxOffset);
+    } else {
+      _swipeOffset = newOffset;
+    }
+    CGFloat offset = fabs(_swipeOffset);
+  
+  
     if (!activeButtons || offset == 0) {
         if (_leftView)
             [_leftView endExpansionAnimated:NO];
@@ -952,13 +960,13 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
     else {
         [self showSwipeOverlayIfNeeded];
-        CGFloat swipeThreshold = sign < 0 ? _rightSwipeSettings.threshold : _leftSwipeSettings.threshold;
-        BOOL keepButtons = sign < 0 ? _rightSwipeSettings.keepButtonsSwiped : _leftSwipeSettings.keepButtonsSwiped;
+        CGFloat swipeThreshold = activeSettings.threshold;
+        BOOL keepButtons = activeSettings.keepButtonsSwiped;
         _targetOffset = keepButtons && offset > activeButtons.bounds.size.width * swipeThreshold ? activeButtons.bounds.size.width * sign : 0;
     }
     
-    BOOL onlyButtons = sign < 0 ? _rightSwipeSettings.onlySwipeButtons : _leftSwipeSettings.onlySwipeButtons;
-    _swipeView.transform = CGAffineTransformMakeTranslation(onlyButtons ? 0 : newOffset, 0);
+    BOOL onlyButtons = activeSettings.onlySwipeButtons;
+    _swipeView.transform = CGAffineTransformMakeTranslation(onlyButtons ? 0 : _swipeOffset, 0);
     
     //animate existing buttons
     MGSwipeButtonsView* but[2] = {_leftView, _rightView};
