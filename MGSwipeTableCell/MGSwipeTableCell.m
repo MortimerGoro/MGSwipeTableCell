@@ -398,7 +398,7 @@
         self.threshold = 0.5;
         self.offset = 0;
         self.keepButtonsSwiped = YES;
-        self.disableSwipeBounces = NO;
+        self.enableSwipeBounces = YES;
         self.showAnimation = [[MGSwipeAnimation alloc] init];
         self.hideAnimation = [[MGSwipeAnimation alloc] init];
         self.stretchAnimation = [[MGSwipeAnimation alloc] init];
@@ -962,12 +962,12 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     MGSwipeButtonsView * activeButtons = sign < 0 ? _rightView : _leftView;
     MGSwipeSettings * activeSettings = sign < 0 ? _rightSwipeSettings : _leftSwipeSettings;
   
-    if(activeSettings.disableSwipeBounces) {
-      CGFloat maxOffset = sign * activeButtons.bounds.size.width;
-      _swipeOffset = sign > 0 ? MIN(newOffset, maxOffset) : MAX(newOffset, maxOffset);
+    if(activeSettings.enableSwipeBounces) {
+        _swipeOffset = newOffset;
     }
     else {
-      _swipeOffset = newOffset;
+        CGFloat maxOffset = sign * activeButtons.bounds.size.width;
+        _swipeOffset = sign > 0 ? MIN(newOffset, maxOffset) : MAX(newOffset, maxOffset);
     }
     CGFloat offset = fabs(_swipeOffset);
   
