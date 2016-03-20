@@ -99,6 +99,9 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 /** If true the table cell is not swiped, just the buttons **/
 @property (nonatomic, assign) BOOL onlySwipeButtons;
 
+/** If true the swipe bounces will be disabled, the swipe motion will stop right after the button */
+@property (nonatomic, assign) BOOL disableSwipeBounces;
+
 @end
 
 
