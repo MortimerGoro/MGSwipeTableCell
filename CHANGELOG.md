@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.5.4
+
+- Safer animation and callbacks checks after a cell is deleted. Fixes issue #91 caused by a null cell.indexPath because the callback was called while/after a cell is deleted
+- Fix issue #168: problem with devices that read right to left (Arabic and Hebrew)
+- Fix swipe issues after reloading a table
+- Fix issue #163: Swipe not working after deleting a cell
+- Add enableSwipeBounces property. Enabled by default, if disabled the swipe bounces will be disabled and the swipe motion will stop right after the button.
+- Add allowsOppositeSwipe property. Controls whether swipe gesture is allowed in opposite directions. NO value disables swiping in opposite direction once started in one direction
+- Add topMargin and bottomMargin properties to MGSwipeSettings
+- Add touchOnDismissSwipe property. Controls whether dismissing a swiped cell when clicking outside of the cell generates a real touch event on the other cell. Default behaviour is the same as the Mail app on iOS. Enable it if you want to allow to start a new swipe while a cell is already in swiped.
+- Add a 'BOOL finished' parameter to completion animation callbacks
 
 ## 1.5.3
 
