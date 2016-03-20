@@ -197,7 +197,7 @@
         _expansionLayout = settings.expansionLayout;
         
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
-        [UIView animateWithDuration: duration animations:^{
+        [UIView animateWithDuration: duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             _expandedButton.hidden = NO;
 
             if (_expansionLayout == MGSwipeExpansionLayoutCenter) {
@@ -241,7 +241,7 @@
             _backgroundColorCopy = nil;
         }
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
-        [UIView animateWithDuration: animated ? duration : 0.0 animations:^{
+        [UIView animateWithDuration: animated ? duration : 0.0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             _container.frame = self.bounds;
             if (_expansionLayout == MGSwipeExpansionLayoutCenter) {
                 _expandedButtonAnimated.frame = _expandedButtonBoundsCopy;
@@ -560,7 +560,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     BOOL _triggerStateChanges;
     
     MGSwipeAnimationData * _animationData;
-    void (^_animationCompletion)();
+    void (^_animationCompletion)(BOOL finished);
     CADisplayLink * _displayLink;
 }
 
@@ -1023,7 +1023,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
--(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)()) completion
+-(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)(BOOL finished)) completion
 {
     MGSwipeAnimation * animation = animated ? (_swipeOffset > 0 ? _leftSwipeSettings.hideAnimation: _rightSwipeSettings.hideAnimation) : nil;
     [self setSwipeOffset:0 animation:animation completion:completion];
@@ -1039,7 +1039,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     [self showSwipe:direction animated:animated completion:nil];
 }
 
--(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)()) completion
+-(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)(BOOL finished)) completion
 {
     [self createSwipeViewIfNeeded];
     _allowSwipeLeftToRight = _leftButtons.count > 0;
@@ -1068,7 +1068,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         if (buttonsView) {
             __weak MGSwipeButtonsView * expansionView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
             __weak MGSwipeTableCell * weakself = self;
-            [self setSwipeOffset:buttonsView.bounds.size.width * s * expSetting.threshold * 2 animation:expSetting.triggerAnimation completion:^{
+            [self setSwipeOffset:buttonsView.bounds.size.width * s * expSetting.threshold * 2 animation:expSetting.triggerAnimation completion:^(BOOL finished){
                 [expansionView endExpansionAnimated:YES];
                 [weakself setSwipeOffset:0 animated:NO completion:nil];
             }];
@@ -1093,25 +1093,25 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         [timer invalidate];
         _displayLink = nil;
         if (_animationCompletion) {
-            _animationCompletion();
+            _animationCompletion(YES);
             _animationCompletion = nil;
         }
     }
 }
--(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)()) completion
+-(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)(BOOL finished)) completion
 {
     MGSwipeAnimation * animation = animated ? [[MGSwipeAnimation alloc] init] : nil;
     [self setSwipeOffset:offset animation:animation completion:completion];
 }
 
--(void) setSwipeOffset:(CGFloat)offset animation: (MGSwipeAnimation *) animation completion:(void(^)()) completion
+-(void) setSwipeOffset:(CGFloat)offset animation: (MGSwipeAnimation *) animation completion:(void(^)(BOOL finished)) completion
 {
     if (_displayLink) {
         [_displayLink invalidate];
         _displayLink = nil;
     }
-    if (_animationCompletion) { //finish  pending animation callback
-        _animationCompletion();
+    if (_animationCompletion) { //notify previous animation cancelled
+        _animationCompletion(NO);
         _animationCompletion = nil;
     }
     if (offset !=0) {
@@ -1121,7 +1121,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (!animation) {
         self.swipeOffset = offset;
         if (completion) {
-            completion();
+            completion(YES);
         }
         return;
     }
