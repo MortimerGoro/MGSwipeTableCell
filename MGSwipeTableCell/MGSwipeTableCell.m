@@ -24,8 +24,12 @@
 
 -(UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
+    if (!_currentCell) {
+        [self removeFromSuperview];
+        return nil;
+    }
     CGPoint p = [self convertPoint:point toView:_currentCell];
-    if (_currentCell && CGRectContainsPoint(_currentCell.bounds, p)) {
+    if (_currentCell && (_currentCell.hidden || CGRectContainsPoint(_currentCell.bounds, p))) {
         return nil;
     }
     BOOL hide = YES;
@@ -725,6 +729,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (!_allowsMultipleSwipe) {
         //input overlay on the whole table
         UITableView * table = [self parentTable];
+        if (_tableInputOverlay) {
+            [_tableInputOverlay removeFromSuperview];
+        }
         _tableInputOverlay = [[MGSwipeTableInputOverlay alloc] initWithFrame:table.bounds];
         _tableInputOverlay.currentCell = self;
         [table addSubview:_tableInputOverlay];
@@ -843,7 +850,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    if (_swipeOverlay && !_swipeOverlay.hidden) {
+    if (!self.hidden && _swipeOverlay && !_swipeOverlay.hidden) {
         //override hitTest to give swipe buttons a higher priority (diclosure buttons can steal input)
         UIView * targets[] = {_leftView, _rightView};
         for (int i = 0; i< 2; ++i) {
