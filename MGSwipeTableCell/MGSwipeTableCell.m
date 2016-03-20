@@ -965,7 +965,8 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if(activeSettings.disableSwipeBounces) {
       CGFloat maxOffset = sign * activeButtons.bounds.size.width;
       _swipeOffset = sign > 0 ? MIN(newOffset, maxOffset) : MAX(newOffset, maxOffset);
-    } else {
+    }
+    else {
       _swipeOffset = newOffset;
     }
     CGFloat offset = fabs(_swipeOffset);
@@ -1093,6 +1094,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _displayLink = nil;
         if (_animationCompletion) {
             _animationCompletion();
+            _animationCompletion = nil;
         }
     }
 }
@@ -1104,20 +1106,27 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void) setSwipeOffset:(CGFloat)offset animation: (MGSwipeAnimation *) animation completion:(void(^)()) completion
 {
-    if (offset !=0) {
-        [self createSwipeViewIfNeeded];
-    }
-    _animationCompletion = completion;
     if (_displayLink) {
         [_displayLink invalidate];
         _displayLink = nil;
     }
+    if (_animationCompletion) { //finish  pending animation callback
+        _animationCompletion();
+        _animationCompletion = nil;
+    }
+    if (offset !=0) {
+        [self createSwipeViewIfNeeded];
+    }
     
     if (!animation) {
         self.swipeOffset = offset;
+        if (completion) {
+            completion();
+        }
         return;
     }
     
+    _animationCompletion = completion;
     _triggerStateChanges = NO;
     _animationData.from = _swipeOffset;
     _animationData.to = offset;
