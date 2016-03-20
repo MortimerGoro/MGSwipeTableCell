@@ -39,7 +39,7 @@
     if (hide) {
         [_currentCell hideSwipeAnimated:YES];
     }
-    return nil; //return nil to allow swiping a new cell while the current one is hidding
+    return _currentCell.touchEventOnDismissSwipe ? nil : self;;
 }
 
 @end

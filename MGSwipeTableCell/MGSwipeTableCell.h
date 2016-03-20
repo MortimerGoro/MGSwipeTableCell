@@ -232,6 +232,9 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 @property (nonatomic) BOOL allowsSwipeWhenTappingButtons;
 // default is NO.  Controls whether the cell selection/highlight status is preserved when expansion occurs
 @property (nonatomic) BOOL preservesSelectionStatus;
+/*default is NO. Controls wheter dismissing a swiped cel when clicking outside of the cell generates a real touch event on the other cell.
+ Default behaviour is the same as the Mail app on iOS. Enable it if you want to allow to start a new swipe while a cell is already in swiped.  */
+@property (nonatomic) BOOL touchEventOnDismissSwipe;
 
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
