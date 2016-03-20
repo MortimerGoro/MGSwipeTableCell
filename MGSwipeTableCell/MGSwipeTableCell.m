@@ -39,7 +39,7 @@
     if (hide) {
         [_currentCell hideSwipeAnimated:YES];
     }
-    return _currentCell.touchEventOnDismissSwipe ? nil : self;;
+    return _currentCell.touchOnDismissSwipe ? nil : self;;
 }
 
 @end
