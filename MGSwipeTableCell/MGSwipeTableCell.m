@@ -562,6 +562,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     MGSwipeAnimationData * _animationData;
     void (^_animationCompletion)(BOOL finished);
     CADisplayLink * _displayLink;
+    MGSwipeState _firstSwipeState;
 }
 
 #pragma mark View creation & layout
@@ -615,6 +616,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     _triggerStateChanges = YES;
     _allowsSwipeWhenTappingButtons = YES;
     _preservesSelectionStatus = NO;
+    _allowsOppositeSwipe = YES;
+    _firstSwipeState = MGSwipeStateNone;
+    
 }
 
 -(void) cleanViews
@@ -1168,6 +1172,12 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (!buttons || ! allowed) {
         offset = 0;
     }
+    else if (!_allowsOppositeSwipe && _firstSwipeState == MGSwipeStateSwipingLeftToRight && offset < 0) {
+        offset = 0;
+    }
+    else if (!_allowsOppositeSwipe && _firstSwipeState == MGSwipeStateSwipingRightToLeft && offset > 0 ) {
+        offset = 0;
+    }
     return offset;
 }
 
@@ -1181,6 +1191,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         [self createSwipeViewIfNeeded];
         _panStartPoint = current;
         _panStartOffset = _swipeOffset;
+        if (_swipeOffset != 0) {
+            _firstSwipeState = _swipeOffset > 0 ? MGSwipeStateSwipingLeftToRight : MGSwipeStateSwipingRightToLeft;
+        }
         
         if (!_allowsMultipleSwipe) {
             NSArray * cells = [self parentTable].visibleCells;
@@ -1193,6 +1206,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
     else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGFloat offset = _panStartOffset + current.x - _panStartPoint.x;
+        if (_firstSwipeState == MGSwipeStateNone) {
+            _firstSwipeState = offset > 0 ? MGSwipeStateSwipingLeftToRight : MGSwipeStateSwipingRightToLeft;
+        }
         self.swipeOffset = [self filterSwipe:offset];
     }
     else {
@@ -1242,6 +1258,8 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             }
             [self setSwipeOffset:_targetOffset animation:animation completion:nil];
         }
+        
+        _firstSwipeState = MGSwipeStateNone;
     }
 }
 

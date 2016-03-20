@@ -233,8 +233,10 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 @property (nonatomic) BOOL allowsMultipleSwipe;
 // default is NO. Controls whether buttons with different width are allowed. Buttons are resized to have the same size by default.
 @property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
-//default is YES. Controls wheter swipe gesture is allowed when the touch starts into the swiped buttons
+//default is YES. Controls whether swipe gesture is allowed when the touch starts into the swiped buttons
 @property (nonatomic) BOOL allowsSwipeWhenTappingButtons;
+//default is YES. Controls whether swipe gesture is allowed in opposite directions. NO value disables swiping in opposite direction once started in one direction
+@property (nonatomic) BOOL allowsOppositeSwipe;
 // default is NO.  Controls whether the cell selection/highlight status is preserved when expansion occurs
 @property (nonatomic) BOOL preservesSelectionStatus;
 /* default is NO. Controls whether dismissing a swiped cell when tapping outside of the cell generates a real touch event on the other cell.
