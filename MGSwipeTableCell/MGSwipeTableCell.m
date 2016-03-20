@@ -636,6 +636,14 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
+-(void) fixRegionAndAccesoryViews
+{
+    //Fix right to left layout direction for arabic and hebrew languagues
+    if (self.bounds.size.width != self.contentView.bounds.size.width && [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft) {
+        _swipeOverlay.frame = CGRectMake(-self.bounds.size.width + self.contentView.bounds.size.width, 0, _swipeOverlay.bounds.size.width, _swipeOverlay.bounds.size.height);
+    }
+}
+
 -(UIView *) swipeContentView
 {
     if (!_swipeContentView) {
@@ -657,6 +665,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (_swipeOverlay) {
         CGSize prevSize = _swipeView.bounds.size;
         _swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height);
+        [self fixRegionAndAccesoryViews];
         if (_swipeView.image &&  !CGSizeEqualToSize(prevSize, _swipeOverlay.bounds.size)) {
             //refresh contentView in situations like layout change, orientation chage, table resize, etc.
             [self refreshContentView];
@@ -678,6 +687,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 {
     if (!_swipeOverlay) {
         _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+        [self fixRegionAndAccesoryViews];
         _swipeOverlay.hidden = YES;
         _swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
         _swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
