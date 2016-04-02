@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.5
+
+- Fix iOS 8.0 compatibility issue
+- Fix issue #190: duplicate callback
+
 ## 1.5.4
 
 - Safer animation and callbacks checks after a cell is deleted. Fixes issue #91 caused by a null cell.indexPath because the callback was called while/after a cell is deleted
