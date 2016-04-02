@@ -640,10 +640,20 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
+-(BOOL) isRTLLocale
+{
+    if ([[UIView class] instancesRespondToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+        return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft;
+    }
+    else {
+        return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+    }
+}
+
 -(void) fixRegionAndAccesoryViews
 {
     //Fix right to left layout direction for arabic and hebrew languagues
-    if (self.bounds.size.width != self.contentView.bounds.size.width && [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft) {
+    if (self.bounds.size.width != self.contentView.bounds.size.width && [self isRTLLocale]) {
         _swipeOverlay.frame = CGRectMake(-self.bounds.size.width + self.contentView.bounds.size.width, 0, _swipeOverlay.bounds.size.width, _swipeOverlay.bounds.size.height);
     }
 }
