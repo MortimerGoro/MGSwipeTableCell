@@ -92,14 +92,8 @@
         for (UIView * button in _buttons) {
             if ([button isKindOfClass:[UIButton class]]) {
                 UIButton * btn = (UIButton*)button;
-                
-                for (id target in btn.allTargets) {
-                    if ([target isKindOfClass:self.class]) {
-                        [btn removeTarget:target action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside]; //Remove all targets to avoid problems with reused buttons among many cells
-                    }
-                }
-                
-                [btn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [btn removeTarget:nil action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside]; //Remove all targets to avoid problems with reused buttons among many cells
+                [btn addTarget:self action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
             if (!differentWidth) {
                 button.frame = CGRectMake(0, 0, maxSize.width, maxSize.height);
@@ -116,7 +110,7 @@
 {
     for (UIView * button in _buttons) {
         if ([button isKindOfClass:[UIButton class]]) {
-            [(UIButton *)button removeTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [(UIButton *)button removeTarget:self action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
 }
@@ -296,7 +290,7 @@
 
 }
 //button listener
--(void) buttonClicked: (id) sender
+-(void) mgButtonClicked: (id) sender
 {
     [self handleClick:sender fromExpansion:NO];
 }
