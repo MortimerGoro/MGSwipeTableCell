@@ -92,14 +92,8 @@
         for (UIView * button in _buttons) {
             if ([button isKindOfClass:[UIButton class]]) {
                 UIButton * btn = (UIButton*)button;
-                
-                for (id target in btn.allTargets) {
-                    if ([target isKindOfClass:self.class]) {
-                        [btn removeTarget:target action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside]; //Remove all targets to avoid problems with reused buttons among many cells
-                    }
-                }
-                
-                [btn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [btn removeTarget:nil action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside]; //Remove all targets to avoid problems with reused buttons among many cells
+                [btn addTarget:self action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
             if (!differentWidth) {
                 button.frame = CGRectMake(0, 0, maxSize.width, maxSize.height);
@@ -116,7 +110,7 @@
 {
     for (UIView * button in _buttons) {
         if ([button isKindOfClass:[UIButton class]]) {
-            [(UIButton *)button removeTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [(UIButton *)button removeTarget:self action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
 }
@@ -296,7 +290,7 @@
 
 }
 //button listener
--(void) buttonClicked: (id) sender
+-(void) mgButtonClicked: (id) sender
 {
     [self handleClick:sender fromExpansion:NO];
 }
@@ -640,6 +634,16 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
+-(BOOL) isRTLLocale
+{
+    if ([[UIView class] respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+        return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft;
+    }
+    else {
+        return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+    }
+}
+
 -(void) fixRegionAndAccesoryViews
 {
   if (![self respondsToSelector: @selector(semanticContentAttribute)])
@@ -647,7 +651,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     return;
   }
     //Fix right to left layout direction for arabic and hebrew languagues
-    if (self.bounds.size.width != self.contentView.bounds.size.width && [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft) {
+    if (self.bounds.size.width != self.contentView.bounds.size.width && [self isRTLLocale]) {
         _swipeOverlay.frame = CGRectMake(-self.bounds.size.width + self.contentView.bounds.size.width, 0, _swipeOverlay.bounds.size.width, _swipeOverlay.bounds.size.height);
     }
 }
