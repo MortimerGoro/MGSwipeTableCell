@@ -642,6 +642,10 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void) fixRegionAndAccesoryViews
 {
+  if (![self respondsToSelector: @selector(semanticContentAttribute)])
+  {
+    return;
+  }
     //Fix right to left layout direction for arabic and hebrew languagues
     if (self.bounds.size.width != self.contentView.bounds.size.width && [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft) {
         _swipeOverlay.frame = CGRectMake(-self.bounds.size.width + self.contentView.bounds.size.width, 0, _swipeOverlay.bounds.size.width, _swipeOverlay.bounds.size.height);
