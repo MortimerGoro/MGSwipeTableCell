@@ -85,6 +85,8 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 @property (nonatomic, assign) CGFloat topMargin;
 /** Bottom margin of the buttons relative to the contentView */
 @property (nonatomic, assign) CGFloat bottomMargin;
+/** Distance between the buttons. Default value : 0 */
+@property (nonatomic, assign) CGFloat buttonsDistance;
 
 /** Animation settings when the swipe buttons are shown */
 @property (nonatomic, strong) MGSwipeAnimation * showAnimation;

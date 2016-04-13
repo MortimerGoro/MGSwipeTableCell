@@ -63,27 +63,29 @@
     CGRect _expandedButtonBoundsCopy;
     MGSwipeExpansionLayout _expansionLayout;
     CGFloat _expansionOffset;
+    CGFloat _buttonsDistance;
     BOOL _autoHideExpansion;
 }
 
 #pragma mark Layout
 
--(instancetype) initWithButtons:(NSArray*) buttonsArray direction:(MGSwipeDirection) direction differentWidth:(BOOL) differentWidth
+-(instancetype) initWithButtons:(NSArray*) buttonsArray direction:(MGSwipeDirection) direction differentWidth:(BOOL) differentWidth buttonsDistance:(CGFloat) buttonsDistance
 {
     CGFloat containerWidth = 0;
     CGSize maxSize = CGSizeZero;
-
+    UIView* lastButton = [buttonsArray lastObject];
     for (UIView * button in buttonsArray) {
-        containerWidth += button.bounds.size.width;
+        containerWidth += button.bounds.size.width + (lastButton == button ? 0 : buttonsDistance);
         maxSize.width = MAX(maxSize.width, button.bounds.size.width);
         maxSize.height = MAX(maxSize.height, button.bounds.size.height);
     }
     if (!differentWidth) {
-        containerWidth = maxSize.width * buttonsArray.count;
+        containerWidth = maxSize.width * buttonsArray.count + buttonsDistance * (buttonsArray.count - 1);
     }
     
     if (self = [super initWithFrame:CGRectMake(0, 0, containerWidth, maxSize.height)]) {
         _fromLeft = direction == MGSwipeDirectionLeftToRight;
+        _buttonsDistance = buttonsDistance;
         _container = [[UIView alloc] initWithFrame:self.bounds];
         _container.clipsToBounds = YES;
         _container.backgroundColor = [UIColor clearColor];
@@ -118,10 +120,11 @@
 -(void) resetButtons
 {
     CGFloat offsetX = 0;
+    UIView* lastButton = [_buttons lastObject];
     for (UIView * button in _buttons) {
         button.frame = CGRectMake(offsetX, 0, button.bounds.size.width, self.bounds.size.height);
         button.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-        offsetX += button.bounds.size.width;
+        offsetX += button.bounds.size.width + (lastButton == button ? 0 : _buttonsDistance);
     }
 }
 
@@ -303,11 +306,12 @@
     const CGFloat dx = self.bounds.size.width * (1.0 - t);
     CGFloat offsetX = 0;
     
+    UIView* lastButton = [_buttons lastObject];
     for (UIView *button in _buttons) {
         CGRect frame = button.frame;
         frame.origin.x = offsetX + (_fromLeft ? dx : -dx);
         button.frame = frame;
-        offsetX += frame.size.width;
+        offsetX += frame.size.width + (button == lastButton ? 0 : _buttonsDistance);
     }
 }
 
@@ -321,6 +325,7 @@
     CGFloat selfWidth = self.bounds.size.width;
     CGFloat offsetX = 0;
     
+    UIView* lastButton = [_buttons lastObject];
     for (UIView *button in _buttons) {
         CGRect frame = button.frame;
         CGFloat dx = roundf(frame.size.width * 0.5 * (1.0 - t)) ;
@@ -336,7 +341,7 @@
             button.layer.mask = maskLayer;
         }
 
-        offsetX += frame.size.width;
+        offsetX += frame.size.width + (button == lastButton ? 0 : _buttonsDistance);
     }
 }
 
@@ -345,11 +350,12 @@
     CGFloat selfWidth = self.bounds.size.width;
     CGFloat offsetX = 0;
     
+    UIView* lastButton = [_buttons lastObject];
     for (UIView *button in _buttons) {
         CGRect frame = button.frame;
         frame.origin.x = _fromLeft ? (selfWidth - frame.size.width - offsetX) * (1.0 - t) + offsetX : offsetX * t;
         button.frame = frame;
-        offsetX += frame.size.width;
+        offsetX += frame.size.width + (button == lastButton ? 0 : _buttonsDistance);
     }
 }
 
@@ -709,14 +715,14 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     
     [self fetchButtonsIfNeeded];
     if (!_leftView && _leftButtons.count > 0) {
-        _leftView = [[MGSwipeButtonsView alloc] initWithButtons:_leftButtons direction:MGSwipeDirectionLeftToRight differentWidth:_allowsButtonsWithDifferentWidth];
+        _leftView = [[MGSwipeButtonsView alloc] initWithButtons:_leftButtons direction:MGSwipeDirectionLeftToRight differentWidth:_allowsButtonsWithDifferentWidth buttonsDistance:_leftSwipeSettings.buttonsDistance];
         _leftView.cell = self;
         _leftView.frame = CGRectMake(-_leftView.bounds.size.width, _leftSwipeSettings.topMargin, _leftView.bounds.size.width, _swipeOverlay.bounds.size.height - _leftSwipeSettings.topMargin - _leftSwipeSettings.bottomMargin);
         _leftView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_leftView];
     }
     if (!_rightView && _rightButtons.count > 0) {
-        _rightView = [[MGSwipeButtonsView alloc] initWithButtons:_rightButtons direction:MGSwipeDirectionRightToLeft differentWidth:_allowsButtonsWithDifferentWidth];
+        _rightView = [[MGSwipeButtonsView alloc] initWithButtons:_rightButtons direction:MGSwipeDirectionRightToLeft differentWidth:_allowsButtonsWithDifferentWidth buttonsDistance:_rightSwipeSettings.buttonsDistance];
         _rightView.cell = self;
         _rightView.frame = CGRectMake(_swipeOverlay.bounds.size.width, _rightSwipeSettings.topMargin, _rightView.bounds.size.width, _swipeOverlay.bounds.size.height - _rightSwipeSettings.topMargin - _rightSwipeSettings.bottomMargin);
         _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
