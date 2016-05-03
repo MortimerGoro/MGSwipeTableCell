@@ -270,12 +270,12 @@
     }
 #pragma clang diagnostic pop
     
-    if (_cell.delegate && [_cell.delegate respondsToSelector:@selector(swipeTableCell:tappedButtonAtIndex:direction:fromExpansion:)]) {
+    if (_cell.delegate && [_cell.delegate respondsToSelector:@selector(swipeTableCell:didTapButtonAtIndex:direction:fromExpansion:)]) {
         NSInteger index = [_buttons indexOfObject:sender];
         if (!_fromLeft) {
             index = _buttons.count - index - 1; //right buttons are reversed
         }
-        autoHide|= [_cell.delegate swipeTableCell:_cell tappedButtonAtIndex:index direction:_fromLeft ? MGSwipeDirectionLeftToRight : MGSwipeDirectionRightToLeft fromExpansion:fromExpansion];
+        autoHide|= [_cell.delegate swipeTableCell:_cell didTapButtonAtIndex:index direction:_fromLeft ? MGSwipeDirectionLeftToRight : MGSwipeDirectionRightToLeft fromExpansion:fromExpansion];
     }
     
     if (fromExpansion && autoHide) {
