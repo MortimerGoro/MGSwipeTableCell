@@ -1188,6 +1188,11 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     else if (!_allowsOppositeSwipe && _firstSwipeState == MGSwipeStateSwipingRightToLeft && offset > 0 ) {
         offset = 0;
     }
+  
+    if (_firstSwipeState == MGSwipeStateSwipingLeftToRight)
+    {
+      offset = MIN(offset, CGRectGetWidth(buttons.frame));
+    }
     return offset;
 }
 
