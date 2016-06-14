@@ -4,7 +4,6 @@
  */
 
 #import "MGSwipeTableCell.h"
-#import "MOVOpaqueView.h"
 
 #pragma mark Input Overlay Helper Class
 /** Used to capture table input while swipe buttons are visible*/
@@ -55,7 +54,7 @@
 @implementation MGSwipeButtonsView
 {
     NSArray * _buttons;
-    MOVOpaqueView * _container;
+    UIView * _container;
     BOOL _fromLeft;
     UIView * _expandedButton;
     UIView * _expandedButtonAnimated;
@@ -85,9 +84,8 @@
     
     if (self = [super initWithFrame:CGRectMake(0, 0, containerWidth, maxSize.height)]) {
         _fromLeft = direction == MGSwipeDirectionLeftToRight;
-        _container = [[MOVOpaqueView alloc] initWithFrame:self.bounds];
+        _container = [[UIView alloc] initWithFrame:self.bounds];
         _container.clipsToBounds = YES;
-        _container.color = [(MGSwipeButton *)buttonsArray.firstObject backgroundColor];
         [self addSubview:_container];
         _buttons = _fromLeft ? buttonsArray: [[buttonsArray reverseObjectEnumerator] allObjects];
         for (UIView * button in _buttons) {
