@@ -54,17 +54,80 @@
     return [self buttonWithTitle: title icon: icon backgroundColor: color insets: insets callback: nil];
 }
 
-+ (instancetype) buttonWithTitle:(NSString *) title icon:(UIImage *) icon backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback
++ (instancetype) buttonWithTitle: (NSString *) title
+                            icon: (UIImage *) icon
+                 backgroundColor: (UIColor *) color
+                        callback: (MGSwipeButtonCallback) callback
 {
-    return [self buttonWithTitle: title icon: icon backgroundColor: color padding: 10 callback: callback];
+    return [self buttonWithTitle: title
+                            icon: icon
+                 backgroundColor: color
+                         padding: 10
+                        callback: callback];
 }
 
-+ (instancetype) buttonWithTitle: (NSString *) title icon:(UIImage *) icon backgroundColor: (UIColor *) color padding: (NSInteger) padding callback: (MGSwipeButtonCallback) callback
++ (instancetype) buttonWithTitle: (NSString *) title
+                            icon: (UIImage *) icon
+                 highlightedIcon: (UIImage *) highlightedIcon
+                 backgroundColor: (UIColor *) color
+                        callback: (MGSwipeButtonCallback) callback
 {
-    return [self buttonWithTitle: title icon: icon backgroundColor: color insets: UIEdgeInsetsMake(0, padding, 0, padding) callback: callback];
+  return [self buttonWithTitle: title
+                          icon: icon
+               highlightedIcon: highlightedIcon
+               backgroundColor: color
+                       padding: 10
+                      callback: callback];
 }
 
-+ (instancetype) buttonWithTitle: (NSString *) title icon: (UIImage *) icon backgroundColor: (UIColor *) color insets: (UIEdgeInsets) insets callback: (MGSwipeButtonCallback) callback
++ (instancetype) buttonWithTitle: (NSString *) title
+                            icon: (UIImage *) icon
+                 backgroundColor: (UIColor *) color
+                         padding: (NSInteger) padding
+                        callback: (MGSwipeButtonCallback) callback
+{
+    return [self buttonWithTitle: title
+                            icon: icon
+                 backgroundColor: color
+                          insets: UIEdgeInsetsMake(0, padding, 0, padding)
+                        callback: callback];
+}
+
++ (instancetype) buttonWithTitle: (NSString *) title
+                            icon: (UIImage *) icon
+                 highlightedIcon: (UIImage *) highlightedIcon
+                 backgroundColor: (UIColor *) color
+                         padding: (NSInteger) padding
+                        callback: (MGSwipeButtonCallback) callback
+{
+  return [self buttonWithTitle: title
+                          icon: icon
+               highlightedIcon: highlightedIcon
+               backgroundColor: color
+                        insets: UIEdgeInsetsMake(0, padding, 0, padding)
+                      callback: callback];
+}
+
++ (instancetype) buttonWithTitle: (NSString *) title
+                            icon: (UIImage *) icon
+                 backgroundColor: (UIColor *) color
+                          insets: (UIEdgeInsets) insets
+                        callback: (MGSwipeButtonCallback) callback
+{
+  return [self buttonWithTitle: title
+                          icon: icon
+               highlightedIcon: nil
+               backgroundColor: color
+                       insets: insets
+                      callback: callback];
+}
+
++ (instancetype) buttonWithTitle: (NSString *) title
+                            icon: (UIImage *) icon
+                 highlightedIcon: (UIImage *) highlightedIcon
+                 backgroundColor: (UIColor *) color
+                          insets: (UIEdgeInsets) insets
+                        callback: (MGSwipeButtonCallback) callback
 {
     MGSwipeButton * button = [self buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = color;
@@ -73,6 +136,11 @@
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setImage:icon forState:UIControlStateNormal];
+    if (highlightedIcon != nil)
+    {
+      [button setImage: highlightedIcon
+              forState: UIControlStateHighlighted];
+    }
     button.callback = callback;
     [button setEdgeInsets:insets];
     return button;
