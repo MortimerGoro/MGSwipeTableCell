@@ -24,6 +24,9 @@
 
 -(UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
+    if (event == nil) {
+        return nil;
+    }
     if (!_currentCell) {
         [self removeFromSuperview];
         return nil;
