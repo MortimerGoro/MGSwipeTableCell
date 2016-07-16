@@ -72,6 +72,25 @@
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.5] forState:UIControlStateHighlighted]; // added
+    [button setImage:icon forState:UIControlStateNormal];
+    button.callback = callback;
+    [button setEdgeInsets:insets];
+    return button;
+}
+
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) attributedTitle icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback // added
+{
+    MGSwipeButton * button = [self buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = color;
+    button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [button setAttributedTitle:attributedTitle forState:UIControlStateNormal]; // added
+    
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; // added
+    [button setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.5] forState:UIControlStateHighlighted]; // added
+
     [button setImage:icon forState:UIControlStateNormal];
     button.callback = callback;
     [button setEdgeInsets:insets];
