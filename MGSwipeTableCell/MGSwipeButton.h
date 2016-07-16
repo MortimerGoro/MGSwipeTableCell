@@ -8,7 +8,7 @@
 
 @class MGSwipeTableCell;
 
-/** 
+/**
  * This is a convenience class to create MGSwipeTableCell buttons
  * Using this class is optional because MGSwipeTableCell is button agnostic and can use any UIView for that purpose
  * Anyway, it's recommended that you use this class because is totally tested and easy to use ;)
@@ -25,7 +25,7 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 /** A width for the expanded buttons. Defaults to 0, which means sizeToFit will be called. */
 @property (nonatomic, assign) CGFloat buttonWidth;
 
-/** 
+/**
  * Convenience static constructors
  */
 +(instancetype) buttonWithTitle:(NSString *) title backgroundColor:(UIColor *) color;
@@ -54,7 +54,6 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback;
 +(instancetype) buttonWithAttributedTitle:(NSAttributedString *) attributedTitle icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback;
-+(instancetype) buttonWithIcon:(UIImage *)icon backgroundColor:(UIColor *)color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback;
 
 -(void) setPadding:(CGFloat) padding;
 -(void) setEdgeInsets:(UIEdgeInsets)insets;

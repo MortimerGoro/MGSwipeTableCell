@@ -124,23 +124,11 @@
 // MARK: Designated
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback
 {
-    MGSwipeButton * button = [MGSwipeButton buttonWithIcon:icon backgroundColor:color insets:insets callback:callback];
-    [button setTitle:title forState:UIControlStateNormal];
-    return button;
-}
-
-+(instancetype) buttonWithAttributedTitle:(NSAttributedString *) attributedTitle icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback
-{
-    MGSwipeButton * button = [MGSwipeButton buttonWithIcon:icon backgroundColor:color insets:insets callback:callback];
-    [button setAttributedTitle:attributedTitle forState:UIControlStateNormal];
-    return button;
-}
-
-+(instancetype) buttonWithIcon:(UIImage *)icon backgroundColor:(UIColor *)color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback {
     MGSwipeButton * button = [self buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = color;
     button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.5] forState:UIControlStateHighlighted];
     [button setImage:icon forState:UIControlStateNormal];
@@ -150,7 +138,23 @@
     return button;
 }
 
-// MARK: 
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) attributedTitle icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback
+{
+    MGSwipeButton * button = [self buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = color;
+    button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [button setAttributedTitle:attributedTitle forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithWhite:1.0 alpha:0.5] forState:UIControlStateHighlighted];
+    [button setImage:icon forState:UIControlStateNormal];
+    [button setImage:icon forState:UIControlStateHighlighted];
+    button.callback = callback;
+    [button setEdgeInsets:insets];
+    return button;
+}
+
+// MARK:
 
 -(BOOL) callMGSwipeConvenienceCallback: (MGSwipeTableCell *) sender
 {
@@ -166,16 +170,16 @@
 }
 
 -(void) centerIconOverTextWithSpacing: (CGFloat) spacing {
-	CGSize size = self.imageView.image.size;
-	self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
-											-size.width,
-											-(size.height + spacing),
-											0.0);
-	size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName: self.titleLabel.font }];
-	self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + spacing),
-											0.0,
-											0.0,
-											-size.width);
+    CGSize size = self.imageView.image.size;
+    self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                            -size.width,
+                                            -(size.height + spacing),
+                                            0.0);
+    size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName: self.titleLabel.font }];
+    self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + spacing),
+                                            0.0,
+                                            0.0,
+                                            -size.width);
 }
 
 -(void) setPadding:(CGFloat) padding
