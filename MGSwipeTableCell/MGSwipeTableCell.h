@@ -60,10 +60,13 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
  * Swipe animation settings
  **/
 @interface MGSwipeAnimation : NSObject
+
 /** Animation duration in seconds. Default value 0.3 */
 @property (nonatomic, assign) CGFloat duration;
+
 /** Animation easing function. Default value EaseOutBounce */
 @property (nonatomic, assign) MGSwipeEasingFunction easingFunction;
+
 /** Override this method to implement custom easing functions */
 -(CGFloat) value:(CGFloat) elapsed duration:(CGFloat) duration from:(CGFloat) from to:(CGFloat) to;
 
@@ -73,23 +76,30 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
  * Swipe settings
  **/
 @interface MGSwipeSettings: NSObject
+
 /** Transition used while swiping buttons */
 @property (nonatomic, assign) MGSwipeTransition transition;
+
 /** Size proportional threshold to hide/keep the buttons when the user ends swiping. Default value 0.5 */
 @property (nonatomic, assign) CGFloat threshold;
-/** Optional offset to change the swipe buttons position. Relative to the cell border position. Default value: 0 
+
+/** Optional offset to change the swipe buttons position. Relative to the cell border position. Default value: 0
  ** For example it can be used to avoid cropped buttons when sectionIndexTitlesForTableView is used in the UITableView
  **/
 @property (nonatomic, assign) CGFloat offset;
+
 /** Top margin of the buttons relative to the contentView */
 @property (nonatomic, assign) CGFloat topMargin;
+
 /** Bottom margin of the buttons relative to the contentView */
 @property (nonatomic, assign) CGFloat bottomMargin;
 
 /** Animation settings when the swipe buttons are shown */
 @property (nonatomic, strong) MGSwipeAnimation * showAnimation;
+
 /** Animation settings when the swipe buttons are hided */
 @property (nonatomic, strong) MGSwipeAnimation * hideAnimation;
+
 /** Animation settings when the cell is stretched from the swipe buttons */
 @property (nonatomic, strong) MGSwipeAnimation * stretchAnimation;
 
@@ -115,16 +125,22 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
  * Swipe button are not expandable by default
  **/
 @interface MGSwipeExpansionSettings: NSObject
+
 /** index of the expandable button (in the left or right buttons arrays) */
 @property (nonatomic, assign) NSInteger buttonIndex;
+
 /** if true the button fills the cell on trigger, else it bounces back to its initial position */
 @property (nonatomic, assign) BOOL fillOnTrigger;
+
 /** Size proportional threshold to trigger the expansion button. Default value 1.5 */
 @property (nonatomic, assign) CGFloat threshold;
+
 /** Optional expansion color. Expanded button's background color is used by default **/
 @property (nonatomic, strong) UIColor * expansionColor;
+
 /** Defines the layout of the expanded button **/
 @property (nonatomic, assign) MGSwipeExpansionLayout expansionLayout;
+
 /** Animation settings when the expansion is triggered **/
 @property (nonatomic, strong) MGSwipeAnimation * triggerAnimation;
 
@@ -132,6 +148,7 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
  * The target animation is the change of a button from normal state to expanded state
  */
 @property (nonatomic, assign) CGFloat animationDuration;
+
 @end
 
 
@@ -226,25 +243,35 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 
 /** Readonly property to fetch the current swipe state */
 @property (nonatomic, readonly) MGSwipeState swipeState;
+
 /** Readonly property to check if the user swipe gesture is currently active */
 @property (nonatomic, readonly) BOOL isSwipeGestureActive;
 
 // default is NO. Controls whether multiple cells can be swiped simultaneously
 @property (nonatomic) BOOL allowsMultipleSwipe;
+
 // default is NO. Controls whether buttons with different width are allowed. Buttons are resized to have the same size by default.
 @property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
+
 //default is YES. Controls whether swipe gesture is allowed when the touch starts into the swiped buttons
 @property (nonatomic) BOOL allowsSwipeWhenTappingButtons;
+
 //default is YES. Controls whether swipe gesture is allowed in opposite directions. NO value disables swiping in opposite direction once started in one direction
 @property (nonatomic) BOOL allowsOppositeSwipe;
+
 // default is NO.  Controls whether the cell selection/highlight status is preserved when expansion occurs
 @property (nonatomic) BOOL preservesSelectionStatus;
+
+/* default is NO. Controls whether the actions should take the width of the screen. When not enabled, the behaviour of calculation of cell widths stay the same. When enabled, every action button will be the same size. */
+@property (nonatomic) BOOL stretchToScreenWidth;
+
 /* default is NO. Controls whether dismissing a swiped cell when tapping outside of the cell generates a real touch event on the other cell.
  Default behaviour is the same as the Mail app on iOS. Enable it if you want to allow to start a new swipe while a cell is already in swiped in a single step.  */
 @property (nonatomic) BOOL touchOnDismissSwipe;
 
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
+
 /** Property to read or change the current swipe offset programmatically */
 @property (nonatomic, assign) CGFloat swipeOffset;
 
