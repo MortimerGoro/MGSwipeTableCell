@@ -39,10 +39,22 @@ typedef BOOL(^MGSwipeButtonCallback)(MGSwipeTableCell * sender);
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets;
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback;
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding callback:(MGSwipeButtonCallback) callback;
+
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title backgroundColor:(UIColor *) color;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title backgroundColor:(UIColor *) color padding:(NSInteger) padding;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title backgroundColor:(UIColor *) color padding:(NSInteger) padding callback:(MGSwipeButtonCallback) callback;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color callback:(MGSwipeButtonCallback) callback;
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color padding:(NSInteger) padding callback:(MGSwipeButtonCallback) callback;
+
 +(instancetype) buttonWithTitle:(NSString *) title icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback;
-
-
-+(instancetype) buttonWithAttributedTitle:(NSAttributedString *) attributedTitle icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback; // added
++(instancetype) buttonWithAttributedTitle:(NSAttributedString *) attributedTitle icon:(UIImage*) icon backgroundColor:(UIColor *) color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback;
++(instancetype) buttonWithIcon:(UIImage *)icon backgroundColor:(UIColor *)color insets:(UIEdgeInsets) insets callback:(MGSwipeButtonCallback) callback;
 
 -(void) setPadding:(CGFloat) padding;
 -(void) setEdgeInsets:(UIEdgeInsets)insets;
