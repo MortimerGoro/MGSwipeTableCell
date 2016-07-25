@@ -73,6 +73,8 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
  * Swipe settings
  **/
 @interface MGSwipeSettings: NSObject
+/** If false no swipe during editing mode ON. Also swipe is canceled on switching on editing mode. Default value false */
+@property (nonatomic, assign) BOOL allowSwipeDuringEditing;
 /** Transition used while swiping buttons */
 @property (nonatomic, assign) MGSwipeTransition transition;
 /** Size proportional threshold to hide/keep the buttons when the user ends swiping. Default value 0.5 */
@@ -169,7 +171,7 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
  * Delegate method to setup the swipe buttons and swipe/expansion settings
  * Buttons can be any kind of UIView but it's recommended to use the convenience MGSwipeButton class
  * Setting up buttons with this delegate instead of using cell properties improves memory usage because buttons are only created in demand
- * @param swipeTableCell the UITableVieCel to configure. You can get the indexPath using [tableView indexPathForCell:cell]
+ * @param swipeTableCell the UITableViewCell to configure. You can get the indexPath using [tableView indexPathForCell:cell]
  * @param direction The swipe direction (left to right or right to left)
  * @param swipeSettings instance to configure the swipe transition and setting (optional)
  * @param expansionSettings instance to configure button expansions (optional)

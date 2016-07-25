@@ -42,7 +42,7 @@
     if (hide) {
         [_currentCell hideSwipeAnimated:YES];
     }
-    return _currentCell.touchOnDismissSwipe ? nil : self;;
+    return _currentCell.touchOnDismissSwipe ? nil : self;
 }
 
 @end
@@ -89,7 +89,6 @@
         _fromLeft = direction == MGSwipeDirectionLeftToRight;
         _container = [[UIView alloc] initWithFrame:self.bounds];
         _container.clipsToBounds = YES;
-        _container.backgroundColor = [UIColor clearColor];
         [self addSubview:_container];
         _buttons = _fromLeft ? buttonsArray: [[buttonsArray reverseObjectEnumerator] allObjects];
         for (UIView * button in _buttons) {
@@ -513,16 +512,16 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     CGFloat (*easingFunction)(CGFloat t, CGFloat b, CGFloat c) = 0;
     switch (_easingFunction) {
         case MGSwipeEasingFunctionLinear: easingFunction = mgEaseLinear; break;
-        case MGSwipeEasingFunctionQuadIn: easingFunction = mgEaseInQuad;;break;
-        case MGSwipeEasingFunctionQuadOut: easingFunction = mgEaseOutQuad;;break;
-        case MGSwipeEasingFunctionQuadInOut: easingFunction = mgEaseInOutQuad;break;
-        case MGSwipeEasingFunctionCubicIn: easingFunction = mgEaseInCubic;break;
+        case MGSwipeEasingFunctionQuadIn: easingFunction = mgEaseInQuad; break;
+        case MGSwipeEasingFunctionQuadOut: easingFunction = mgEaseOutQuad; break;
+        case MGSwipeEasingFunctionQuadInOut: easingFunction = mgEaseInOutQuad; break;
+        case MGSwipeEasingFunctionCubicIn: easingFunction = mgEaseInCubic; break;
         default:
-        case MGSwipeEasingFunctionCubicOut: easingFunction = mgEaseOutCubic;break;
-        case MGSwipeEasingFunctionCubicInOut: easingFunction = mgEaseInOutCubic;break;
-        case MGSwipeEasingFunctionBounceIn: easingFunction = mgEaseInBounce;break;
-        case MGSwipeEasingFunctionBounceOut: easingFunction = mgEaseOutBounce;break;
-        case MGSwipeEasingFunctionBounceInOut: easingFunction = mgEaseInOutBounce;break;
+        case MGSwipeEasingFunctionCubicOut: easingFunction = mgEaseOutCubic; break;
+        case MGSwipeEasingFunctionCubicInOut: easingFunction = mgEaseInOutCubic; break;
+        case MGSwipeEasingFunctionBounceIn: easingFunction = mgEaseInBounce; break;
+        case MGSwipeEasingFunctionBounceOut: easingFunction = mgEaseOutBounce; break;
+        case MGSwipeEasingFunctionBounceInOut: easingFunction = mgEaseInOutBounce; break;
     }
     return (*easingFunction)(t, from, to - from);
 }
@@ -856,7 +855,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 -(void) setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
-    if (editing) { //disable swipe buttons when the user sets table editing mode
+    if (editing && self.cancelsSwipeOnEditing) { //disable swipe buttons when the user sets table editing mode
         self.swipeOffset = 0;
     }
 }
@@ -864,7 +863,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 -(void) setEditing:(BOOL)editing
 {
     [super setEditing:YES];
-    if (editing) { //disable swipe buttons when the user sets table editing mode
+    if (editing && self.cancelsSwipeOnEditing) { //disable swipe buttons when the user sets table editing mode
         self.swipeOffset = 0;
     }
 }
@@ -963,6 +962,11 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:didChangeSwipeState:gestureIsActive:)]) {
         [_delegate swipeTableCell:self didChangeSwipeState:_swipeState gestureIsActive: self.isSwipeGestureActive] ;
     }
+}
+
+- (BOOL) cancelsSwipeOnEditing
+{
+  return !self.leftSwipeSettings.allowSwipeDuringEditing && !self.rightSwipeSettings.allowSwipeDuringEditing;
 }
 
 #pragma mark Swipe Animation
@@ -1185,6 +1189,11 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     else if (!_allowsOppositeSwipe && _firstSwipeState == MGSwipeStateSwipingRightToLeft && offset > 0 ) {
         offset = 0;
     }
+  
+    if (_firstSwipeState == MGSwipeStateSwipingLeftToRight)
+    {
+      offset = MIN(offset, CGRectGetWidth(buttons.frame));
+    }
     return offset;
 }
 
@@ -1274,7 +1283,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     
     if (gestureRecognizer == _panRecognizer) {
         
-        if (self.isEditing) {
+        if (self.isEditing && self.cancelsSwipeOnEditing) {
             return NO; //do not swipe while editing table
         }
         
