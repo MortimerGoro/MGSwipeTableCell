@@ -71,17 +71,28 @@
 
 #pragma mark Layout
 
--(instancetype) initWithButtons:(NSArray*) buttonsArray direction:(MGSwipeDirection) direction differentWidth:(BOOL) differentWidth
+-(instancetype) initWithButtons:(NSArray*) buttonsArray
+                      direction:(MGSwipeDirection) direction
+                 differentWidth:(BOOL) differentWidth
+             stretchToScreenWidth:(BOOL) stretchToScreenWidth
 {
     CGFloat containerWidth = 0;
     CGSize maxSize = CGSizeZero;
-
+    
+    if (stretchToScreenWidth) {
+        maxSize.width = [UIScreen mainScreen].bounds.size.width / [@([buttonsArray count]) doubleValue];
+        containerWidth = [UIScreen mainScreen].bounds.size.width;
+    }
+    
     for (UIView * button in buttonsArray) {
-        containerWidth += button.bounds.size.width;
-        maxSize.width = MAX(maxSize.width, button.bounds.size.width);
+        if (!stretchToScreenWidth) {
+            containerWidth += button.bounds.size.width;
+            maxSize.width = MAX(maxSize.width, button.bounds.size.width);
+        }
         maxSize.height = MAX(maxSize.height, button.bounds.size.height);
     }
-    if (!differentWidth) {
+    
+    if (!stretchToScreenWidth && !differentWidth) {
         containerWidth = maxSize.width * buttonsArray.count;
     }
     
@@ -95,7 +106,9 @@
         for (UIView * button in _buttons) {
             if ([button isKindOfClass:[UIButton class]]) {
                 UIButton * btn = (UIButton*)button;
-                [btn removeTarget:nil action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside]; //Remove all targets to avoid problems with reused buttons among many cells
+                
+                //Remove all targets to avoid problems with reused buttons among many cells
+                [btn removeTarget:nil action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [btn addTarget:self action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
             if (!differentWidth) {
@@ -712,14 +725,14 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     
     [self fetchButtonsIfNeeded];
     if (!_leftView && _leftButtons.count > 0) {
-        _leftView = [[MGSwipeButtonsView alloc] initWithButtons:_leftButtons direction:MGSwipeDirectionLeftToRight differentWidth:_allowsButtonsWithDifferentWidth];
+        _leftView = [[MGSwipeButtonsView alloc] initWithButtons:_leftButtons direction:MGSwipeDirectionLeftToRight differentWidth:_allowsButtonsWithDifferentWidth stretchToScreenWidth:_stretchToScreenWidth];
         _leftView.cell = self;
         _leftView.frame = CGRectMake(-_leftView.bounds.size.width, _leftSwipeSettings.topMargin, _leftView.bounds.size.width, _swipeOverlay.bounds.size.height - _leftSwipeSettings.topMargin - _leftSwipeSettings.bottomMargin);
         _leftView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_leftView];
     }
     if (!_rightView && _rightButtons.count > 0) {
-        _rightView = [[MGSwipeButtonsView alloc] initWithButtons:_rightButtons direction:MGSwipeDirectionRightToLeft differentWidth:_allowsButtonsWithDifferentWidth];
+        _rightView = [[MGSwipeButtonsView alloc] initWithButtons:_rightButtons direction:MGSwipeDirectionRightToLeft differentWidth:_allowsButtonsWithDifferentWidth stretchToScreenWidth:_stretchToScreenWidth];
         _rightView.cell = self;
         _rightView.frame = CGRectMake(_swipeOverlay.bounds.size.width, _rightSwipeSettings.topMargin, _rightView.bounds.size.width, _swipeOverlay.bounds.size.height - _rightSwipeSettings.topMargin - _rightSwipeSettings.bottomMargin);
         _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
