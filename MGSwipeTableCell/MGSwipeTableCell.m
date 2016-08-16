@@ -1221,7 +1221,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     else {
         MGSwipeButtonsView * expansion = _activeExpansion;
         if (expansion) {
-            UIView * expandedButton = [expansion getExpandedButton];
+            __weak UIView * expandedButton = [expansion getExpandedButton];
             MGSwipeExpansionSettings * expSettings = _swipeOffset > 0 ? _leftExpansion : _rightExpansion;
             UIColor * backgroundColor = nil;
             if (!expSettings.fillOnTrigger && expSettings.expansionColor) {
