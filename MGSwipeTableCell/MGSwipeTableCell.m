@@ -1105,8 +1105,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         [timer invalidate];
         _displayLink = nil;
         if (_animationCompletion) {
-            _animationCompletion(YES);
+            void (^callbackCopy)(BOOL finished) = _animationCompletion; //copy to avoid duplicated callbacks
             _animationCompletion = nil;
+            callbackCopy(YES);
         }
     }
 }
@@ -1123,8 +1124,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _displayLink = nil;
     }
     if (_animationCompletion) { //notify previous animation cancelled
-        _animationCompletion(NO);
+        void (^callbackCopy)(BOOL finished) = _animationCompletion; //copy to avoid duplicated callbacks
         _animationCompletion = nil;
+        callbackCopy(NO);
     }
     if (offset !=0) {
         [self createSwipeViewIfNeeded];
