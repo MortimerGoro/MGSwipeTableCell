@@ -1340,4 +1340,19 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
+#pragma mark Accessibility
+
+- (NSInteger)accessibilityElementCount {
+    return _swipeOffset == 0 ? [super accessibilityElementCount] : 1;
+}
+
+- (id)accessibilityElementAtIndex:(NSInteger)index {
+    return _swipeOffset == 0  ? [super accessibilityElementAtIndex:index] : self.contentView;
+}
+
+- (NSInteger)indexOfAccessibilityElement:(id)element {
+    return _swipeOffset == 0  ? [super indexOfAccessibilityElement:element] : 0;
+}
+
+
 @end
