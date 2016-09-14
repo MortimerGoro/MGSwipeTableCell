@@ -86,8 +86,12 @@
     return NO;
 }
 
--(void) centerIconOverText {
-	const CGFloat spacing = 3.0;
+-(void) centerIconOverText
+{
+    [self centerIconOverTextWithSpacing: 3.0];
+}
+
+-(void) centerIconOverTextWithSpacing: (CGFloat) spacing {
 	CGSize size = self.imageView.image.size;
 	self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
 											-size.width,
@@ -125,6 +129,16 @@
 {
     self.contentEdgeInsets = insets;
     [self sizeToFit];
+}
+
+-(void) iconTintColor:(UIColor *)tintColor
+{
+    UIImage *currentIcon = self.imageView.image;
+    if (currentIcon.renderingMode != UIImageRenderingModeAlwaysTemplate) {
+        currentIcon = [currentIcon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self setImage:currentIcon forState:UIControlStateNormal];
+    }
+    self.tintColor = tintColor;
 }
 
 @end

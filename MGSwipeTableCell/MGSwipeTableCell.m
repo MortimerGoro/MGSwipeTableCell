@@ -24,8 +24,15 @@
 
 -(UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
+    if (event == nil) {
+        return nil;
+    }
+    if (!_currentCell) {
+        [self removeFromSuperview];
+        return nil;
+    }
     CGPoint p = [self convertPoint:point toView:_currentCell];
-    if (_currentCell && CGRectContainsPoint(_currentCell.bounds, p)) {
+    if (_currentCell && (_currentCell.hidden || CGRectContainsPoint(_currentCell.bounds, p))) {
         return nil;
     }
     BOOL hide = YES;
@@ -35,7 +42,7 @@
     if (hide) {
         [_currentCell hideSwipeAnimated:YES];
     }
-    return nil; //return nil to allow swiping a new cell while the current one is hidding
+    return _currentCell.touchOnDismissSwipe ? nil : self;
 }
 
 @end
@@ -87,8 +94,8 @@
         _buttons = _fromLeft ? buttonsArray: [[buttonsArray reverseObjectEnumerator] allObjects];
         for (UIView * button in _buttons) {
             if ([button isKindOfClass:[UIButton class]]) {
-                [(UIButton *)button removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
-                [(UIButton *)button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [btn removeTarget:nil action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside]; //Remove all targets to avoid problems with reused buttons among many cells
+                [btn addTarget:self action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
             if (!differentWidth) {
                 button.frame = CGRectMake(0, 0, maxSize.width, maxSize.height);
@@ -105,7 +112,7 @@
 {
     for (UIView * button in _buttons) {
         if ([button isKindOfClass:[UIButton class]]) {
-            [(UIButton *)button removeTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [(UIButton *)button removeTarget:self action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
 }
@@ -186,7 +193,7 @@
         _expansionLayout = settings.expansionLayout;
         
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
-        [UIView animateWithDuration: duration animations:^{
+        [UIView animateWithDuration: duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             _expandedButton.hidden = NO;
 
             if (_expansionLayout == MGSwipeExpansionLayoutCenter) {
@@ -214,7 +221,7 @@
     [self layoutExpansion:offset];
 }
 
--(void) endExpansioAnimated:(BOOL) animated
+-(void) endExpansionAnimated:(BOOL) animated
 {
     if (_expandedButton) {
         _expandedButtonAnimated = _expandedButton;
@@ -230,7 +237,7 @@
             _backgroundColorCopy = nil;
         }
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
-        [UIView animateWithDuration: animated ? duration : 0.0 animations:^{
+        [UIView animateWithDuration: animated ? duration : 0.0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             _container.frame = self.bounds;
             if (_expansionLayout == MGSwipeExpansionLayoutCenter) {
                 _expandedButtonAnimated.frame = _expandedButtonBoundsCopy;
@@ -285,7 +292,7 @@
 
 }
 //button listener
--(void) buttonClicked: (id) sender
+-(void) mgButtonClicked: (id) sender
 {
     [self handleClick:sender fromExpansion:NO];
 }
@@ -387,6 +394,7 @@
         self.threshold = 0.5;
         self.offset = 0;
         self.keepButtonsSwiped = YES;
+        self.enableSwipeBounces = YES;
         self.showAnimation = [[MGSwipeAnimation alloc] init];
         self.hideAnimation = [[MGSwipeAnimation alloc] init];
         self.stretchAnimation = [[MGSwipeAnimation alloc] init];
@@ -503,9 +511,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
     CGFloat (*easingFunction)(CGFloat t, CGFloat b, CGFloat c) = 0;
     switch (_easingFunction) {
-        case MGSwipeEasingFunctionLinear: easingFunction = mgEaseLinear; break;
-        case MGSwipeEasingFunctionQuadIn: easingFunction = mgEaseInQuad;;break;
-        case MGSwipeEasingFunctionQuadOut: easingFunction = mgEaseOutQuad;;break;
+        case MGSwipeEasingFunctionLinear: easingFunction = mgEaseLinear;break;
+        case MGSwipeEasingFunctionQuadIn: easingFunction = mgEaseInQuad;break;
+        case MGSwipeEasingFunctionQuadOut: easingFunction = mgEaseOutQuad;break;
         case MGSwipeEasingFunctionQuadInOut: easingFunction = mgEaseInOutQuad;break;
         case MGSwipeEasingFunctionCubicIn: easingFunction = mgEaseInCubic;break;
         default:
@@ -548,8 +556,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     BOOL _triggerStateChanges;
     
     MGSwipeAnimationData * _animationData;
-    void (^_animationCompletion)();
+    void (^_animationCompletion)(BOOL finished);
     CADisplayLink * _displayLink;
+    MGSwipeState _firstSwipeState;
 }
 
 #pragma mark View creation & layout
@@ -573,6 +582,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void) awakeFromNib
 {
+    [super awakeFromNib];
     if (!_panRecognizer) {
         [self initViews:YES];
     }
@@ -603,6 +613,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     _triggerStateChanges = YES;
     _allowsSwipeWhenTappingButtons = YES;
     _preservesSelectionStatus = NO;
+    _allowsOppositeSwipe = YES;
+    _firstSwipeState = MGSwipeStateNone;
+    
 }
 
 -(void) cleanViews
@@ -621,6 +634,28 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _panRecognizer.delegate = nil;
         [self removeGestureRecognizer:_panRecognizer];
         _panRecognizer = nil;
+    }
+}
+
+-(BOOL) isRTLLocale
+{
+    if ([[UIView class] respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+        return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft;
+    }
+#ifndef TARGET_IS_EXTENSION
+    else {
+        return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+    }
+#else
+    return NO;
+#endif
+}
+
+-(void) fixRegionAndAccesoryViews
+{
+    //Fix right to left layout direction for arabic and hebrew languagues
+    if (self.bounds.size.width != self.contentView.bounds.size.width && [self isRTLLocale]) {
+        _swipeOverlay.frame = CGRectMake(-self.bounds.size.width + self.contentView.bounds.size.width, 0, _swipeOverlay.bounds.size.width, _swipeOverlay.bounds.size.height);
     }
 }
 
@@ -645,6 +680,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (_swipeOverlay) {
         CGSize prevSize = _swipeView.bounds.size;
         _swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height);
+        [self fixRegionAndAccesoryViews];
         if (_swipeView.image &&  !CGSizeEqualToSize(prevSize, _swipeOverlay.bounds.size)) {
             //refresh contentView in situations like layout change, orientation chage, table resize, etc.
             [self refreshContentView];
@@ -666,6 +702,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 {
     if (!_swipeOverlay) {
         _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height)];
+        [self fixRegionAndAccesoryViews];
         _swipeOverlay.hidden = YES;
         _swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
         _swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
@@ -680,16 +717,16 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     [self fetchButtonsIfNeeded];
     if (!_leftView && _leftButtons.count > 0) {
         _leftView = [[MGSwipeButtonsView alloc] initWithButtons:_leftButtons direction:MGSwipeDirectionLeftToRight differentWidth:_allowsButtonsWithDifferentWidth];
-        _leftView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         _leftView.cell = self;
-        _leftView.frame = CGRectMake(-_leftView.bounds.size.width, 0, _leftView.bounds.size.width, _swipeOverlay.bounds.size.height);
+        _leftView.frame = CGRectMake(-_leftView.bounds.size.width, _leftSwipeSettings.topMargin, _leftView.bounds.size.width, _swipeOverlay.bounds.size.height - _leftSwipeSettings.topMargin - _leftSwipeSettings.bottomMargin);
+        _leftView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_leftView];
     }
     if (!_rightView && _rightButtons.count > 0) {
         _rightView = [[MGSwipeButtonsView alloc] initWithButtons:_rightButtons direction:MGSwipeDirectionRightToLeft differentWidth:_allowsButtonsWithDifferentWidth];
-        _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         _rightView.cell = self;
-        _rightView.frame = CGRectMake(_swipeOverlay.bounds.size.width, 0, _rightView.bounds.size.width, _swipeOverlay.bounds.size.height);
+        _rightView.frame = CGRectMake(_swipeOverlay.bounds.size.width, _rightSwipeSettings.topMargin, _rightView.bounds.size.width, _swipeOverlay.bounds.size.height - _rightSwipeSettings.topMargin - _rightSwipeSettings.bottomMargin);
+        _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_rightView];
     }
 }
@@ -717,6 +754,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (!_allowsMultipleSwipe) {
         //input overlay on the whole table
         UITableView * table = [self parentTable];
+        if (_tableInputOverlay) {
+            [_tableInputOverlay removeFromSuperview];
+        }
         _tableInputOverlay = [[MGSwipeTableInputOverlay alloc] initWithFrame:table.bounds];
         _tableInputOverlay.currentCell = self;
         [table addSubview:_tableInputOverlay];
@@ -753,6 +793,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     self.selectionStyle = _previusSelectionStyle;
     NSArray * selectedRows = self.parentTable.indexPathsForSelectedRows;
     if ([selectedRows containsObject:[self.parentTable indexPathForCell:self]]) {
+        self.selected = NO; //Hack: in some iOS versions setting the selected property to YES own isn't enough to force the cell to redraw the chosen selectionStyle
         self.selected = YES;
     }
     [self setAccesoryViewsHidden:NO];
@@ -834,7 +875,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
-    if (_swipeOverlay && !_swipeOverlay.hidden) {
+    if (!self.hidden && _swipeOverlay && !_swipeOverlay.hidden) {
         //override hitTest to give swipe buttons a higher priority (diclosure buttons can steal input)
         UIView * targets[] = {_leftView, _rightView};
         for (int i = 0; i< 2; ++i) {
@@ -932,17 +973,25 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 - (void)setSwipeOffset:(CGFloat) newOffset;
 {
-    _swipeOffset = newOffset;
-    
     CGFloat sign = newOffset > 0 ? 1.0 : -1.0;
-    CGFloat offset = fabs(newOffset);
-    
     MGSwipeButtonsView * activeButtons = sign < 0 ? _rightView : _leftView;
+    MGSwipeSettings * activeSettings = sign < 0 ? _rightSwipeSettings : _leftSwipeSettings;
+  
+    if(activeSettings.enableSwipeBounces) {
+        _swipeOffset = newOffset;
+    }
+    else {
+        CGFloat maxOffset = sign * activeButtons.bounds.size.width;
+        _swipeOffset = sign > 0 ? MIN(newOffset, maxOffset) : MAX(newOffset, maxOffset);
+    }
+    CGFloat offset = fabs(_swipeOffset);
+  
+  
     if (!activeButtons || offset == 0) {
         if (_leftView)
-            [_leftView endExpansioAnimated:NO];
+            [_leftView endExpansionAnimated:NO];
         if (_rightView)
-            [_rightView endExpansioAnimated:NO];
+            [_rightView endExpansionAnimated:NO];
         [self hideSwipeOverlayIfNeeded];
         _targetOffset = 0;
         [self updateState:MGSwipeStateNone];
@@ -950,13 +999,13 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
     else {
         [self showSwipeOverlayIfNeeded];
-        CGFloat swipeThreshold = sign < 0 ? _rightSwipeSettings.threshold : _leftSwipeSettings.threshold;
-        BOOL keepButtons = sign < 0 ? _rightSwipeSettings.keepButtonsSwiped : _leftSwipeSettings.keepButtonsSwiped;
+        CGFloat swipeThreshold = activeSettings.threshold;
+        BOOL keepButtons = activeSettings.keepButtonsSwiped;
         _targetOffset = keepButtons && offset > activeButtons.bounds.size.width * swipeThreshold ? activeButtons.bounds.size.width * sign : 0;
     }
     
-    BOOL onlyButtons = sign < 0 ? _rightSwipeSettings.onlySwipeButtons : _leftSwipeSettings.onlySwipeButtons;
-    _swipeView.transform = CGAffineTransformMakeTranslation(onlyButtons ? 0 : newOffset, 0);
+    BOOL onlyButtons = activeSettings.onlySwipeButtons;
+    _swipeView.transform = CGAffineTransformMakeTranslation(onlyButtons ? 0 : _swipeOffset, 0);
     
     //animate existing buttons
     MGSwipeButtonsView* but[2] = {_leftView, _rightView};
@@ -980,7 +1029,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             [self updateState:i ? MGSwipeStateExpandingRightToLeft : MGSwipeStateExpandingLeftToRight];
         }
         else {
-            [view endExpansioAnimated:YES];
+            [view endExpansionAnimated:YES];
             _activeExpansion = nil;
             CGFloat t = MIN(1.0f, offset/view.bounds.size.width);
             [view transition:settings[i].transition percent:t];
@@ -989,7 +1038,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
--(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)()) completion
+-(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)(BOOL finished)) completion
 {
     MGSwipeAnimation * animation = animated ? (_swipeOffset > 0 ? _leftSwipeSettings.hideAnimation: _rightSwipeSettings.hideAnimation) : nil;
     [self setSwipeOffset:0 animation:animation completion:completion];
@@ -1005,7 +1054,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     [self showSwipe:direction animated:animated completion:nil];
 }
 
--(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)()) completion
+-(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)(BOOL finished)) completion
 {
     [self createSwipeViewIfNeeded];
     _allowSwipeLeftToRight = _leftButtons.count > 0;
@@ -1034,8 +1083,8 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         if (buttonsView) {
             __weak MGSwipeButtonsView * expansionView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
             __weak MGSwipeTableCell * weakself = self;
-            [self setSwipeOffset:buttonsView.bounds.size.width * s * expSetting.threshold * 2 animation:expSetting.triggerAnimation completion:^{
-                [expansionView endExpansioAnimated:YES];
+            [self setSwipeOffset:buttonsView.bounds.size.width * s * expSetting.threshold * 2 animation:expSetting.triggerAnimation completion:^(BOOL finished){
+                [expansionView endExpansionAnimated:YES];
                 [weakself setSwipeOffset:0 animated:NO completion:nil];
             }];
         }
@@ -1059,29 +1108,42 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         [timer invalidate];
         _displayLink = nil;
         if (_animationCompletion) {
-            _animationCompletion();
+            void (^callbackCopy)(BOOL finished) = _animationCompletion; //copy to avoid duplicated callbacks
+            _animationCompletion = nil;
+            callbackCopy(YES);
         }
     }
 }
--(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)()) completion
+-(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)(BOOL finished)) completion
 {
     MGSwipeAnimation * animation = animated ? [[MGSwipeAnimation alloc] init] : nil;
     [self setSwipeOffset:offset animation:animation completion:completion];
 }
 
--(void) setSwipeOffset:(CGFloat)offset animation: (MGSwipeAnimation *) animation completion:(void(^)()) completion
+-(void) setSwipeOffset:(CGFloat)offset animation: (MGSwipeAnimation *) animation completion:(void(^)(BOOL finished)) completion
 {
-    _animationCompletion = completion;
     if (_displayLink) {
         [_displayLink invalidate];
         _displayLink = nil;
     }
+    if (_animationCompletion) { //notify previous animation cancelled
+        void (^callbackCopy)(BOOL finished) = _animationCompletion; //copy to avoid duplicated callbacks
+        _animationCompletion = nil;
+        callbackCopy(NO);
+    }
+    if (offset !=0) {
+        [self createSwipeViewIfNeeded];
+    }
     
     if (!animation) {
         self.swipeOffset = offset;
+        if (completion) {
+            completion(YES);
+        }
         return;
     }
     
+    _animationCompletion = completion;
     _triggerStateChanges = NO;
     _animationData.from = _swipeOffset;
     _animationData.to = offset;
@@ -1123,6 +1185,12 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (!buttons || ! allowed) {
         offset = 0;
     }
+    else if (!_allowsOppositeSwipe && _firstSwipeState == MGSwipeStateSwipingLeftToRight && offset < 0) {
+        offset = 0;
+    }
+    else if (!_allowsOppositeSwipe && _firstSwipeState == MGSwipeStateSwipingRightToLeft && offset > 0 ) {
+        offset = 0;
+    }
     return offset;
 }
 
@@ -1136,6 +1204,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         [self createSwipeViewIfNeeded];
         _panStartPoint = current;
         _panStartOffset = _swipeOffset;
+        if (_swipeOffset != 0) {
+            _firstSwipeState = _swipeOffset > 0 ? MGSwipeStateSwipingLeftToRight : MGSwipeStateSwipingRightToLeft;
+        }
         
         if (!_allowsMultipleSwipe) {
             NSArray * cells = [self parentTable].visibleCells;
@@ -1148,6 +1219,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
     else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGFloat offset = _panStartOffset + current.x - _panStartPoint.x;
+        if (_firstSwipeState == MGSwipeStateNone) {
+            _firstSwipeState = offset > 0 ? MGSwipeStateSwipingLeftToRight : MGSwipeStateSwipingRightToLeft;
+        }
         self.swipeOffset = [self filterSwipe:offset];
     }
     else {
@@ -1160,10 +1234,13 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
                 backgroundColor = expansion.backgroundColorCopy; //keep expansion background color
                 expansion.backgroundColorCopy = expSettings.expansionColor;
             }
-            [self setSwipeOffset:_targetOffset animation:expSettings.triggerAnimation completion:^{
+            [self setSwipeOffset:_targetOffset animation:expSettings.triggerAnimation completion:^(BOOL finished){
+                if (!finished || self.hidden) {
+                    return; //cell might be hidden after a delete row animation without being deallocated (to be reused later)
+                }
                 BOOL autoHide = [expansion handleClick:expandedButton fromExpansion:YES];
                 if (autoHide) {
-                    [expansion endExpansioAnimated:NO];
+                    [expansion endExpansionAnimated:NO];
                 }
                 if (backgroundColor) {
                     expandedButton.backgroundColor = backgroundColor;
@@ -1194,6 +1271,8 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             }
             [self setSwipeOffset:_targetOffset animation:animation completion:nil];
         }
+        
+        _firstSwipeState = MGSwipeStateNone;
     }
 }
 
@@ -1231,7 +1310,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             _allowSwipeLeftToRight = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionLeftToRight];
             _allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft];
-            #pragma clang diagnastic pop
+            #pragma clang diagnostic pop
         }
         else {
             [self fetchButtonsIfNeeded];
@@ -1252,5 +1331,27 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 {
     return _panRecognizer.state == UIGestureRecognizerStateBegan || _panRecognizer.state == UIGestureRecognizerStateChanged;
 }
+
+-(void)setSwipeBackgroundColor:(UIColor *)swipeBackgroundColor {
+    _swipeBackgroundColor = swipeBackgroundColor;
+    if (_swipeOverlay) {
+        _swipeOverlay.backgroundColor = swipeBackgroundColor;
+    }
+}
+
+#pragma mark Accessibility
+
+- (NSInteger)accessibilityElementCount {
+    return _swipeOffset == 0 ? [super accessibilityElementCount] : 1;
+}
+
+- (id)accessibilityElementAtIndex:(NSInteger)index {
+    return _swipeOffset == 0  ? [super accessibilityElementAtIndex:index] : self.contentView;
+}
+
+- (NSInteger)indexOfAccessibilityElement:(id)element {
+    return _swipeOffset == 0  ? [super indexOfAccessibilityElement:element] : 0;
+}
+
 
 @end

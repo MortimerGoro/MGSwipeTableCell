@@ -4,6 +4,7 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "MGSwipeButton.h"
 
 
 /** Transition types */
@@ -80,6 +81,11 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
  ** For example it can be used to avoid cropped buttons when sectionIndexTitlesForTableView is used in the UITableView
  **/
 @property (nonatomic, assign) CGFloat offset;
+/** Top margin of the buttons relative to the contentView */
+@property (nonatomic, assign) CGFloat topMargin;
+/** Bottom margin of the buttons relative to the contentView */
+@property (nonatomic, assign) CGFloat bottomMargin;
+
 /** Animation settings when the swipe buttons are shown */
 @property (nonatomic, strong) MGSwipeAnimation * showAnimation;
 /** Animation settings when the swipe buttons are hided */
@@ -97,6 +103,9 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 
 /** If true the table cell is not swiped, just the buttons **/
 @property (nonatomic, assign) BOOL onlySwipeButtons;
+
+/** If NO the swipe bounces will be disabled, the swipe motion will stop right after the button */
+@property (nonatomic, assign) BOOL enableSwipeBounces;
 
 @end
 
@@ -224,10 +233,15 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 @property (nonatomic) BOOL allowsMultipleSwipe;
 // default is NO. Controls whether buttons with different width are allowed. Buttons are resized to have the same size by default.
 @property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
-//default is YES. Controls wheter swipe gesture is allowed when the touch starts into the swiped buttons
+//default is YES. Controls whether swipe gesture is allowed when the touch starts into the swiped buttons
 @property (nonatomic) BOOL allowsSwipeWhenTappingButtons;
+//default is YES. Controls whether swipe gesture is allowed in opposite directions. NO value disables swiping in opposite direction once started in one direction
+@property (nonatomic) BOOL allowsOppositeSwipe;
 // default is NO.  Controls whether the cell selection/highlight status is preserved when expansion occurs
 @property (nonatomic) BOOL preservesSelectionStatus;
+/* default is NO. Controls whether dismissing a swiped cell when tapping outside of the cell generates a real touch event on the other cell.
+ Default behaviour is the same as the Mail app on iOS. Enable it if you want to allow to start a new swipe while a cell is already in swiped in a single step.  */
+@property (nonatomic) BOOL touchOnDismissSwipe;
 
 /** Optional background color for swipe overlay. If not set, its inferred automatically from the cell contentView */
 @property (nonatomic, strong) UIColor * swipeBackgroundColor;
@@ -236,16 +250,16 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 
 /** Utility methods to show or hide swipe buttons programmatically */
 -(void) hideSwipeAnimated: (BOOL) animated;
--(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)()) completion;
+-(void) hideSwipeAnimated: (BOOL) animated completion:(void(^)(BOOL finished)) completion;
 -(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
--(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)()) completion;
--(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)()) completion;
--(void) setSwipeOffset:(CGFloat)offset animation: (MGSwipeAnimation *) animation completion:(void(^)()) completion;
+-(void) showSwipe: (MGSwipeDirection) direction animated: (BOOL) animated completion:(void(^)(BOOL finished)) completion;
+-(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)(BOOL finished)) completion;
+-(void) setSwipeOffset:(CGFloat)offset animation: (MGSwipeAnimation *) animation completion:(void(^)(BOOL finished)) completion;
 -(void) expandSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
 
 /** Refresh method to be used when you want to update the cell contents while the user is swiping */
 -(void) refreshContentView;
-/** Refresh method to be used when you want to dinamically change the left or right buttons (add or remove)
+/** Refresh method to be used when you want to dynamically change the left or right buttons (add or remove)
  * If you only want to change the title or the backgroundColor of a button you can change it's properties (get the button instance from leftButtons or rightButtons arrays)
  * @param usingDelegate if YES new buttons will be fetched using the MGSwipeTableCellDelegate. Otherwise new buttons will be fetched from leftButtons/rightButtons properties.
  */

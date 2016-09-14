@@ -1,8 +1,9 @@
 MGSwipeTableCell
 ================
 
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-MGSwipeTableCell is an easy to use UITableViewCell subclass that allows to display swipeable buttons with a variety of transitions. 
+MGSwipeTableCell is an easy to use UITableViewCell subclass that allows to display swipeable buttons with a variety of transitions.
 
 
 This library is compatible with all the different ways to create a UITableViewCell: system predefined styles, programmatically created cells, cells loaded from a xib and prototype cells within a storyboard. You can use autolayout if you want.
@@ -41,13 +42,24 @@ See [`SpotifyDemo`](demo/SpotifyDemo) for a complete project which mimics Spotif
 
 See [`MGSwipeDemo`](demo/MGSwipeDemo) for a complete project where you can test the variety of transitions on a real device/simulator.
 
+##Setup your project
+
+You can use CocoaPods to include MGSwipeTableCell into you project:
+
+    pod 'MGSwipeTableCell'
+    
+You can use Carthage to include MGSwipeTableCell into your project. Just add this dependency to your Cartfile:
+    
+    github "MortimerGoro/MGSwipeTableCell"
+
 ##Usage
 
-###Basic 
-Integrating MGSwipeTableCell in your project is veary easy. Basically, you only have to inherit from MGSwipeTableCell instead of UITableViewCell, or directly instantiate MGSwipeTableCell instances with iOS predefined cell styles. You can layout your cell content as you are used to do, MGSwipeTableCell doesn't force you to change layouts.
+###Basic
+Integrating MGSwipeTableCell in your project is very easy. Basically, you only have to inherit from MGSwipeTableCell instead of UITableViewCell, or directly instantiate MGSwipeTableCell instances with iOS predefined cell styles. You can layout your cell content as you are used to do, MGSwipeTableCell doesn't force you to change layouts.
 
 Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set an array of buttons to cell.leftButtons and/or cell.rightButtons properties. MGSwipeButton is a convenience class, you are not force to use it. You can use your own UIButtons or UIViews. You can configure transitions (and swipe thresholds) with the leftSwipeSettings and/or rightSwipeSettings properties
 
+#####Objective-C
 ```objc
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -56,17 +68,17 @@ Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set
     if (!cell) {
         cell = [[MGSwipeTableCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     }
-    
+
     cell.textLabel.text = @"Title";
     cell.detailTextLabel.text = @"Detail text";
     cell.delegate = self; //optional
 
-    
+
     //configure left buttons
     cell.leftButtons = @[[MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"check.png"] backgroundColor:[UIColor greenColor]],
                           [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"fav.png"] backgroundColor:[UIColor blueColor]]];
     cell.leftSwipeSettings.transition = MGSwipeTransition3D;
-    
+
     //configure right buttons
     cell.rightButtons = @[[MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor redColor]],
                            [MGSwipeButton buttonWithTitle:@"More" backgroundColor:[UIColor lightGrayColor]]];
@@ -74,18 +86,56 @@ Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set
     return cell;
 }
 ```
+#####Swift
+```swift
+  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+  {
+    let reuseIdentifier = "programmaticCell"
+    var cell = self.table.dequeueReusableCellWithIdentifier(reuseIdentifier) as! MGSwipeTableCell!
+    if cell == nil
+    {
+      cell = MGSwipeTableCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
+    }
 
-In order to listen button click events you have 2 options. You can implement the optional MGSwipeTableCellDelegate. If you are lazy to do that MGSwipeButton class comes with a convenience block callback ;)
+    cell.textLabel!.text = "Title"
+    cell.detailTextLabel!.text = "Detail text"
+    cell.delegate = self //optional
+    
+    //configure left buttons
+    cell.leftButtons = [MGSwipeButton(title: "", icon: UIImage(named:"check.png"), backgroundColor: UIColor.greenColor())
+      ,MGSwipeButton(title: "", icon: UIImage(named:"fav.png"), backgroundColor: UIColor.blueColor())]
+    cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
+    
+    //configure right buttons
+    cell.rightButtons = [MGSwipeButton(title: "Delete", backgroundColor: UIColor.redColor())
+      ,MGSwipeButton(title: "More",backgroundColor: UIColor.lightGrayColor())]
+    cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
+    
+    return cell
+  }
+```
 
+In order to listen for button click events you can implement the optional MGSwipeTableCellDelegate, or if you are too lazy to do that, the MGSwipeButton class comes with a convenience block callback ;)
+
+#####Objective-c
 ```objc
 [MGSwipeButton buttonWithTitle:@"More" backgroundColor:[UIColor lightGrayColor] callback:^BOOL(MGSwipeTableCell *sender) {
       NSLog(@"Convenience callback for swipe buttons!");
 }]
 ```
+#####Swift
+```swift
+MGSwipeButton(title: "Delete", backgroundColor: UIColor.redColor(), callback: {
+      (sender: MGSwipeTableCell!) -> Bool in
+      println("Convenience callback for swipe buttons!")
+      return true
+    })
+
+```
 
 ###Delegate
 
-MGSwipeTableCellDelegate is an optional delegate to configure swipe buttons or to receive triggered actions or another events. Buttons can be configured inline when the cell is created instead of using this delegate, but using the delegate improves memory usage because buttons are only created in demand.
+MGSwipeTableCellDelegate is an optional delegate to configure swipe buttons or to receive triggered actions or another events. Buttons can be configured inline when the cell is created instead of using this delegate, but using the delegate improves memory usage since buttons are only created on demand.
 
 ```objc
 @protocol MGSwipeTableCellDelegate <NSObject>
