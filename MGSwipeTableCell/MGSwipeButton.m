@@ -92,16 +92,31 @@
 }
 
 -(void) centerIconOverTextWithSpacing: (CGFloat) spacing {
-	CGSize size = self.imageView.image.size;
-	self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
-											-size.width,
-											-(size.height + spacing),
-											0.0);
-	size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName: self.titleLabel.font }];
-	self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + spacing),
-											0.0,
-											0.0,
-											-size.width);
+  CGSize size = self.imageView.image.size;
+  
+  if ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft) {
+    self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                            0.0,
+                                            -(size.height + spacing),
+                                            -size.width);
+    size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName: self.titleLabel.font }];
+    self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + spacing),
+                                            -size.width,
+                                            0.0,
+                                            0.0);
+  }
+  else
+  {
+    self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                            -size.width,
+                                            -(size.height + spacing),
+                                            0.0);
+    size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName: self.titleLabel.font }];
+    self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + spacing),
+                                            0.0,
+                                            0.0,
+                                            -size.width);
+  }
 }
 
 -(void) setPadding:(CGFloat) padding
