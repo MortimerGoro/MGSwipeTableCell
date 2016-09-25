@@ -94,7 +94,7 @@
 -(void) centerIconOverTextWithSpacing: (CGFloat) spacing {
   CGSize size = self.imageView.image.size;
   
-  if ([UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft) {
+  if ([UIDevice currentDevice].systemVersion.floatValue >= 9.0 && [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft) {
     self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
                                             0.0,
                                             -(size.height + spacing),
