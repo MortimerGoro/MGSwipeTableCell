@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.5.6
+
+- Improve iOS 10.0 support
+- Objective-C nullable annotations to improve Swift 3.0 interoperation. Add Swift 3.0 sample.
+- Improve accesibility implementation to allow recording UI Tests
+- Add preprocessor macro to allow compilations on App Extension projects
+- Add swipeBounceRate property. Coefficient applied to cell movement in bounce zone
+- Fix issue #216: Crash when combining programmatically created offset animations in consecutive block callbacks
+- Fix issue #139: Accessing Buttons in UITests does not work
+- Fix issue #134: Crash due to zombie object in expansion
+- Fix button text alignment for RTL languages
+
 ## 1.5.5
 
 - Fix iOS 8.0 compatibility issue
