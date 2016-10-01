@@ -292,9 +292,10 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if direction == MGSwipeDirection.LeftToRight {
             expansionSettings.fillOnTrigger = false;
             expansionSettings.threshold = 2;
+            let color = UIColor.init(red:1.0, green:122/255.0, blue:50/255.0, alpha:1.0);
             
             return [
-                MGSwipeButton(title: readButtonText(mail.read), backgroundColor: UIColor.init(red:1.0, green:59/255.0, blue:50/255.0, alpha:1.0), callback: { (cell) -> Bool in
+                MGSwipeButton(title: readButtonText(mail.read), backgroundColor: color, callback: { (cell) -> Bool in
                     mail.read = !mail.read;
                     self.updateCellIndicator(mail, cell: cell as! MailTableCell);
                     cell.refreshContentView();
@@ -304,6 +305,20 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     return true;
                 })
             ]
+        }
+        else {
+            expansionSettings.fillOnTrigger = true;
+            expansionSettings.threshold = 1.1;
+            let padding = 15;
+            let color1 = UIColor.init(red:1.0, green:59/255.0, blue:50/255.0, alpha:1.0);
+            let color2 = UIColor.init(red:1.0, green:149/255.0, blue:0.05, alpha:1.0);
+            let color3 = UIColor.init(red:200/255.0, green:200/255.0, blue:205/255.0, alpha:1.0);
+            
+            let trash = MGSwipeButton(title: "Trash", backgroundColor: color1, padding: padding, callback: { (cell) -> Bool in
+                
+            });
+            
+            
         }
         
         return [];
