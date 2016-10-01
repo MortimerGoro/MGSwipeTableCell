@@ -35,8 +35,9 @@ Works on iOS >= 5.0. Tested on all iOS versions on iPhone and iPad: iOS 5, iOS 6
 ## API Reference
 See [`MGSwipeTableCell.h`](MGSwipeTableCell/MGSwipeTableCell.h) header file for a complete overview of the capabilities of the class.
 
+See [`MailAppDemo`](demo/MailAppDemo) for a complete project which mimics Apple's Mail App (written in Objective-C)
 
-See [`MailAppDemo`](demo/MailAppDemo) for a complete project which mimics iOS 8.0 Mail App
+See [`MailAppDemoSwift`](demo/MailAppDemoSwift) for a complete project which mimics Apple's Mail App (Written in Swift)
 
 See [`SpotifyDemo`](demo/SpotifyDemo) for a complete project which mimics Spotify App swipe style
 
