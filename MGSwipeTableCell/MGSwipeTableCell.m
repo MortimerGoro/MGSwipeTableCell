@@ -1234,7 +1234,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         self.swipeOffset = [self filterSwipe:offset];
     }
     else {
-        MGSwipeButtonsView * expansion = _activeExpansion;
+        __weak MGSwipeButtonsView * expansion = _activeExpansion;
         if (expansion) {
             __weak UIView * expandedButton = [expansion getExpandedButton];
             MGSwipeExpansionSettings * expSettings = _swipeOffset > 0 ? _leftExpansion : _rightExpansion;
@@ -1244,14 +1244,14 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
                 expansion.backgroundColorCopy = expSettings.expansionColor;
             }
             [self setSwipeOffset:_targetOffset animation:expSettings.triggerAnimation completion:^(BOOL finished){
-                if (!finished || self.hidden) {
+                if (!finished || self.hidden || !expansion) {
                     return; //cell might be hidden after a delete row animation without being deallocated (to be reused later)
                 }
                 BOOL autoHide = [expansion handleClick:expandedButton fromExpansion:YES];
                 if (autoHide) {
                     [expansion endExpansionAnimated:NO];
                 }
-                if (backgroundColor) {
+                if (backgroundColor && expandedButton) {
                     expandedButton.backgroundColor = backgroundColor;
                 }
             }];
