@@ -107,6 +107,10 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 /** If NO the swipe bounces will be disabled, the swipe motion will stop right after the button */
 @property (nonatomic, assign) BOOL enableSwipeBounces;
 
+/** Coefficient applied to cell movement in bounce zone. Set to value between 0.0 and 1.0
+    to make the cell 'resist' swiping after buttons are revealed. Default is 1.0 */
+@property (nonatomic, assign) CGFloat swipeBounceRate;
+
 @end
 
 
