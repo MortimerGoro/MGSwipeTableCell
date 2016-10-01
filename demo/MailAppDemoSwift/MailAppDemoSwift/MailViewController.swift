@@ -14,7 +14,7 @@ class MailData {
     var flag = false;
 }
 
-typealias MailActionCallback = (cancelled: Bool, deleted: Bool, actionIndex: Int) -> Void
+typealias MailActionCallback = (_ cancelled: Bool, _ deleted: Bool, _ actionIndex: Int) -> Void
 
 class MailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MGSwipeTableCellDelegate, UIActionSheetDelegate {
     
@@ -67,7 +67,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         ];
         
         
-        for var i = 0; i < messages.count; ++i {
+        for i in 0 ..< messages.count {
             let mail = MailData();
             mail.from = from[i];
             mail.subject = subjects[i];
@@ -77,8 +77,8 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
     
-    func mailForIndexPath(path: NSIndexPath) -> MailData {
-        return demoData[path.row];
+    func mailForIndexPath(_ path: IndexPath) -> MailData {
+        return demoData[(path as NSIndexPath).row];
     }
     
     func refreshCallback() {
@@ -87,12 +87,12 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         refreshControl.endRefreshing();
     }
     
-    func deleteMail(path:NSIndexPath) {
-        demoData.removeAtIndex(path.row);
-        tableView.deleteRowsAtIndexPaths([path], withRowAnimation: .Left);
+    func deleteMail(_ path:IndexPath) {
+        demoData.remove(at: (path as NSIndexPath).row);
+        tableView.deleteRows(at: [path], with: .left);
     }
     
-    func updateCellIndicator(mail: MailData, cell: MailTableCell) {
+    func updateCellIndicator(_ mail: MailData, cell: MailTableCell) {
         var color: UIColor;
         var innerColor : UIColor?;
         
@@ -104,7 +104,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
             color = UIColor.init(red: 1.0, green: 149/255.0, blue: 0.05, alpha: 1.0);
         }
         else if mail.read {
-            color = UIColor.clearColor();
+            color = UIColor.clear;
         }
         else {
             color = UIColor.init(red: 0.0, green: 122/255.0, blue: 1.0, alpha: 1.0);
@@ -114,33 +114,33 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         cell.indicatorView.innerColor = innerColor;
     }
     
-    func showMailActions(mail: MailData, callback: MailActionCallback) {
+    func showMailActions(_ mail: MailData, callback: @escaping MailActionCallback) {
         actionCallback = callback;
         let sheet = UIActionSheet.init(title: "Actions", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: "Trash");
-        sheet.addButtonWithTitle("Mark as unread");
-        sheet.addButtonWithTitle("Mark as read");
-        sheet.addButtonWithTitle("Flag");
+        sheet.addButton(withTitle: "Mark as unread");
+        sheet.addButton(withTitle: "Mark as read");
+        sheet.addButton(withTitle: "Flag");
 
-        sheet.showInView(self.view);
+        sheet.show(in: self.view);
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex index: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt index: Int) {
         if let action = actionCallback {
-            action(cancelled: index == actionSheet.cancelButtonIndex,
-                   deleted:index == actionSheet.destructiveButtonIndex,
-                   actionIndex: index);
+            action(index == actionSheet.cancelButtonIndex,
+                   index == actionSheet.destructiveButtonIndex,
+                   index);
             actionCallback = nil;
         }
     }
     
-    func readButtonText(read:Bool) -> String {
+    func readButtonText(_ read:Bool) -> String {
         return read ? "Mark as\nunread" : "Mark as\nread";
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView = UITableView(frame: view.bounds, style: UITableViewStyle.Plain);
+        tableView = UITableView(frame: view.bounds, style: UITableViewStyle.plain);
         tableView.delegate = self;
         tableView.dataSource = self;
         view.addSubview(tableView);
@@ -148,7 +148,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.title = "MSwipeTableCell MailApp";
         
         refreshControl = UIRefreshControl();
-        refreshControl.addTarget(self, action: #selector(refreshCallback), forControlEvents: UIControlEvents.ValueChanged);
+        refreshControl.addTarget(self, action: #selector(refreshCallback), for: UIControlEvents.valueChanged);
         tableView.addSubview(refreshControl);
         prepareDemoData();
     }
@@ -158,22 +158,22 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Dispose of any resources that can be recreated.
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return demoData.count;
     }
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let identifier = "MailCell";
         
-        var cell: MailTableCell! = tableView.dequeueReusableCellWithIdentifier(identifier) as? MailTableCell;
+        var cell: MailTableCell! = tableView.dequeueReusableCell(withIdentifier: identifier) as? MailTableCell;
         if cell == nil {
-            cell = MailTableCell(style: UITableViewCellStyle.Default, reuseIdentifier: identifier);
+            cell = MailTableCell(style: UITableViewCellStyle.default, reuseIdentifier: identifier);
         }
         cell.delegate = self;
         
-        let data: MailData = demoData[indexPath.row];
+        let data: MailData = demoData[(indexPath as NSIndexPath).row];
         cell!.mailFrom.text = data.from;
         cell!.mailSubject.text = data.subject;
         cell!.mailMessage.text = data.message;
@@ -182,111 +182,24 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         return cell;
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 110;
     }
     
-    func swipeTableCell(cell: MGSwipeTableCell!, canSwipe direction: MGSwipeDirection) -> Bool {
+    func swipeTableCell(_ cell: MGSwipeTableCell, canSwipe direction: MGSwipeDirection) -> Bool {
         return true;
     }
     
-    //-(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
-    //             swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
-    //{
-    //
-    //    swipeSettings.transition = MGSwipeTransitionBorder;
-    //    expansionSettings.buttonIndex = 0;
-    //
-    //    __weak MailViewController * me = self;
-    //    MailData * mail = [me mailForIndexPath:[self.tableView indexPathForCell:cell]];
-    //
-    //    if (direction == MGSwipeDirectionLeftToRight) {
-    //
-    //        expansionSettings.fillOnTrigger = NO;
-    //        expansionSettings.threshold = 2;
-    //        return @[[MGSwipeButton buttonWithTitle:[me readButtonText:mail.read] backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:1.0 alpha:1.0] padding:5 callback:^BOOL(//MGSwipeTableCell *sender) {
-    //
-    //            MailData * mail = [me mailForIndexPath:[me.tableView indexPathForCell:sender]];
-    //            mail.read = !mail.read;
-    //            [me updateCellIndicactor:mail cell:(MailTableCell*)sender];
-    //            [cell refreshContentView]; //needed to refresh cell contents while swipping
-    //
-    //            //change button text
-    //            [(UIButton*)[cell.leftButtons objectAtIndex:0] setTitle:[me readButtonText:mail.read] forState:UIControlStateNormal];
-    //
-    //            return YES;
-    //        }]];
-    //    }
-    //    else {
-    //
-    //        expansionSettings.fillOnTrigger = YES;
-    //        expansionSettings.threshold = 1.1;
-    //
-    //        CGFloat padding = 15;
-    //
-    //        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Trash" backgroundColor:[UIColor colorWithRed:1.0 green:59/255.0 blue:50/255.0 alpha:1.0] padding:padding callback:^BOOL(//MGSwipeTableCell *sender) {
-    //
-    //            NSIndexPath * indexPath = [me.tableView indexPathForCell:sender];
-    //            [me deleteMail:indexPath];
-    //            return NO; //don't autohide to improve delete animation
-    //        }];
-    //        MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Flag" backgroundColor:[UIColor colorWithRed:1.0 green:149/255.0 blue:0.05 alpha:1.0] padding:padding callback:^BOOL(//MGSwipeTableCell *sender) {
-    //
-    //            MailData * mail = [me mailForIndexPath:[me.tableView indexPathForCell:sender]];
-    //            mail.flag = !mail.flag;
-    //            [me updateCellIndicactor:mail cell:(MailTableCell*)sender];
-    //            [cell refreshContentView]; //needed to refresh cell contents while swipping
-    //            return YES;
-    //        }];
-    //        MGSwipeButton * more = [MGSwipeButton buttonWithTitle:@"More" backgroundColor:[UIColor colorWithRed:200/255.0 green:200/255.0 blue:205/255.0 alpha:1.0] padding:padding callback:^BOOL(//MGSwipeTableCell *sender) {
-    //
-    //            NSIndexPath * indexPath = [me.tableView indexPathForCell:sender];
-    //            MailData * mail = [me mailForIndexPath:indexPath];
-    //            MailTableCell * cell = (MailTableCell*) sender;
-    //            [me showMailActions:mail callback:^(BOOL cancelled, BOOL deleted, NSInteger actionIndex) {
-    //                if (cancelled) {
-    //                    return;
-    //                }
-    //                if (deleted) {
-    //                    [me deleteMail:indexPath];
-    //                }
-    //                else if (actionIndex == 1) {
-    //                    mail.read = !mail.read;
-    //                    [(UIButton*)[cell.leftButtons objectAtIndex:0] setTitle:[me readButtonText:mail.read] forState:UIControlStateNormal];
-    //                    [me updateCellIndicactor:mail cell:cell];
-    //                    [cell refreshContentView]; //needed to refresh cell contents while swipping
-    //                }
-    //                else if (actionIndex == 2) {
-    //                    mail.flag = !mail.flag;
-    //                    [me updateCellIndicactor:mail cell:cell];
-    //                    [cell refreshContentView]; //needed to refresh cell contents while swipping
-    //                }
-    //                
-    //                [cell hideSwipeAnimated:YES];
-    //                
-    //            }];
-    //            
-    //            return NO; //avoid autohide swipe
-    //        }];
-    //        
-    //        return @[trash, flag, more];
-    //    }
-    //    
-    //    return nil;
-    //    
-    //}
-
     
-    
-    func swipeTableCell(cell: MGSwipeTableCell!, swipeButtonsForDirection direction: MGSwipeDirection, swipeSettings: MGSwipeSettings!, expansionSettings: MGSwipeExpansionSettings!) -> [AnyObject]! {
+    func swipeTableCell(_ cell: MGSwipeTableCell, swipeButtonsFor direction: MGSwipeDirection, swipeSettings: MGSwipeSettings, expansionSettings: MGSwipeExpansionSettings) -> [UIView]? {
         
-        swipeSettings.transition = MGSwipeTransition.Border;
+        swipeSettings.transition = MGSwipeTransition.border;
         expansionSettings.buttonIndex = 0;
         
         
-        let mail = mailForIndexPath(tableView.indexPathForCell(cell)!);
+        let mail = mailForIndexPath(tableView.indexPath(for: cell)!);
         
-        if direction == MGSwipeDirection.LeftToRight {
+        if direction == MGSwipeDirection.leftToRight {
             expansionSettings.fillOnTrigger = false;
             expansionSettings.threshold = 2;
             let color = UIColor.init(red:0.0, green:122/255.0, blue:1.0, alpha:1.0);
@@ -296,7 +209,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     mail.read = !mail.read;
                     self.updateCellIndicator(mail, cell: cell as! MailTableCell);
                     cell.refreshContentView();
-                    (cell.leftButtons[0] as! UIButton).setTitle(self.readButtonText(mail.read), forState: .Normal);
+                    (cell.leftButtons[0] as! UIButton).setTitle(self.readButtonText(mail.read), for: UIControlState());
                     
                     return true;
                 })
@@ -311,12 +224,12 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
             let color3 = UIColor.init(red:200/255.0, green:200/255.0, blue:205/255.0, alpha:1.0);
             
             let trash = MGSwipeButton(title: "Trash", backgroundColor: color1, padding: padding, callback: { (cell) -> Bool in
-                self.deleteMail(self.tableView.indexPathForCell(cell)!);
+                self.deleteMail(self.tableView.indexPath(for: cell)!);
                 return false; //don't autohide to improve delete animation
             });
     
             let flag = MGSwipeButton(title: "Flag", backgroundColor: color2, padding: padding, callback: { (cell) -> Bool in
-                let mail = self.mailForIndexPath(self.tableView.indexPathForCell(cell)!);
+                let mail = self.mailForIndexPath(self.tableView.indexPath(for: cell)!);
                 mail.flag = !mail.flag;
                 self.updateCellIndicator(mail, cell: cell as! MailTableCell);
                 cell.refreshContentView(); //needed to refresh cell contents while swipping
@@ -324,7 +237,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
             });
             
             let more = MGSwipeButton(title: "More", backgroundColor: color3, padding: padding, callback: { (cell) -> Bool in
-                let path = self.tableView.indexPathForCell(cell)!;
+                let path = self.tableView.indexPath(for: cell)!;
                 let mail = self.mailForIndexPath(path);
                 
                 self.showMailActions(mail, callback: { (cancelled, deleted, index) in
@@ -338,14 +251,14 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         mail.read = !mail.read;
                         self.updateCellIndicator(mail, cell: cell as! MailTableCell);
                         cell.refreshContentView();
-                        (cell.leftButtons[0] as! UIButton).setTitle(self.readButtonText(mail.read), forState: .Normal);
-                        cell.hideSwipeAnimated(true);
+                        (cell.leftButtons[0] as! UIButton).setTitle(self.readButtonText(mail.read), for: UIControlState());
+                        cell.hideSwipe(animated: true);
                     }
                     else if index == 2 {
                         mail.flag = !mail.flag;
                         self.updateCellIndicator(mail, cell: cell as! MailTableCell);
                         cell.refreshContentView(); //needed to refresh cell contents while swipping
-                        cell.hideSwipeAnimated(true);
+                        cell.hideSwipe(animated: true);
                     }
                     
                 });
