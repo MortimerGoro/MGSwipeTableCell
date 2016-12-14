@@ -4,8 +4,7 @@
  */
 
 #import "MGSwipeButton.h"
-
-@class MGSwipeTableCell;
+#import "MGSwipeTableCell.h"
 
 @implementation MGSwipeButton
 
@@ -94,7 +93,7 @@
 -(void) centerIconOverTextWithSpacing: (CGFloat) spacing {
   CGSize size = self.imageView.image.size;
   
-  if ([UIDevice currentDevice].systemVersion.floatValue >= 9.0 && [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft) {
+  if ([UIDevice currentDevice].systemVersion.floatValue >= 9.0 && [MGSwipeTableCell isRTLLocale]) {
     self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
                                             0.0,
                                             -(size.height + spacing),

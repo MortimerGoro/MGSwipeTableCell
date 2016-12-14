@@ -252,6 +252,19 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 /** Property to read or change the current swipe offset programmatically */
 @property (nonatomic, assign) CGFloat swipeOffset;
 
+/** A property which is used as a fallback on iOS < 9 to determine if RTL should be used */
+@property (nonatomic, class) BOOL isRTLLocale;
+
+/** Uses UIApplication.sharedApplication to set isRTLLocale */
++(void) useAppLocale NS_EXTENSION_UNAVAILABLE_IOS("In extension use guessLocale or set isRTLLocale directly");
+
+/** 
+ Uses first of NSLocale.preferredLanguages to set isRTLLocale
+ This might be faulty as if current application has no localization
+ for the preferred language, a fallback will be used with no RTL.
+ */
++(void) guessLocale;
+
 /** Utility methods to show or hide swipe buttons programmatically */
 -(void) hideSwipeAnimated: (BOOL) animated;
 -(void) hideSwipeAnimated: (BOOL) animated completion:(nullable void(^)(BOOL finished)) completion;

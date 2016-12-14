@@ -532,6 +532,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 #pragma mark MGSwipeTableCell Implementation
 
+static BOOL _isRTLLocale = NO;
 
 @implementation MGSwipeTableCell
 {
@@ -644,13 +645,25 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if ([[UIView class] respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
         return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft;
     }
-#ifndef TARGET_IS_EXTENSION
-    else {
-        return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
-    }
-#else
-    return NO;
-#endif
+
+    return [MGSwipeTableCell isRTLLocale];
+}
+
++ (BOOL)isRTLLocale {
+    return _isRTLLocale;
+}
+
++ (void)setIsRTLLocale:(BOOL)isRTLLocale {
+    _isRTLLocale = isRTLLocale;
+}
+
++ (void)useAppLocale {
+    MGSwipeTableCell.isRTLLocale = (UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
+}
+
++ (void)guessLocale {
+    NSString *lang = [[NSLocale preferredLanguages] objectAtIndex:0];
+    MGSwipeTableCell.isRTLLocale = ([NSLocale characterDirectionForLanguage:lang] == NSLocaleLanguageDirectionRightToLeft);
 }
 
 -(void) fixRegionAndAccesoryViews
