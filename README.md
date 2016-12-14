@@ -48,9 +48,9 @@ See [`MGSwipeDemo`](demo/MGSwipeDemo) for a complete project where you can test 
 You can use CocoaPods to include MGSwipeTableCell into you project:
 
     pod 'MGSwipeTableCell'
-    
+
 You can use Carthage to include MGSwipeTableCell into your project. Just add this dependency to your Cartfile:
-    
+
     github "MortimerGoro/MGSwipeTableCell"
 
 ##Usage
@@ -101,17 +101,17 @@ Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set
     cell.textLabel!.text = "Title"
     cell.detailTextLabel!.text = "Detail text"
     cell.delegate = self //optional
-    
+
     //configure left buttons
     cell.leftButtons = [MGSwipeButton(title: "", icon: UIImage(named:"check.png"), backgroundColor: UIColor.greenColor())
       ,MGSwipeButton(title: "", icon: UIImage(named:"fav.png"), backgroundColor: UIColor.blueColor())]
     cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
-    
+
     //configure right buttons
     cell.rightButtons = [MGSwipeButton(title: "Delete", backgroundColor: UIColor.redColor())
       ,MGSwipeButton(title: "More",backgroundColor: UIColor.lightGrayColor())]
     cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
-    
+
     return cell
   }
 ```
@@ -132,6 +132,26 @@ MGSwipeButton(title: "Delete", backgroundColor: UIColor.redColor(), callback: {
       return true
     })
 
+```
+
+#### RTL support
+
+On iOS 9+ RTL support will work out of box. For older iOS version a bit of manual work required:
+
+If you use in the application:
+```objc
+[MGSwipeTableCell useAppLocale];
+```
+
+Since APIs are not be available in an app extension, you have to set it manually like this:
+```objc
+[MGSwipeTableCell guessLocale];
+```
+
+or configure it manually like:
+
+```objc
+MGSwipeTableCell.isRTLLocale = myRTLdetector();
 ```
 
 ###Delegate
