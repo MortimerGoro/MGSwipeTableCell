@@ -678,6 +678,12 @@ static inline CGFloat mgEaseOutElastic(CGFloat t, CGFloat b, CGFloat c)  {
         _swipeOverlay.hidden = YES;
         _swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
         _swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
+        
+        // TO make the table view cell and its swipe buttons as rounded corners//
+        _swipeOverlay.layer.cornerRadius = self.layer.cornerRadius;
+        _swipeOverlay.clipsToBounds = self.clipsToBounds;
+        // TO make the table view cell and its swipe buttons as rounded corners//
+        
         _swipeView = [[UIImageView alloc] initWithFrame:_swipeOverlay.bounds];
         _swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _swipeView.contentMode = UIViewContentModeCenter;
