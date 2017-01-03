@@ -185,6 +185,17 @@ Expandable button events are triggered automatically when the user ends the swip
 @property (nonatomic, assign) CGFloat threshold;
 @end
 ```
+### Rounded corners and swipe buttons
+MGSwipeTableCell supports rounded corners. Example: 
+
+```objc
+cell.layer.cornerRadius = 50
+cell.backgroundColor = UIColor.gray
+cell.clipsToBounds = true
+cell.swipeBackgroundColor = UIColor.gray
+```
+<p align="center"><img src="https://github.com/MortimerGoro/MGSwipeTableCell/blob/master/readme-assets/RoundTableViewCell.png" width="30%" /></p>
+
 
 ## License
 
