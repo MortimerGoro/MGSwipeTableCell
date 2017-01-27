@@ -204,16 +204,22 @@
                 _expandedButton.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
                 [_expandedButton.superview bringSubviewToFront:_expandedButton];
                 _expandedButton.frame = _container.bounds;
+                _expansionBackground.frame = [self expansionBackgroundRect:_expandedButton];
+            }
+            else if (_expansionLayout == MGSwipeExpansionLayoutNone) {
+                [_expandedButton.superview bringSubviewToFront:_expandedButton];
+                _expansionBackground.frame = _container.bounds;
             }
             else if (_fromLeft) {
                 _expandedButton.frame = CGRectMake(_container.bounds.size.width - _expandedButton.bounds.size.width, 0, _expandedButton.bounds.size.width, _expandedButton.bounds.size.height);
                 _expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleLeftMargin;
+                _expansionBackground.frame = [self expansionBackgroundRect:_expandedButton];
             }
             else {
                 _expandedButton.frame = CGRectMake(0, 0, _expandedButton.bounds.size.width, _expandedButton.bounds.size.height);
                 _expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleRightMargin;
+                _expansionBackground.frame = [self expansionBackgroundRect:_expandedButton];
             }
-            _expansionBackground.frame = [self expansionBackgroundRect:_expandedButton];
 
         } completion:^(BOOL finished) {
         }];
