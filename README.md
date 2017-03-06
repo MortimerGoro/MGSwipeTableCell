@@ -89,31 +89,27 @@ Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set
 ```
 #####Swift
 ```swift
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-  {
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+{
     let reuseIdentifier = "programmaticCell"
-    var cell = self.table.dequeueReusableCellWithIdentifier(reuseIdentifier) as! MGSwipeTableCell!
-    if cell == nil
-    {
-      cell = MGSwipeTableCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
-    }
+    var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! MGSwipeTableCell
 
     cell.textLabel!.text = "Title"
     cell.detailTextLabel!.text = "Detail text"
     cell.delegate = self //optional
-    
+
     //configure left buttons
-    cell.leftButtons = [MGSwipeButton(title: "", icon: UIImage(named:"check.png"), backgroundColor: UIColor.greenColor())
-      ,MGSwipeButton(title: "", icon: UIImage(named:"fav.png"), backgroundColor: UIColor.blueColor())]
-    cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
-    
+    cell.leftButtons = [MGSwipeButton(title: "", icon: UIImage(named:"check.png"), backgroundColor: .green),
+                        MGSwipeButton(title: "", icon: UIImage(named:"fav.png"), backgroundColor: .blue)]
+    cell.leftSwipeSettings.transition = .rotate3D
+
     //configure right buttons
-    cell.rightButtons = [MGSwipeButton(title: "Delete", backgroundColor: UIColor.redColor())
-      ,MGSwipeButton(title: "More",backgroundColor: UIColor.lightGrayColor())]
-    cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
-    
+    cell.rightButtons = [MGSwipeButton(title: "Delete", backgroundColor: .red),
+                         MGSwipeButton(title: "More",backgroundColor: .lightGray)]
+    cell.rightSwipeSettings.transition = .rotate3D
+
     return cell
-  }
+}
 ```
 
 In order to listen for button click events you can implement the optional MGSwipeTableCellDelegate, or if you are too lazy to do that, the MGSwipeButton class comes with a convenience block callback ;)
@@ -126,12 +122,11 @@ In order to listen for button click events you can implement the optional MGSwip
 ```
 #####Swift
 ```swift
-MGSwipeButton(title: "Delete", backgroundColor: UIColor.redColor(), callback: {
+MGSwipeButton(title: "Delete", backgroundColor: .red) {
       (sender: MGSwipeTableCell!) -> Bool in
-      println("Convenience callback for swipe buttons!")
+      print("Convenience callback for swipe buttons!")
       return true
-    })
-
+    }
 ```
 
 ###Delegate
