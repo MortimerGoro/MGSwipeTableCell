@@ -863,6 +863,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
     BOOL cleanButtons = _delegate && [_delegate respondsToSelector:@selector(swipeTableCell:swipeButtonsForDirection:swipeSettings:expansionSettings:)];
     [self initViews:cleanButtons];
+    [singleSwipePerTable removeObject:[NSValue valueWithNonretainedObject:[self parentTable]]];
 }
 
 -(void) setEditing:(BOOL)editing animated:(BOOL)animated
