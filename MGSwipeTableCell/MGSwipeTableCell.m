@@ -865,22 +865,6 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     [self initViews:cleanButtons];
 }
 
--(void) setEditing:(BOOL)editing animated:(BOOL)animated
-{
-    [super setEditing:editing animated:animated];
-    if (editing) { //disable swipe buttons when the user sets table editing mode
-        self.swipeOffset = 0;
-    }
-}
-
--(void) setEditing:(BOOL)editing
-{
-    [super setEditing:YES];
-    if (editing) { //disable swipe buttons when the user sets table editing mode
-        self.swipeOffset = 0;
-    }
-}
-
 -(UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event
 {
     if (!self.hidden && _swipeOverlay && !_swipeOverlay.hidden) {
@@ -1294,10 +1278,6 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     
     if (gestureRecognizer == _panRecognizer) {
         
-        if (self.isEditing) {
-            return NO; //do not swipe while editing table
-        }
-        
         CGPoint translation = [_panRecognizer translationInView:self];
         if (fabs(translation.y) > fabs(translation.x)) {
             return NO; // user is scrolling vertically
@@ -1317,13 +1297,13 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:canSwipe:fromPoint:)]) {
             CGPoint point = [_panRecognizer locationInView:self];
             _allowSwipeLeftToRight = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionLeftToRight fromPoint:point];
-            _allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft fromPoint:point];
+            _allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft fromPoint:point] && !self.editing;
         }
         else if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:canSwipe:)]) {
             #pragma clang diagnostic push
             #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             _allowSwipeLeftToRight = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionLeftToRight];
-            _allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft];
+            _allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft] && !self.editing;
             #pragma clang diagnostic pop
         }
         else {
