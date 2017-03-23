@@ -749,7 +749,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         [_delegate swipeTableCellWillBeginSwiping:self];
     }
     
-    // snapshot image without separator
+    // snapshot cell without separator
     CGFloat separatorHeight = self.bounds.size.height - self.contentView.bounds.size.height;
     CGSize  cropSize        = CGSizeMake(self.bounds.size.width, self.bounds.size.height - separatorHeight);
     _swipeView.image = [self imageFromView:self cropSize:cropSize];
