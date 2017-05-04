@@ -153,7 +153,8 @@ Add following line in **swipeTableCell(_ cell: MGSwipeTableCell, swipeButtonsFor
 ```objc
 cell.swipeBackgroundColor = UIColor.gray
 ```
-![](/Users/karthick/Desktop/Screen Shot 2017-01-03 at 10.10.39 AM.png)
+<p align="center"><img src="https://drive.google.com/file/d/0B7fNS3r7y3-dWHR6a3JNS3ZucU0/view?usp=sharing" /></p>
+
 
 ##License
 
