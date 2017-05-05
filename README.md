@@ -153,7 +153,7 @@ Add following line in **swipeTableCell(_ cell: MGSwipeTableCell, swipeButtonsFor
 ```objc
 cell.swipeBackgroundColor = UIColor.gray
 ```
-<p align="center"><img src="https://drive.google.com/file/d/0B7fNS3r7y3-dWHR6a3JNS3ZucU0/view?usp=sharing" /></p>
+<p align="center"><img src="https://github.com/karthironald/MGSwipeTableCell/blob/develop/readme-assets/RoundTableViewCell.png" /></p>
 
 
 ##License
