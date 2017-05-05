@@ -137,6 +137,24 @@ Expandable button events are triggered automatically when the user ends the swip
 @property (nonatomic, assign) CGFloat threshold;
 @end
 ```
+###Round corner table view cells
+We can have the round corners in table view cell, with swipe buttons with round corner effects.
+
+**Swift:**
+	Add following line in cellForRowAtIndexPath table view data source methods.
+	
+```objc
+cell.layer.cornerRadius = 50
+cell.backgroundColor = UIColor.gray
+cell.clipsToBounds = true
+```
+Add following line in **swipeTableCell(_ cell: MGSwipeTableCell, swipeButtonsFor direction: MGSwipeDirection, swipeSettings: MGSwipeSettings, expansionSettings: MGSwipeExpansionSettings) -> [UIView]?** method.
+	
+```objc
+cell.swipeBackgroundColor = UIColor.gray
+```
+<p align="center"><img src="https://github.com/karthironald/MGSwipeTableCell/blob/develop/readme-assets/RoundTableViewCell.png" /></p>
+
 
 ##License
 
