@@ -10,25 +10,25 @@ This library is compatible with all the different ways to create a UITableViewCe
 
 Works on iOS >= 5.0. Tested on all iOS versions on iPhone and iPad: iOS 5, iOS 6, iOS 7 and iOS 8.
 
-##Transitions demo
+## Transitions demo
 
-###Border transition
+### Border transition
 
 <p align="center"><img src="https://raw.githubusercontent.com/MortimerGoro/MGSwipeTableCell/master/readme-assets/border.gif" /></p>
 
-###Clip transition
+### Clip transition
 
 <p align="center"><img src="https://raw.githubusercontent.com/MortimerGoro/MGSwipeTableCell/master/readme-assets/clip.gif" /></p>
 
-###3D transition
+### 3D transition
 
 <p align="center"><img src="https://raw.githubusercontent.com/MortimerGoro/MGSwipeTableCell/master/readme-assets/3d.gif" /></p>
 
-###Static transition
+### Static transition
 
 <p align="center"><img src="https://raw.githubusercontent.com/MortimerGoro/MGSwipeTableCell/master/readme-assets/static.gif" /></p>
 
-###Drag transition
+### Drag transition
 
 <p align="center"><img src="https://raw.githubusercontent.com/MortimerGoro/MGSwipeTableCell/master/readme-assets/drag.gif" /></p>
 
@@ -53,14 +53,14 @@ You can use Carthage to include MGSwipeTableCell into your project. Just add thi
     
     github "MortimerGoro/MGSwipeTableCell"
 
-##Usage
+## Usage
 
-###Basic
+### Basic
 Integrating MGSwipeTableCell in your project is very easy. Basically, you only have to inherit from MGSwipeTableCell instead of UITableViewCell, or directly instantiate MGSwipeTableCell instances with iOS predefined cell styles. You can layout your cell content as you are used to do, MGSwipeTableCell doesn't force you to change layouts.
 
 Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set an array of buttons to cell.leftButtons and/or cell.rightButtons properties. MGSwipeButton is a convenience class, you are not forced to use it. You can use your own UIButtons or UIViews. You can configure transitions (and swipe thresholds) with the leftSwipeSettings and/or rightSwipeSettings properties
 
-#####Objective-C
+##### Objective-C
 ```objc
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -87,7 +87,7 @@ Here is a example of a MGSwipeTableCell using iOS predefined styles. You can set
     return cell;
 }
 ```
-#####Swift
+##### Swift
 ```swift
 func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
 {
@@ -114,13 +114,13 @@ func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> U
 
 In order to listen for button click events you can implement the optional MGSwipeTableCellDelegate, or if you are too lazy to do that, the MGSwipeButton class comes with a convenience block callback ;)
 
-#####Objective-c
+##### Objective-c
 ```objc
 [MGSwipeButton buttonWithTitle:@"More" backgroundColor:[UIColor lightGrayColor] callback:^BOOL(MGSwipeTableCell *sender) {
       NSLog(@"Convenience callback for swipe buttons!");
 }]
 ```
-#####Swift
+##### Swift
 ```swift
 MGSwipeButton(title: "Delete", backgroundColor: .red) {
       (sender: MGSwipeTableCell!) -> Bool in
@@ -129,7 +129,7 @@ MGSwipeButton(title: "Delete", backgroundColor: .red) {
     }
 ```
 
-###Delegate
+### Delegate
 
 MGSwipeTableCellDelegate is an optional delegate to configure swipe buttons or to receive triggered actions or another events. Buttons can be configured inline when the cell is created instead of using this delegate, but using the delegate improves memory usage since buttons are only created on demand.
 
@@ -169,7 +169,7 @@ MGSwipeTableCellDelegate is an optional delegate to configure swipe buttons or t
 @end
 ```
 
-###Expandable buttons
+### Expandable buttons
 
 Buttons are not expandable by default. You can set up expandable buttons using cell.leftExpansion and cell.rightExpansion properties
 
@@ -186,7 +186,7 @@ Expandable button events are triggered automatically when the user ends the swip
 @end
 ```
 
-##License
+## License
 
 The MIT License (MIT)
 
