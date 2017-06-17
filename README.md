@@ -43,7 +43,7 @@ See [`SpotifyDemo`](demo/SpotifyDemo) for a complete project which mimics Spotif
 
 See [`MGSwipeDemo`](demo/MGSwipeDemo) for a complete project where you can test the variety of transitions on a real device/simulator.
 
-##Setup your project
+## Setup your project
 
 You can use CocoaPods to include MGSwipeTableCell into you project:
 
