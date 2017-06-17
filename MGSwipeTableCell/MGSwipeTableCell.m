@@ -1130,14 +1130,20 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     //call animation completion and invalidate timer
     if (completed){
         [timer invalidate];
-        _displayLink = nil;
-        if (_animationCompletion) {
-            void (^callbackCopy)(BOOL finished) = _animationCompletion; //copy to avoid duplicated callbacks
-            _animationCompletion = nil;
-            callbackCopy(YES);
-        }
+        [self invalidateDisplayLink];
     }
 }
+
+-(void)invalidateDisplayLink {
+    [_displayLink invalidate];
+    _displayLink = nil;
+    if (_animationCompletion) {
+        void (^callbackCopy)(BOOL finished) = _animationCompletion; //copy to avoid duplicated callbacks
+        _animationCompletion = nil;
+        callbackCopy(YES);
+    }
+}
+
 -(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(void(^)(BOOL finished)) completion
 {
     MGSwipeAnimation * animation = animated ? [[MGSwipeAnimation alloc] init] : nil;
@@ -1223,6 +1229,8 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     CGPoint current = [gesture translationInView:self];
     
     if (gesture.state == UIGestureRecognizerStateBegan) {
+        [self invalidateDisplayLink];
+
         if (!_preservesSelectionStatus)
             self.highlighted = NO;
         [self createSwipeViewIfNeeded];
