@@ -651,18 +651,24 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
+- (BOOL)isAppExtension
+{
+    return [[NSBundle mainBundle].executablePath rangeOfString:@".appex/"].location != NSNotFound;
+}
+
+
 -(BOOL) isRTLLocale
 {
     if ([[UIView class] respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
         return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft;
+    } else {
+        if ([self isAppExtension]) {
+            return [NSLocale characterDirectionForLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]]==NSLocaleLanguageDirectionRightToLeft;
+        } else {
+            UIApplication *application = [UIApplication performSelector:@selector(sharedApplication)];
+            return application.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+        }
     }
-#ifndef TARGET_IS_EXTENSION
-    else {
-        return [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
-    }
-#else
-    return NO;
-#endif
 }
 
 -(void) fixRegionAndAccesoryViews
