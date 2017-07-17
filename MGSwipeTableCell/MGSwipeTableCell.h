@@ -263,6 +263,7 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 -(void) setSwipeOffset:(CGFloat)offset animated: (BOOL) animated completion:(nullable void(^)(BOOL finished)) completion;
 -(void) setSwipeOffset:(CGFloat)offset animation: (nullable MGSwipeAnimation *) animation completion:(nullable void(^)(BOOL finished)) completion;
 -(void) expandSwipe: (MGSwipeDirection) direction animated: (BOOL) animated;
+-(void) demoSwipe: (MGSwipeDirection) direction expandDistance: (NSInteger) distance;
 
 /** Refresh method to be used when you want to update the cell contents while the user is swiping */
 -(void) refreshContentView;
