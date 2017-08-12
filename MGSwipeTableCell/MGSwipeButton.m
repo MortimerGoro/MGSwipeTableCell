@@ -94,7 +94,7 @@
 -(void) centerIconOverTextWithSpacing: (CGFloat) spacing {
   CGSize size = self.imageView.image.size;
   
-  if ([UIDevice currentDevice].systemVersion.floatValue >= 9.0 && [UIApplication sharedApplication].userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft) {
+  if ([UIDevice currentDevice].systemVersion.floatValue >= 9.0 && [self isRTLLocale]) {
     self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
                                             0.0,
                                             -(size.height + spacing),
@@ -154,6 +154,26 @@
         [self setImage:currentIcon forState:UIControlStateNormal];
     }
     self.tintColor = tintColor;
+}
+
+- (BOOL)isAppExtension
+{
+    return [[NSBundle mainBundle].executablePath rangeOfString:@".appex/"].location != NSNotFound;
+}
+
+
+-(BOOL) isRTLLocale
+{
+    if ([[UIView class] respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+        return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft;
+    } else {
+        if ([self isAppExtension]) {
+            return [NSLocale characterDirectionForLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]]==NSLocaleLanguageDirectionRightToLeft;
+        } else {
+            UIApplication *application = [UIApplication performSelector:@selector(sharedApplication)];
+            return application.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
+        }
+    }
 }
 
 @end
