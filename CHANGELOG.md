@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.6.0
+
+- Fix glitch when dragging before animation completes.
+- Fix cell separator overlap when swiping.
+- Add buttonsDistance property to MGSwipeSettings: allows to control distance between the buttons.
+- Add MGSwipeExpansionLayoutNone type that allows not to performont button layout in expansions.
+- Improved AppExtension and RTL language support.
+- Improved Swift interoperation.
+
 ## 1.5.6
 
 - Improve iOS 10.0 support
