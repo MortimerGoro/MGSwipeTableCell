@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.1
+
+- Fix issue #294: iOS 11 crash.
+
 ## 1.6.0
 
 - Fix glitch when dragging before animation completes.
