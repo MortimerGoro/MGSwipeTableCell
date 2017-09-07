@@ -7,7 +7,7 @@ MGSwipeTableCell is an easy to use UITableViewCell subclass that allows to displ
 
 This library is compatible with all the different ways to create a UITableViewCell: system predefined styles, programmatically created cells, cells loaded from a xib and prototype cells within a storyboard. You can use autolayout if you want.
 
-Works on iOS >= 5.0. Tested on all iOS versions on iPhone and iPad: iOS 7, iOS 8, iOS 9, iOS 10.
+Works on iOS >= 5.0. Tested on all iOS versions on iPhone and iPad: iOS 7, iOS 8, iOS 9, iOS 10, iOS 11.
 
 ## Transitions demo
 
