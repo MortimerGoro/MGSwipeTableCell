@@ -720,16 +720,13 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 -(void) createSwipeViewIfNeeded
 {
     if (!_swipeOverlay) {
-        _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height)];
+        _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(12, 0, self.bounds.size.width-24, self.contentView.bounds.size.height)];
         [self fixRegionAndAccesoryViews];
         _swipeOverlay.hidden = YES;
         _swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
         _swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
-        _swipeView = [[UIImageView alloc] initWithFrame:_swipeOverlay.bounds];
-        _swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _swipeView.contentMode = UIViewContentModeCenter;
-        _swipeView.clipsToBounds = YES;
-        [_swipeOverlay addSubview:_swipeView];
+        [_swipeOverlay setAccessibilityLabel:@"Swipe Overlay"];
+        _swipeOverlay.clipsToBounds = YES;
         [self.contentView addSubview:_swipeOverlay];
     }
     
@@ -748,8 +745,20 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_rightView];
     }
+    if(!_swipeView)
+    {
+      _swipeView = [[UIImageView alloc] initWithFrame:_swipeOverlay.bounds];
+      _swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+      _swipeView.contentMode = UIViewContentModeCenter;
+      [_swipeView setAccessibilityLabel:@"Swipe View"];
+      [_swipeOverlay addSubview:_swipeView];
+    }
+  
 }
 
+-(void) updateSwipeFrames {
+
+}
 
 - (void) showSwipeOverlayIfNeeded
 {
@@ -918,6 +927,8 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 - (UIImage *)imageFromView:(UIView *)view cropSize:(CGSize)cropSize{
     UIGraphicsBeginImageContextWithOptions(cropSize, NO, [[UIScreen mainScreen] scale]);
+//  [self.backgroundView  drawViewHierarchyInRect:self.bounds afterScreenUpdates:YES];
+//   [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:YES];
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -1030,8 +1041,19 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
     
     BOOL onlyButtons = activeSettings.onlySwipeButtons;
-    _swipeView.transform = CGAffineTransformMakeTranslation(onlyButtons ? 0 : _swipeOffset, 0);
-    
+  // update swipe frames
+  if(_swipeOffset > 0)
+  {
+    _swipeOverlay.frame = CGRectMake(self.contentInsets.left, 0, self.bounds.size.width-self.contentInsets.left, self.contentView.bounds.size.height);
+  } else {
+    _swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width-self.contentInsets.right, self.contentView.bounds.size.height);
+  }
+
+  CGRect swipeViewBounds = _swipeOverlay.bounds;
+  swipeViewBounds.origin.x = onlyButtons ? 0 : _swipeOffset - _swipeOverlay.frame.origin.x, 0;
+  swipeViewBounds.size.width = self.bounds.size.width;
+  _swipeView.frame = swipeViewBounds;
+
     //animate existing buttons
     MGSwipeButtonsView* but[2] = {_leftView, _rightView};
     MGSwipeSettings* settings[2] = {_leftSwipeSettings, _rightSwipeSettings};
