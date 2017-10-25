@@ -1045,8 +1045,18 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
   if(_swipeOffset > 0)
   {
     _swipeOverlay.frame = CGRectMake(self.contentInsets.left, 0, self.bounds.size.width-self.contentInsets.left, self.contentView.bounds.size.height);
+    _leftView.layer.cornerRadius =  self.cornerRadius;
+    _leftView.layer.masksToBounds = YES;
+    _rightView.layer.cornerRadius =  self.cornerRadius;
+    _rightView.layer.masksToBounds = YES;
+
   } else {
     _swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width-self.contentInsets.right, self.contentView.bounds.size.height);
+    _leftView.layer.cornerRadius =  self.cornerRadius;
+    _leftView.layer.masksToBounds = YES;
+    _rightView.layer.cornerRadius =  self.cornerRadius;
+    _rightView.layer.masksToBounds = YES;
+
   }
 
   CGRect swipeViewBounds = _swipeOverlay.bounds;

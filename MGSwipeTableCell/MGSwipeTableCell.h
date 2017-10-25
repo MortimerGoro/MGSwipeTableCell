@@ -223,7 +223,9 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
  *
  */
 @property (nonatomic, assign) UIEdgeInsets contentInsets;
-/** 
+@property (nonatomic, assign) CGFloat cornerRadius;
+
+/**
  * Left and right swipe buttons and its settings.
  * Buttons can be any kind of UIView but it's recommended to use the convenience MGSwipeButton class
  */
