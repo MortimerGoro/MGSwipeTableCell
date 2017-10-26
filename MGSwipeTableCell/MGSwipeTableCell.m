@@ -728,8 +728,13 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         [_swipeOverlay setAccessibilityLabel:@"Swipe Overlay"];
         _swipeOverlay.clipsToBounds = YES;
         [self.contentView addSubview:_swipeOverlay];
+        _swipeView = [[UIImageView alloc] initWithFrame:_swipeOverlay.bounds];
+        _swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _swipeView.contentMode = UIViewContentModeCenter;
+        [_swipeView setAccessibilityLabel:@"Swipe View"];
+        [_swipeOverlay addSubview:_swipeView];
     }
-    
+  
     [self fetchButtonsIfNeeded];
     if (!_leftView && _leftButtons.count > 0) {
         _leftView = [[MGSwipeButtonsView alloc] initWithButtons:_leftButtons direction:MGSwipeDirectionLeftToRight differentWidth:_allowsButtonsWithDifferentWidth buttonsDistance:_leftSwipeSettings.buttonsDistance];
@@ -745,14 +750,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_rightView];
     }
-    if(!_swipeView)
-    {
-      _swipeView = [[UIImageView alloc] initWithFrame:_swipeOverlay.bounds];
-      _swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-      _swipeView.contentMode = UIViewContentModeCenter;
-      [_swipeView setAccessibilityLabel:@"Swipe View"];
-      [_swipeOverlay addSubview:_swipeView];
-    }
+    [_swipeOverlay bringSubviewToFront:_swipeView];
   
 }
 
