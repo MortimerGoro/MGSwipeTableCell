@@ -80,7 +80,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func mailForIndexPath(_ path: IndexPath) -> MailData {
         return demoData[(path as NSIndexPath).row];
     }
-    
+    @objc
     func refreshCallback() {
         prepareDemoData();
         tableView.reloadData();
