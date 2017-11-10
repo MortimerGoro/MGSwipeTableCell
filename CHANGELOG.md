@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.2
+
+- Handle iOS 11 safeAreaInsets.
+- Fix issue #302: Right Buttons are covered iPhone X when landscape.
+- Use availability checks for Objective-C to remove some warings in XCode 9.
+
 ## 1.6.1
 
 - Fix issue #294: iOS 11 crash.
