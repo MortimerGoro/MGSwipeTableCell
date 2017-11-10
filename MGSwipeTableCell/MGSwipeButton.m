@@ -161,18 +161,16 @@
     return [[NSBundle mainBundle].executablePath rangeOfString:@".appex/"].location != NSNotFound;
 }
 
-
 -(BOOL) isRTLLocale
 {
-    if ([[UIView class] respondsToSelector:@selector(userInterfaceLayoutDirectionForSemanticContentAttribute:)]) {
+    if (@available(iOS 9, *)) {
         return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionRightToLeft;
+    }
+    else if ([self isAppExtension]) {
+        return [NSLocale characterDirectionForLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]]==NSLocaleLanguageDirectionRightToLeft;
     } else {
-        if ([self isAppExtension]) {
-            return [NSLocale characterDirectionForLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]]==NSLocaleLanguageDirectionRightToLeft;
-        } else {
-            UIApplication *application = [UIApplication performSelector:@selector(sharedApplication)];
-            return application.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
-        }
+        UIApplication *application = [UIApplication performSelector:@selector(sharedApplication)];
+        return application.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft;
     }
 }
 
