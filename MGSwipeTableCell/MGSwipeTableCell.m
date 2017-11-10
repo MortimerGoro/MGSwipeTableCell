@@ -677,6 +677,15 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
+-(UIEdgeInsets) getSafeInsets {
+    if (@available(iOS 11, *)) {
+        return self.safeAreaInsets;
+    }
+    else {
+        return UIEdgeInsetsZero;
+    }
+}
+
 -(UIView *) swipeContentView
 {
     if (!_swipeContentView) {
@@ -700,10 +709,33 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _swipeOverlay.frame = CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height);
         [self fixRegionAndAccesoryViews];
         if (_swipeView.image &&  !CGSizeEqualToSize(prevSize, _swipeOverlay.bounds.size)) {
+            //refresh safeInsets in situations like layout change, orientation chage, table resize, etc.
+            UIEdgeInsets safeInsets = [self getSafeInsets];
+            if (safeInsets.left !=0 || safeInsets.right != 0) {
+                if (_leftView) {
+                    [self changeFrameSafe:_leftView x: -_leftView.bounds.size.width - safeInsets.left];
+                }
+                if (_rightView) {
+                    [self changeFrameSafe:_rightView x: _swipeOverlay.bounds.size.width - safeInsets.right];
+                }
+                if (_swipeView) {
+                    [self changeFrameSafe:_swipeView x: -safeInsets.left];
+                }
+            }
             //refresh contentView in situations like layout change, orientation chage, table resize, etc.
             [self refreshContentView];
         }
     }
+}
+
+
+-(void) changeFrameSafe:(UIView *) view x:(CGFloat) x {
+    CGRect frame = view.frame;
+    CGAffineTransform transform = view.transform;
+    view.transform = CGAffineTransformIdentity;
+    frame.origin.x = x;
+    view.frame = frame;
+    view.transform = transform;
 }
 
 -(void) fetchButtonsIfNeeded
@@ -718,13 +750,15 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void) createSwipeViewIfNeeded
 {
+    UIEdgeInsets safeInsets = [self getSafeInsets];
     if (!_swipeOverlay) {
         _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height)];
         [self fixRegionAndAccesoryViews];
         _swipeOverlay.hidden = YES;
         _swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
         _swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
-        _swipeView = [[UIImageView alloc] initWithFrame:_swipeOverlay.bounds];
+        CGRect bounds = _swipeOverlay.bounds;
+        _swipeView = [[UIImageView alloc] initWithFrame:CGRectMake(-safeInsets.left, bounds.origin.y, bounds.size.width, bounds.size.height)];
         _swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _swipeView.contentMode = UIViewContentModeCenter;
         _swipeView.clipsToBounds = YES;
@@ -736,14 +770,14 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (!_leftView && _leftButtons.count > 0) {
         _leftView = [[MGSwipeButtonsView alloc] initWithButtons:_leftButtons direction:MGSwipeDirectionLeftToRight differentWidth:_allowsButtonsWithDifferentWidth buttonsDistance:_leftSwipeSettings.buttonsDistance];
         _leftView.cell = self;
-        _leftView.frame = CGRectMake(-_leftView.bounds.size.width, _leftSwipeSettings.topMargin, _leftView.bounds.size.width, _swipeOverlay.bounds.size.height - _leftSwipeSettings.topMargin - _leftSwipeSettings.bottomMargin);
+        _leftView.frame = CGRectMake(-_leftView.bounds.size.width - safeInsets.left, _leftSwipeSettings.topMargin, _leftView.bounds.size.width, _swipeOverlay.bounds.size.height - _leftSwipeSettings.topMargin - _leftSwipeSettings.bottomMargin);
         _leftView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_leftView];
     }
     if (!_rightView && _rightButtons.count > 0) {
         _rightView = [[MGSwipeButtonsView alloc] initWithButtons:_rightButtons direction:MGSwipeDirectionRightToLeft differentWidth:_allowsButtonsWithDifferentWidth buttonsDistance:_rightSwipeSettings.buttonsDistance];
         _rightView.cell = self;
-        _rightView.frame = CGRectMake(_swipeOverlay.bounds.size.width, _rightSwipeSettings.topMargin, _rightView.bounds.size.width, _swipeOverlay.bounds.size.height - _rightSwipeSettings.topMargin - _rightSwipeSettings.bottomMargin);
+        _rightView.frame = CGRectMake(_swipeOverlay.bounds.size.width - safeInsets.right, _rightSwipeSettings.topMargin, _rightView.bounds.size.width, _swipeOverlay.bounds.size.height - _rightSwipeSettings.topMargin - _rightSwipeSettings.bottomMargin);
         _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_rightView];
     }
