@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.3
+
+- Backwards compatibility with XCode 8 compilation
+
 ## 1.6.2
 
 - Handle iOS 11 safeAreaInsets.
