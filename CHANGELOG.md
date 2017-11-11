@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.6.3
+## 1.6.4
 
 - Backwards compatibility with XCode 8 compilation
 
