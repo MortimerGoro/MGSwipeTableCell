@@ -682,12 +682,16 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 }
 
 -(UIEdgeInsets) getSafeInsets {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 110000
     if (@available(iOS 11, *)) {
         return self.safeAreaInsets;
     }
     else {
         return UIEdgeInsetsZero;
     }
+#else
+    return UIEdgeInsetsZero;
+#endif
 }
 
 -(UIView *) swipeContentView
