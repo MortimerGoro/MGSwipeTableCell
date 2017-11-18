@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.6
+
+- Improve notch code to better handle edge cases like orientation changes while swiping.
+- Correctly handle safeAreaInsets for RTL language.
+- Add allowsButtonWithDifferentWidth property to MGSwipeSettings and deprecate the one in MGSwipeTableCell.
+
 ## 1.6.5
 
 - Expand the first or last button width to make appearance look good with a notch (e.g. iPhone X).
