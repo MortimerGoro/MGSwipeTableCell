@@ -141,7 +141,7 @@
     }
 }
 
--(void) setSafeInset:(CGFloat)safeInset extendEdgeButton:(BOOL) extendEdgeButton {
+-(void) setSafeInset:(CGFloat)safeInset extendEdgeButton:(BOOL) extendEdgeButton isRTL: (BOOL) isRTL {
     CGFloat diff = safeInset - _safeInset;
     if (diff != 0) {
         _safeInset = safeInset;
@@ -160,10 +160,10 @@
         frame.size.width += diff;
         // Adjust position to match width and safeInsets chages
         if (_direction == MGSwipeDirectionLeftToRight) {
-            frame.origin.x = -frame.size.width -safeInset;
+            frame.origin.x = -frame.size.width + safeInset * (isRTL ? 1 : -1);
         }
         else {
-            frame.origin.x = self.superview.bounds.size.width - safeInset;
+            frame.origin.x = self.superview.bounds.size.width + safeInset * (isRTL ? 1 : -1);
         }
         
         self.frame = frame;
@@ -778,7 +778,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             // Refresh safe insets
             if (_leftView) {
                 CGFloat width = _leftView.bounds.size.width;
-                [_leftView setSafeInset:safeInsets.left extendEdgeButton:_leftSwipeSettings.expandLastButtonBySafeAreaInsets];
+                [_leftView setSafeInset:safeInsets.left extendEdgeButton:_leftSwipeSettings.expandLastButtonBySafeAreaInsets isRTL: [self isRTLLocale]];
                 if (_swipeOffset > 0 && _leftView.bounds.size.width != width) {
                     // Adapt offset to the view change size due to safeInsets
                     _swipeOffset += _leftView.bounds.size.width - width;
@@ -786,7 +786,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             }
             if (_rightView) {
                 CGFloat width = _rightView.bounds.size.width;
-                [_rightView setSafeInset:safeInsets.right extendEdgeButton:_rightSwipeSettings.expandLastButtonBySafeAreaInsets];
+                [_rightView setSafeInset:safeInsets.right extendEdgeButton:_rightSwipeSettings.expandLastButtonBySafeAreaInsets isRTL: [self isRTLLocale]];
                 if (_swipeOffset < 0 && _rightView.bounds.size.width != width) {
                     // Adapt offset to the view change size due to safeInsets
                     _swipeOffset -= _rightView.bounds.size.width - width;
@@ -830,7 +830,10 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _leftSwipeSettings.allowsButtonsWithDifferentWidth = _leftSwipeSettings.allowsButtonsWithDifferentWidth || _allowsButtonsWithDifferentWidth;
         _leftView = [[MGSwipeButtonsView alloc] initWithButtons:_leftButtons direction:MGSwipeDirectionLeftToRight swipeSettings:_leftSwipeSettings safeInset:safeInsets.left];
         _leftView.cell = self;
-        _leftView.frame = CGRectMake(-_leftView.bounds.size.width - safeInsets.left, _leftSwipeSettings.topMargin, _leftView.bounds.size.width, _swipeOverlay.bounds.size.height - _leftSwipeSettings.topMargin - _leftSwipeSettings.bottomMargin);
+        _leftView.frame = CGRectMake(-_leftView.bounds.size.width + safeInsets.left * ([self isRTLLocale] ? 1 : -1),
+                                     _leftSwipeSettings.topMargin,
+                                     _leftView.bounds.size.width,
+                                     _swipeOverlay.bounds.size.height - _leftSwipeSettings.topMargin - _leftSwipeSettings.bottomMargin);
         _leftView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_leftView];
     }
@@ -838,18 +841,21 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _rightSwipeSettings.allowsButtonsWithDifferentWidth = _rightSwipeSettings.allowsButtonsWithDifferentWidth || _allowsButtonsWithDifferentWidth;
         _rightView = [[MGSwipeButtonsView alloc] initWithButtons:_rightButtons direction:MGSwipeDirectionRightToLeft swipeSettings:_rightSwipeSettings safeInset:safeInsets.right];
         _rightView.cell = self;
-        _rightView.frame = CGRectMake(_swipeOverlay.bounds.size.width - safeInsets.right, _rightSwipeSettings.topMargin, _rightView.bounds.size.width, _swipeOverlay.bounds.size.height - _rightSwipeSettings.topMargin - _rightSwipeSettings.bottomMargin);
+        _rightView.frame = CGRectMake(_swipeOverlay.bounds.size.width + safeInsets.right * ([self isRTLLocale] ? 1 : -1),
+                                      _rightSwipeSettings.topMargin,
+                                      _rightView.bounds.size.width,
+                                      _swipeOverlay.bounds.size.height - _rightSwipeSettings.topMargin - _rightSwipeSettings.bottomMargin);
         _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_rightView];
     }
     
     // Refresh safeInsets if required
     if (_leftView) {
-        [_leftView setSafeInset:safeInsets.left extendEdgeButton:_leftSwipeSettings.expandLastButtonBySafeAreaInsets];
+        [_leftView setSafeInset:safeInsets.left extendEdgeButton:_leftSwipeSettings.expandLastButtonBySafeAreaInsets isRTL: [self isRTLLocale]];
     }
     
     if (_rightView) {
-        [_rightView setSafeInset:safeInsets.right extendEdgeButton:_rightSwipeSettings.expandLastButtonBySafeAreaInsets];
+        [_rightView setSafeInset:safeInsets.right extendEdgeButton:_rightSwipeSettings.expandLastButtonBySafeAreaInsets isRTL: [self isRTLLocale]];
     }
 }
 
@@ -1134,7 +1140,8 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     
     BOOL onlyButtons = activeSettings.onlySwipeButtons;
     UIEdgeInsets safeInsets = [self getSafeInsets];
-    _swipeView.transform = CGAffineTransformMakeTranslation(onlyButtons ? 0 : _swipeOffset - safeInsets.left, 0);
+    CGFloat safeInset = [self isRTLLocale] ? safeInsets.right :  -safeInsets.left;
+    _swipeView.transform = CGAffineTransformMakeTranslation(safeInset + (onlyButtons ? 0 : _swipeOffset), 0);
     
     //animate existing buttons
     MGSwipeButtonsView* but[2] = {_leftView, _rightView};
