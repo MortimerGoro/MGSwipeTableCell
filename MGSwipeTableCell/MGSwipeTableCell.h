@@ -88,6 +88,8 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 @property (nonatomic, assign) CGFloat bottomMargin;
 /** Distance between the buttons. Default value : 0 */
 @property (nonatomic, assign) CGFloat buttonsDistance;
+/** If true, expands the last button length by safeAreaInsets. Useful for devices with a notch (e.g. iPhone X) */
+@property (nonatomic, assign) BOOL expandLastButtonBySafeAreaInsets;
 
 /** Animation settings when the swipe buttons are shown */
 @property (nonatomic, strong, nonnull) MGSwipeAnimation * showAnimation;
