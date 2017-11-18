@@ -116,6 +116,9 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
     to make the cell 'resist' swiping after buttons are revealed. Default is 1.0 */
 @property (nonatomic, assign) CGFloat swipeBounceRate;
 
+// default is NO. Controls whether buttons with different width are allowed. Buttons are resized to have the same size by default.
+@property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
+
 @end
 
 
@@ -241,7 +244,7 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
 // default is NO. Controls whether multiple cells can be swiped simultaneously
 @property (nonatomic) BOOL allowsMultipleSwipe;
 // default is NO. Controls whether buttons with different width are allowed. Buttons are resized to have the same size by default.
-@property (nonatomic) BOOL allowsButtonsWithDifferentWidth;
+@property (nonatomic) BOOL allowsButtonsWithDifferentWidth DEPRECATED_MSG_ATTRIBUTE("Use MGSwipeSettings.allowsButtonsWithDifferentWidth instead");
 //default is YES. Controls whether swipe gesture is allowed when the touch starts into the swiped buttons
 @property (nonatomic) BOOL allowsSwipeWhenTappingButtons;
 //default is YES. Controls whether swipe gesture is allowed in opposite directions. NO value disables swiping in opposite direction once started in one direction
