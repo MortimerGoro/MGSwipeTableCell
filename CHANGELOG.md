@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.5
+
+- Expand the first or last button width to make appearance look good with a notch (e.g. iPhone X).
+- Add expandLastButtonBySafeAreaInsets property to optionally enable/disable the default behaviour.
+
 ## 1.6.4
 
 - Backwards compatibility with XCode 8 compilation
