@@ -268,7 +268,7 @@
                 [self->_expandedButton.superview bringSubviewToFront:self->_expandedButton];
                 self->_expansionBackground.frame = self->_container.bounds;
             }
-            else if (_fromLeft) {
+            else if (self->_fromLeft) {
                 self->_expandedButton.frame = CGRectMake(self->_container.bounds.size.width - self->_expandedButton.bounds.size.width, 0, self->_expandedButton.bounds.size.width, self->_expandedButton.bounds.size.height);
                 self->_expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleLeftMargin;
                 self->_expansionBackground.frame = [self expansionBackgroundRect:self->_expandedButton];
