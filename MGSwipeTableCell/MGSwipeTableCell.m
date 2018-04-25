@@ -992,7 +992,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 -(void) setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
-    if (editing) { //disable swipe buttons when the user sets table editing mode
+    if (editing && self.cancelsSwipeOnEditing) { //disable swipe buttons when the user sets table editing mode
         self.swipeOffset = 0;
     }
 }
@@ -1000,7 +1000,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 -(void) setEditing:(BOOL)editing
 {
     [super setEditing:YES];
-    if (editing) { //disable swipe buttons when the user sets table editing mode
+    if (editing && self.cancelsSwipeOnEditing) { //disable swipe buttons when the user sets table editing mode
         self.swipeOffset = 0;
     }
 }
@@ -1095,6 +1095,11 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     if (_delegate && [_delegate respondsToSelector:@selector(swipeTableCell:didChangeSwipeState:gestureIsActive:)]) {
         [_delegate swipeTableCell:self didChangeSwipeState:_swipeState gestureIsActive: self.isSwipeGestureActive] ;
     }
+}
+
+- (BOOL) cancelsSwipeOnEditing
+{
+    return !self.leftSwipeSettings.allowSwipeDuringEditing && !self.rightSwipeSettings.allowSwipeDuringEditing;
 }
 
 #pragma mark Swipe Animation
@@ -1424,7 +1429,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     
     if (gestureRecognizer == _panRecognizer) {
         
-        if (self.isEditing) {
+        if (self.isEditing && self.cancelsSwipeOnEditing) {
             return NO; //do not swipe while editing table
         }
         

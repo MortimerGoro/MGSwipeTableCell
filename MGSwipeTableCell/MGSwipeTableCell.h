@@ -74,6 +74,8 @@ typedef NS_ENUM(NSInteger, MGSwipeEasingFunction) {
  * Swipe settings
  **/
 @interface MGSwipeSettings: NSObject
+/** If false no swipe during editing mode ON. Also swipe is canceled on switching on editing mode. Default value false */
+@property (nonatomic, assign) BOOL allowSwipeDuringEditing;
 /** Transition used while swiping buttons */
 @property (nonatomic, assign) MGSwipeTransition transition;
 /** Size proportional threshold to hide/keep the buttons when the user ends swiping. Default value 0.5 */
