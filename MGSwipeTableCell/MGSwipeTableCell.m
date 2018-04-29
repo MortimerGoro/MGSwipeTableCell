@@ -253,30 +253,30 @@
         
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
         [UIView animateWithDuration: duration delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _expandedButton.hidden = NO;
+            self->_expandedButton.hidden = NO;
 
-            if (_expansionLayout == MGSwipeExpansionLayoutCenter) {
-                _expandedButtonBoundsCopy = _expandedButton.bounds;
-                _expandedButton.layer.mask = nil;
-                _expandedButton.layer.transform = CATransform3DIdentity;
-                _expandedButton.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-                [_expandedButton.superview bringSubviewToFront:_expandedButton];
-                _expandedButton.frame = _container.bounds;
-                _expansionBackground.frame = [self expansionBackgroundRect:_expandedButton];
+            if (self->_expansionLayout == MGSwipeExpansionLayoutCenter) {
+                self->_expandedButtonBoundsCopy = self->_expandedButton.bounds;
+                self->_expandedButton.layer.mask = nil;
+                self->_expandedButton.layer.transform = CATransform3DIdentity;
+                self->_expandedButton.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+                [self->_expandedButton.superview bringSubviewToFront:self->_expandedButton];
+                self->_expandedButton.frame = self->_container.bounds;
+                self->_expansionBackground.frame = [self expansionBackgroundRect:self->_expandedButton];
             }
-            else if (_expansionLayout == MGSwipeExpansionLayoutNone) {
-                [_expandedButton.superview bringSubviewToFront:_expandedButton];
-                _expansionBackground.frame = _container.bounds;
+            else if (self->_expansionLayout == MGSwipeExpansionLayoutNone) {
+                [self->_expandedButton.superview bringSubviewToFront:self->_expandedButton];
+                self->_expansionBackground.frame = self->_container.bounds;
             }
-            else if (_fromLeft) {
-                _expandedButton.frame = CGRectMake(_container.bounds.size.width - _expandedButton.bounds.size.width, 0, _expandedButton.bounds.size.width, _expandedButton.bounds.size.height);
-                _expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleLeftMargin;
-                _expansionBackground.frame = [self expansionBackgroundRect:_expandedButton];
+            else if (self->_fromLeft) {
+                self->_expandedButton.frame = CGRectMake(self->_container.bounds.size.width - self->_expandedButton.bounds.size.width, 0, self->_expandedButton.bounds.size.width, self->_expandedButton.bounds.size.height);
+                self->_expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleLeftMargin;
+                self->_expansionBackground.frame = [self expansionBackgroundRect:self->_expandedButton];
             }
             else {
-                _expandedButton.frame = CGRectMake(0, 0, _expandedButton.bounds.size.width, _expandedButton.bounds.size.height);
-                _expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleRightMargin;
-                _expansionBackground.frame = [self expansionBackgroundRect:_expandedButton];
+                self->_expandedButton.frame = CGRectMake(0, 0, self->_expandedButton.bounds.size.width, self->_expandedButton.bounds.size.height);
+                self->_expandedButton.autoresizingMask|= UIViewAutoresizingFlexibleRightMargin;
+                self->_expansionBackground.frame = [self expansionBackgroundRect:self->_expandedButton];
             }
 
         } completion:^(BOOL finished) {
@@ -303,14 +303,14 @@
         }
         CGFloat duration = _fromLeft ? _cell.leftExpansion.animationDuration : _cell.rightExpansion.animationDuration;
         [UIView animateWithDuration: animated ? duration : 0.0 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _container.frame = self.bounds;
-            if (_expansionLayout == MGSwipeExpansionLayoutCenter) {
-                _expandedButtonAnimated.frame = _expandedButtonBoundsCopy;
+            self->_container.frame = self.bounds;
+            if (self->_expansionLayout == MGSwipeExpansionLayoutCenter) {
+                self->_expandedButtonAnimated.frame = self->_expandedButtonBoundsCopy;
             }
             [self resetButtons];
-            _expansionBackgroundAnimated.frame = [self expansionBackgroundRect:_expandedButtonAnimated];
+            self->_expansionBackgroundAnimated.frame = [self expansionBackgroundRect:self->_expandedButtonAnimated];
         } completion:^(BOOL finished) {
-            [_expansionBackgroundAnimated removeFromSuperview];
+            [self->_expansionBackgroundAnimated removeFromSuperview];
         }];
     }
     else if (_expansionBackground) {
