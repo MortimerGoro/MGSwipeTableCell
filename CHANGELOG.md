@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.7
+
+- Fix quality loss in snapshot image.
+- Got rid from Block implicitly warning.
+
 ## 1.6.6
 
 - Improve notch code to better handle edge cases like orientation changes while swiping.
