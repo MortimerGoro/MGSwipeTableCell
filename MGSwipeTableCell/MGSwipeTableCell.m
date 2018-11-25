@@ -1027,7 +1027,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 - (UIImage *)imageFromView:(UIView *)view cropSize:(CGSize)cropSize{
     UIGraphicsBeginImageContextWithOptions(cropSize, NO, 0);
-    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
     UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
