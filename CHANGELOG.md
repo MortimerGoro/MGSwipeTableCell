@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.8
+
+- Fix duplicaged buttons on orientation change.
+
 ## 1.6.7
 
 - Fix quality loss in snapshot image.
