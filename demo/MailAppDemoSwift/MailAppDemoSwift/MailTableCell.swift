@@ -68,7 +68,7 @@ class MailTableCell: MGSwipeTableCell {
         mailMessage.isScrollEnabled = false;
         mailMessage.isEditable = false;
         mailMessage.backgroundColor = UIColor.clear;
-        mailMessage.contentInset = UIEdgeInsetsMake(-5, -5, 0, 0);
+        mailMessage.contentInset = UIEdgeInsets.init(top: -5, left: -5, bottom: 0, right: 0);
         mailMessage.textColor = UIColor.gray;
         mailMessage.isUserInteractionEnabled = false;
         
@@ -83,7 +83,7 @@ class MailTableCell: MGSwipeTableCell {
         
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier:String?)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier:String?)
     {
         super.init(style:style, reuseIdentifier: reuseIdentifier);
         initViews();

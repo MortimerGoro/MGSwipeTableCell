@@ -140,7 +140,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView = UITableView(frame: view.bounds, style: UITableViewStyle.plain);
+        tableView = UITableView(frame: view.bounds, style: UITableView.Style.plain);
         tableView.delegate = self;
         tableView.dataSource = self;
         view.addSubview(tableView);
@@ -148,7 +148,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.title = "MSwipeTableCell MailApp";
         
         refreshControl = UIRefreshControl();
-        refreshControl.addTarget(self, action: #selector(refreshCallback), for: UIControlEvents.valueChanged);
+        refreshControl.addTarget(self, action: #selector(refreshCallback), for: UIControl.Event.valueChanged);
         tableView.addSubview(refreshControl);
         prepareDemoData();
     }
@@ -169,7 +169,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         var cell: MailTableCell! = tableView.dequeueReusableCell(withIdentifier: identifier) as? MailTableCell;
         if cell == nil {
-            cell = MailTableCell(style: UITableViewCellStyle.default, reuseIdentifier: identifier);
+            cell = MailTableCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: identifier);
         }
         cell.delegate = self;
         
@@ -209,7 +209,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
                     mail.read = !mail.read;
                     self.updateCellIndicator(mail, cell: cell as! MailTableCell);
                     cell.refreshContentView();
-                    (cell.leftButtons[0] as! UIButton).setTitle(self.readButtonText(mail.read), for: UIControlState());
+                    (cell.leftButtons[0] as! UIButton).setTitle(self.readButtonText(mail.read), for: UIControl.State());
                     
                     return true;
                 })
@@ -251,7 +251,7 @@ class MailViewController: UIViewController, UITableViewDataSource, UITableViewDe
                         mail.read = !mail.read;
                         self.updateCellIndicator(mail, cell: cell as! MailTableCell);
                         cell.refreshContentView();
-                        (cell.leftButtons[0] as! UIButton).setTitle(self.readButtonText(mail.read), for: UIControlState());
+                        (cell.leftButtons[0] as! UIButton).setTitle(self.readButtonText(mail.read), for: UIControl.State());
                         cell.hideSwipe(animated: true);
                     }
                     else if index == 2 {
