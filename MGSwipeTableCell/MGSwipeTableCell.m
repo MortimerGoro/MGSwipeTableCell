@@ -603,7 +603,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void) dealloc
 {
-    [self hideSwipeOverlayIfNeeded];
+  [self hideSwipeOverlayIfNeeded:YES];
 }
 
 -(void) initViews: (BOOL) cleanButtons
@@ -802,7 +802,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     [self addGestureRecognizer:_tapRecognizer];
 }
 
--(void) hideSwipeOverlayIfNeeded
+-(void) hideSwipeOverlayIfNeeded:(BOOL) fromDealloc
 {
     if (!_overlayEnabled) {
         return;
@@ -820,7 +820,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _tableInputOverlay = nil;
     }
     
-    self.selectionStyle = _previusSelectionStyle;
+    if (!fromDealloc) {
+      self.selectionStyle = _previusSelectionStyle;
+    }
     NSArray * selectedRows = self.parentTable.indexPathsForSelectedRows;
     if ([selectedRows containsObject:[self.parentTable indexPathForCell:self]]) {
         self.selected = NO; //Hack: in some iOS versions setting the selected property to YES own isn't enough to force the cell to redraw the chosen selectionStyle
@@ -871,7 +873,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 -(void) willMoveToSuperview:(UIView *)newSuperview;
 {
     if (newSuperview == nil) { //remove the table overlay when a cell is removed from the table
-        [self hideSwipeOverlayIfNeeded];
+      [self hideSwipeOverlayIfNeeded:YES];
     }
 }
 
@@ -1026,7 +1028,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             [_leftView endExpansionAnimated:NO];
         if (_rightView)
             [_rightView endExpansionAnimated:NO];
-        [self hideSwipeOverlayIfNeeded];
+      [self hideSwipeOverlayIfNeeded:NO];
         _targetOffset = 0;
         [self updateState:MGSwipeStateNone];
         return;
