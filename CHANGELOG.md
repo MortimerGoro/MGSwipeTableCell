@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.9
+
+- iOS 13 compatibility fixes.
+
 ## 1.6.8
 
 - Fix duplicaged buttons on orientation change.
