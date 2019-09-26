@@ -622,6 +622,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     bool _overlayEnabled;
     UITableViewCellSelectionStyle _previusSelectionStyle;
     NSMutableSet * _previusHiddenViews;
+    UITableViewCellAccessoryType _previusAccessoryType;
     BOOL _triggerStateChanges;
     
     MGSwipeAnimationData * _animationData;
@@ -1037,6 +1038,19 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void) setAccesoryViewsHidden: (BOOL) hidden
 {
+    if (@available(iOS 13, *)) {
+        // Hide the accessory to prevent blank box being displayed in iOS13-beta
+        // (blank area would be overlayed in accessory area when using cell in storyboard view)
+        // This may be fixed in iOS13 production release
+        if (hidden) {
+            _previusAccessoryType = self.accessoryType;
+            self.accessoryType = UITableViewCellAccessoryNone;
+        } else if (self.accessoryType == UITableViewCellAccessoryNone) {
+            self.accessoryType = _previusAccessoryType;
+            _previusAccessoryType = UITableViewCellAccessoryNone;
+        }
+    }
+    
     if (self.accessoryView) {
         self.accessoryView.hidden = hidden;
     }
