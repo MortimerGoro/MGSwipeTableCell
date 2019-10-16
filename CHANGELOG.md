@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.10
+
+- Fix cut view when UITableViewCell's accessoryType is set to disclosureIndicator in a storyboard.
+
 ## 1.6.9
 
 - iOS 13 compatibility fixes.
