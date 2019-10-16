@@ -1038,10 +1038,10 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void) setAccesoryViewsHidden: (BOOL) hidden
 {
-    if (@available(iOS 13, *)) {
-        // Hide the accessory to prevent blank box being displayed in iOS13-beta
+    if (@available(iOS 12, *)) {
+        // Hide the accessory to prevent blank box being displayed in iOS13 / iOS12
         // (blank area would be overlayed in accessory area when using cell in storyboard view)
-        // This may be fixed in iOS13 production release
+        // See: https://github.com/MortimerGoro/MGSwipeTableCell/issues/337
         if (hidden) {
             _previusAccessoryType = self.accessoryType;
             self.accessoryType = UITableViewCellAccessoryNone;
