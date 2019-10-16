@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.11
+
+- Also apply the accessoryType fix on iOS 12
+
 ## 1.6.10
 
 - Fix cut view when UITableViewCell's accessoryType is set to disclosureIndicator in a storyboard.
