@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger, MGSwipeState) {
     MGSwipeStateExpandingRightToLeft,
 };
 
-/** Swipe state */
+/** Swipe Expansion Layout */
 typedef NS_ENUM(NSInteger, MGSwipeExpansionLayout) {
     MGSwipeExpansionLayoutBorder = 0,
     MGSwipeExpansionLayoutCenter,
