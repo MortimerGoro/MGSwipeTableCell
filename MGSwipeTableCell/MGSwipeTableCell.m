@@ -328,7 +328,7 @@
 
 -(BOOL) handleClick: (id) sender fromExpansion:(BOOL) fromExpansion
 {
-    bool autoHide = false;
+    BOOL autoHide = NO;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
     if ([sender respondsToSelector:@selector(callMGSwipeConvenienceCallback:)]) {
@@ -614,12 +614,12 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     UIView * _swipeContentView;
     MGSwipeButtonsView * _leftView;
     MGSwipeButtonsView * _rightView;
-    bool _allowSwipeRightToLeft;
-    bool _allowSwipeLeftToRight;
+    BOOL _allowSwipeRightToLeft;
+    BOOL _allowSwipeLeftToRight;
     __weak MGSwipeButtonsView * _activeExpansion;
 
     MGSwipeTableInputOverlay * _tableInputOverlay;
-    bool _overlayEnabled;
+    BOOL _overlayEnabled;
     UITableViewCellSelectionStyle _previusSelectionStyle;
     NSMutableSet * _previusHiddenViews;
     UITableViewCellAccessoryType _previusAccessoryType;
@@ -660,7 +660,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(void) dealloc
 {
-    [self hideSwipeOverlayIfNeededIncludingReselect:false];
+    [self hideSwipeOverlayIfNeededIncludingReselect:NO];
 }
 
 -(void) initViews: (BOOL) cleanButtons
@@ -976,7 +976,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 -(void) willMoveToSuperview:(UIView *)newSuperview;
 {
     if (newSuperview == nil) { //remove the table overlay when a cell is removed from the table
-        [self hideSwipeOverlayIfNeededIncludingReselect:false];
+        [self hideSwipeOverlayIfNeededIncludingReselect:NO];
     }
 }
 
@@ -1142,7 +1142,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             [_leftView endExpansionAnimated:NO];
         if (_rightView)
             [_rightView endExpansionAnimated:NO];
-        [self hideSwipeOverlayIfNeededIncludingReselect:true];
+        [self hideSwipeOverlayIfNeededIncludingReselect:YES];
         _targetOffset = 0;
         [self updateState:MGSwipeStateNone];
         return;
@@ -1173,7 +1173,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         view.transform = CGAffineTransformMakeTranslation(translation, 0);
 
         if (view != activeButtons) continue; //only transition if active (perf. improvement)
-        bool expand = expansions[i].buttonIndex >= 0 && offset > view.bounds.size.width * expansions[i].threshold;
+        BOOL expand = expansions[i].buttonIndex >= 0 && offset > view.bounds.size.width * expansions[i].threshold;
         if (expand) {
             [view expandToOffset:offset settings:expansions[i]];
             _targetOffset = expansions[i].fillOnTrigger ? self.bounds.size.width * sign : 0;
@@ -1249,7 +1249,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _animationData.start = timer.timestamp;
     }
     CFTimeInterval elapsed = timer.timestamp - _animationData.start;
-    bool completed = elapsed >= _animationData.duration;
+    BOOL completed = elapsed >= _animationData.duration;
     if (completed) {
         _triggerStateChanges = YES;
     }
@@ -1338,7 +1338,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 
 -(CGFloat) filterSwipe: (CGFloat) offset
 {
-    bool allowed = offset > 0 ? _allowSwipeLeftToRight : _allowSwipeRightToLeft;
+    BOOL allowed = offset > 0 ? _allowSwipeLeftToRight : _allowSwipeRightToLeft;
     UIView * buttons = offset > 0 ? _leftView : _rightView;
     if (!buttons || ! allowed) {
         offset = 0;
