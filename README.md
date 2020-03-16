@@ -7,7 +7,7 @@ MGSwipeTableCell is an easy to use UITableViewCell subclass that allows to displ
 
 This library is compatible with all the different ways to create a UITableViewCell: system predefined styles, programmatically created cells, cells loaded from a xib and prototype cells within a storyboard. You can use autolayout if you want.
 
-Works on iOS >= 5.0. Tested on all iOS versions on iPhone and iPad: iOS 7, iOS 8, iOS 9, iOS 10, iOS 11.
+Works on iOS >= 5.0. Tested on all iOS versions on iPhone and iPad: iOS 7, iOS 8, iOS 9, iOS 10, iOS 11, iOS 12, iOS 13
 
 ## Transitions demo
 
@@ -156,7 +156,7 @@ MGSwipeTableCellDelegate is an optional delegate to configure swipe buttons or t
  * Delegate method to setup the swipe buttons and swipe/expansion settings
  * Buttons can be any kind of UIView but it's recommended to use the convenience MGSwipeButton class
  * Setting up buttons with this delegate instead of using cell properties improves memory usage because buttons are only created in demand
- * @param swipeTableCell the UITableVieCel to configure. You can get the indexPath using [tableView indexPathForCell:cell]
+ * @param swipeTableCell the UITableViewCell to configure. You can get the indexPath using [tableView indexPathForCell:cell]
  * @param direction The swipe direction (left to right or right to left)
  * @param swipeSettings instance to configure the swipe transition and setting (optional)
  * @param expansionSettings instance to configure button expansions (optional)

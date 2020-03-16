@@ -1,5 +1,47 @@
 # Changelog
 
+## 1.6.11
+
+- Also apply the accessoryType fix on iOS 12
+
+## 1.6.10
+
+- Fix cut view when UITableViewCell's accessoryType is set to disclosureIndicator in a storyboard.
+
+## 1.6.9
+
+- iOS 13 compatibility fixes.
+
+## 1.6.8
+
+- Fix duplicaged buttons on orientation change.
+
+## 1.6.7
+
+- Fix quality loss in snapshot image.
+- Got rid from Block implicitly warning.
+
+## 1.6.6
+
+- Improve notch code to better handle edge cases like orientation changes while swiping.
+- Correctly handle safeAreaInsets for RTL language.
+- Add allowsButtonWithDifferentWidth property to MGSwipeSettings and deprecate the one in MGSwipeTableCell.
+
+## 1.6.5
+
+- Expand the first or last button width to make appearance look good with a notch (e.g. iPhone X).
+- Add expandLastButtonBySafeAreaInsets property to optionally enable/disable the default behaviour.
+
+## 1.6.4
+
+- Backwards compatibility with XCode 8 compilation
+
+## 1.6.2
+
+- Handle iOS 11 safeAreaInsets.
+- Fix issue #302: Right Buttons are covered iPhone X when landscape.
+- Use availability checks for Objective-C to remove some warings in XCode 9.
+
 ## 1.6.1
 
 - Fix issue #294: iOS 11 crash.
