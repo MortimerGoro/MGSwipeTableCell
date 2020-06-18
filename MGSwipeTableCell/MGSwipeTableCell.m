@@ -813,7 +813,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 {
     UIEdgeInsets safeInsets = [self getSafeInsets];
     if (!_swipeOverlay) {
-        _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(12, 0, self.bounds.size.width-24, self.contentView.bounds.size.height)];
+      _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(self.contentInsets.left, 0, self.bounds.size.width-self.contentInsets.left - self.contentInsets.right, self.contentView.bounds.size.height)];
         [self fixRegionAndAccesoryViews];
         _swipeOverlay.hidden = YES;
         _swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
