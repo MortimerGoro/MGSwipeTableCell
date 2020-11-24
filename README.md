@@ -42,7 +42,7 @@ See [`SpotifyDemo`](demo/SpotifyDemo) for a complete project which mimics Spotif
 
 See [`MGSwipeDemo`](demo/MGSwipeDemo) for a complete project where you can test the variety of transitions on a real device/simulator.
 
-##Setup your project
+## Setup your project
 
 You can use CocoaPods to include MGSwipeTableCell into you project:
 
@@ -51,6 +51,10 @@ You can use CocoaPods to include MGSwipeTableCell into you project:
 You can use Carthage to include MGSwipeTableCell into your project. Just add this dependency to your Cartfile:
     
     github "MortimerGoro/MGSwipeTableCell"
+
+You can use Swift Package Manager to include MGSwipeTableCell into you project:
+
+    .package(url: "https://github.com/MortimerGoro/MGSwipeTableCell.git", from: "1.6.0")
 
 ## Usage
 
