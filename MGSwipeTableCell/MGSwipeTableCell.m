@@ -1029,10 +1029,21 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 #pragma mark Some utility methods
 
 - (UIImage *)imageFromView:(UIView *)view cropSize:(CGSize)cropSize{
+    
+    BOOL originalGeometry = view.layer.geometryFlipped;
+    BOOL superviewOriginalGeometry = view.superview.layer.geometryFlipped;
+    
+    view.layer.geometryFlipped = NO;
+    view.superview.layer.geometryFlipped = NO;
+    
     UIGraphicsBeginImageContextWithOptions(cropSize, NO, 0);
     [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
     UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+
+    view.layer.geometryFlipped = originalGeometry;
+    view.superview.layer.geometryFlipped = superviewOriginalGeometry;
+    
     return image;
 }
 
