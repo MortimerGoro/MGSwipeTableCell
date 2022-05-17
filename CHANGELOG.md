@@ -1,5 +1,10 @@
 # Changelog
 
+
+## 1.6.12
+
+- Fix Visual glitch/flash on refreshContentView() while cell is swiped open (see #363)
+
 ## 1.6.11
 
 - Also apply the accessoryType fix on iOS 12
