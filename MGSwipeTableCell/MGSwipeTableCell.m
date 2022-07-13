@@ -813,19 +813,21 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 {
     UIEdgeInsets safeInsets = [self getSafeInsets];
     if (!_swipeOverlay) {
-        _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, self.contentView.bounds.size.height)];
+      _swipeOverlay = [[UIView alloc] initWithFrame:CGRectMake(self.contentInsets.left, 0, self.bounds.size.width-self.contentInsets.left - self.contentInsets.right, self.contentView.bounds.size.height)];
         [self fixRegionAndAccesoryViews];
         _swipeOverlay.hidden = YES;
         _swipeOverlay.backgroundColor = [self backgroundColorForSwipe];
         _swipeOverlay.layer.zPosition = 10; //force render on top of the contentView;
+        [_swipeOverlay setAccessibilityLabel:@"Swipe Overlay"];
+        _swipeOverlay.clipsToBounds = YES;
+        [self.contentView addSubview:_swipeOverlay];
         _swipeView = [[UIImageView alloc] initWithFrame:_swipeOverlay.bounds];
         _swipeView.autoresizingMask =  UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _swipeView.contentMode = UIViewContentModeCenter;
-        _swipeView.clipsToBounds = YES;
+        [_swipeView setAccessibilityLabel:@"Swipe View"];
         [_swipeOverlay addSubview:_swipeView];
-        [self.contentView addSubview:_swipeOverlay];
     }
-    
+  
     [self fetchButtonsIfNeeded];
     if (!_leftView && _leftButtons.count > 0) {
         _leftSwipeSettings.allowsButtonsWithDifferentWidth = _leftSwipeSettings.allowsButtonsWithDifferentWidth || _allowsButtonsWithDifferentWidth;
@@ -849,7 +851,6 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         _rightView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
         [_swipeOverlay addSubview:_rightView];
     }
-    
     // Refresh safeInsets if required
     if (_leftView) {
         [_leftView setSafeInset:safeInsets.left extendEdgeButton:_leftSwipeSettings.expandLastButtonBySafeAreaInsets isRTL: [self isRTLLocale]];
@@ -860,6 +861,9 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
+-(void) updateSwipeFrames {
+
+}
 
 - (void) showSwipeOverlayIfNeeded
 {
@@ -922,7 +926,6 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
         [_tableInputOverlay removeFromSuperview];
         _tableInputOverlay = nil;
     }
-
     if (reselectCellIfNeeded) {
         self.selectionStyle = _previusSelectionStyle;
         NSArray * selectedRows = self.parentTable.indexPathsForSelectedRows;
