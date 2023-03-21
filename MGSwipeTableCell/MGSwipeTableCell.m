@@ -1220,6 +1220,27 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     }
 }
 
+-(void) demoSwipe: (MGSwipeDirection) direction expandDistance: (NSInteger) distance {
+    CGFloat s = direction == MGSwipeDirectionLeftToRight ? 1.0 : -1.0;
+    MGSwipeExpansionSettings* expSetting = direction == MGSwipeDirectionLeftToRight ? _leftExpansion : _rightExpansion;
+    
+    if(!_activeExpansion) {
+        [self createSwipeViewIfNeeded];
+        _allowSwipeLeftToRight = _leftButtons.count > 0;
+        _allowSwipeRightToLeft = _rightButtons.count > 0;
+        UIView * buttonsView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
+        
+        if (buttonsView) {
+            __weak MGSwipeButtonsView * expansionView = direction == MGSwipeDirectionLeftToRight ? _leftView : _rightView;
+            __weak MGSwipeTableCell * weakself = self;
+            [self setSwipeOffset:distance * s * expSetting.threshold * 2 animation:expSetting.triggerAnimation completion:^(BOOL finished){
+                [expansionView endExpansionAnimated:YES];
+                [weakself setSwipeOffset:0 animated:YES completion:nil];
+            }];
+        }
+    }
+}
+
 -(void) expandSwipe: (MGSwipeDirection) direction animated: (BOOL) animated
 {
     CGFloat s = direction == MGSwipeDirectionLeftToRight ? 1.0 : -1.0;
